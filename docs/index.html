@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tekst programming language documentation.">
+    <title>Documentation — Tekst</title>
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .docs-layout {
+            max-width: 1180px;
+            margin: auto;
+            padding: 70px 24px 120px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 70px;
+        }
+
+        .docs-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .docs-sidebar strong {
+            display: block;
+            margin-bottom: 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ff6b35;
+        }
+
+        .docs-sidebar a {
+            display: block;
+            padding: 7px 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .docs-sidebar a:hover,
+        .docs-sidebar a.active {
+            color: #fff;
+        }
+
+        .docs-content {
+            min-width: 0;
+        }
+
+        .docs-content > .section-label {
+            margin-bottom: 18px;
+        }
+
+        .docs-content h1 {
+            font-size: clamp(48px, 7vw, 76px);
+            line-height: 1;
+            letter-spacing: -4px;
+            margin-bottom: 25px;
+        }
+
+        .docs-content > p {
+            color: #999;
+            max-width: 680px;
+            font-size: 17px;
+            margin-bottom: 70px;
+        }
+
+        .docs-block {
+            padding-top: 70px;
+            margin-top: 70px;
+            border-top: 1px solid #242424;
+        }
+
+        .docs-block h2 {
+            font-size: 34px;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+
+        .docs-block h3 {
+            font-size: 19px;
+            margin: 35px 0 12px;
+        }
+
+        .docs-block p {
+            color: #999;
+            margin-bottom: 18px;
+            max-width: 720px;
+        }
+
+        .docs-block ul {
+            color: #999;
+            padding-left: 20px;
+        }
+
+        .docs-block li {
+            margin: 7px 0;
+        }
+
+        .docs-code {
+            margin: 25px 0;
+            background: #0b0b0b;
+            border: 1px solid #242424;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .docs-code-title {
+            padding: 10px 15px;
+            border-bottom: 1px solid #242424;
+            color: #666;
+            font: 12px monospace;
+        }
+
+        .docs-code pre {
+            padding: 22px;
+            overflow-x: auto;
+        }
+
+        .docs-code code {
+            color: #d6d6d6;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .callout {
+            margin: 25px 0;
+            padding: 18px 20px;
+            border-left: 2px solid #ff6b35;
+            background: rgba(255, 107, 53, 0.05);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .docs-sidebar {
+                position: static;
+                display: flex;
+                gap: 18px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+
+            .docs-sidebar strong {
+                display: none;
+            }
+
+            .docs-sidebar a {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="../" class="brand">
+                <span class="brand-mark">T</span>
+                <span>Tekst</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="../#features">Features</a>
+                <a href="../#syntax">Syntax</a>
+                <a href="../#examples">Examples</a>
+                <a href="./">Docs</a>
+                <a href="../contributing/">Contribute</a>
+            </div>
+
+            <a href="../contributing/" class="nav-button">
+                Contribute <span>→</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="docs-layout">
+        <aside class="docs-sidebar">
+            <strong>Documentation</strong>
+            <a href="#introduction" class="active">Introduction</a>
+            <a href="#installation">Installation</a>
+            <a href="#variables">Variables</a>
+            <a href="#functions">Functions</a>
+            <a href="#control-flow">Control flow</a>
+            <a href="#classes">Classes</a>
+            <a href="#errors">Errors</a>
+            <a href="#running">Running Tekst</a>
+        </aside>
+
+        <article class="docs-content">
+            <div class="section-label">TEKST DOCUMENTATION</div>
+
+            <h1>Learn Tekst.</h1>
+
+            <p>
+                Everything you need to understand the language, write your first
+                program, and start experimenting with the interpreter.
+            </p>
+
+            <section id="introduction" class="docs-block">
+                <h2>Introduction</h2>
+
+                <p>
+                    Tekst is a lightweight interpreted programming language
+                    designed around readable syntax and simple programming
+                    concepts.
+                </p>
+
+                <div class="callout">
+                    Tekst is currently an experimental language. Syntax and
+                    features may change as the interpreter evolves.
+                </div>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">hello.tekst</div>
+
+                    <pre><code><span class="code-builtin">print</span>(<span class="code-string">"Hello, World!"</span>)</code></pre>
+                </div>
+            </section>
+
+            <section id="installation" class="docs-block">
+                <h2>Installation</h2>
+
+                <p>
+                    The Tekst interpreter is currently built from source using
+                    a C++17-compatible compiler.
+                </p>
+
+                <h3>Requirements</h3>
+
+                <ul>
+                    <li>G++ or another C++17 compiler</li>
+                    <li>Git</li>
+                    <li>Windows, Linux, or macOS</li>
+                </ul>
+
+                <h3>Build</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>g++ -std=c++17 -O2 -o Tekst src/main.cpp src/lexer.cpp src/parser.cpp -I.</code></pre>
+                </div>
+            </section>
+
+            <section id="variables" class="docs-block">
+                <h2>Variables</h2>
+
+                <p>
+                    Variables are created by assigning a value to a name.
+                    Tekst does not require explicit type declarations for
+                    basic values.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">variables.tekst</div>
+
+                    <pre><code><span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
+<span class="code-variable">age</span> = <span class="code-number">14</span>
+<span class="code-variable">price</span> = <span class="code-number">9.99</span>
+<span class="code-variable">active</span> = <span class="code-boolean">True</span>
+
+<span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>]
+<span class="code-variable">config</span> = {<span class="code-string">"port"</span>: <span class="code-number">8080</span>}</code></pre>
+                </div>
+            </section>
+
+            <section id="functions" class="docs-block">
+                <h2>Functions</h2>
+
+                <p>
+                    Functions are declared with the <code>fn</code> keyword.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">functions.tekst</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
+  <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
+
+<span class="code-function">greet</span>(<span class="code-string">"Tekst"</span>)</code></pre>
+                </div>
+
+                <h3>Default arguments</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">defaults.tekst</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>, <span class="code-variable">greeting</span> = <span class="code-string">"Hello"</span>):
+  <span class="code-builtin">print</span>(<span class="code-variable">greeting</span> + <span class="code-string">", "</span> + <span class="code-variable">name</span>)
+
+<span class="code-function">greet</span>(<span class="code-string">"World"</span>)
+<span class="code-function">greet</span>(<span class="code-string">"World"</span>, <span class="code-string">"Welcome"</span>)</code></pre>
+                </div>
+            </section>
+
+            <section id="control-flow" class="docs-block">
+                <h2>Control flow</h2>
+
+                <h3>Conditions</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">conditions.tekst</div>
+
+                    <pre><code><span class="code-variable">x</span> = <span class="code-number">10</span>
+
+<span class="code-keyword">if</span> <span class="code-variable">x</span> &gt; <span class="code-number">15</span>:
+  <span class="code-builtin">print</span>(<span class="code-string">"Large"</span>)
+<span class="code-keyword">elif</span> <span class="code-variable">x</span> &gt; <span class="code-number">5</span>:
+  <span class="code-builtin">print</span>(<span class="code-string">"Medium"</span>)
+<span class="code-keyword">else</span>:
+  <span class="code-builtin">print</span>(<span class="code-string">"Small"</span>)</code></pre>
+                </div>
+
+                <h3>Loops</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">loops.tekst</div>
+
+                    <pre><code><span class="code-variable">count</span> = <span class="code-number">0</span>
+
+<span class="code-keyword">while</span> <span class="code-variable">count</span> &lt; <span class="code-number">5</span>:
+  <span class="code-builtin">print</span>(<span class="code-variable">count</span>)
+  <span class="code-variable">count</span> = <span class="code-variable">count</span> + <span class="code-number">1</span>
+
+<span class="code-variable">items</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]
+
+<span class="code-keyword">for</span> <span class="code-variable">item</span> <span class="code-keyword">in</span> <span class="code-variable">items</span>:
+  <span class="code-builtin">print</span>(<span class="code-variable">item</span>)</code></pre>
+                </div>
+            </section>
+
+            <section id="classes" class="docs-block">
+                <h2>Classes</h2>
+
+                <p>
+                    Tekst supports classes, constructors, methods, and inheritance.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">classes.tekst</div>
+
+                    <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
+  <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-variable">self</span>, <span class="code-variable">start</span>):
+    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
+
+  <span class="code-keyword">def</span> <span class="code-function">increment</span>():
+    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">self</span>.<span class="code-property">value</span> + <span class="code-number">1</span>
+
+  <span class="code-keyword">def</span> <span class="code-function">display</span>():
+    <span class="code-builtin">print</span>(<span class="code-variable">self</span>.<span class="code-property">value</span>)
+
+<span class="code-class">Counter</span> <span class="code-variable">counter</span>
+<span class="code-variable">counter</span>.<span class="code-function">increment</span>()
+<span class="code-variable">counter</span>.<span class="code-function">display</span>()</code></pre>
+                </div>
+            </section>
+
+            <section id="errors" class="docs-block">
+                <h2>Error handling</h2>
+
+                <p>
+                    Runtime errors can be handled using try and catch blocks.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">errors.tekst</div>
+
+                    <pre><code><span class="code-keyword">try</span>:
+  <span class="code-variable">x</span> = <span class="code-number">1</span> / <span class="code-number">0</span>
+
+<span class="code-keyword">catch</span> <span class="code-variable">error</span>:
+  <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
+                </div>
+            </section>
+
+            <section id="running" class="docs-block">
+                <h2>Running Tekst</h2>
+
+                <p>
+                    Once the interpreter has been built, pass a Tekst source
+                    file to the executable.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>Tekst script.tekst</code></pre>
+                </div>
+
+                <p>
+                    Debug output can be enabled when supported by the interpreter.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>./Tekst --debug script.tekst</code></pre>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="brand">
+                <span class="brand-mark">T</span>
+                <span>Tekst</span>
+            </div>
+
+            <p>A lightweight programming language.</p>
+
+        <div class="footer-links">
+            <a href="download/TekstSetup.exe">Download</a>
+            <a href="docs/">Documentation</a>
+            <a href="contributing/">Contributing</a>
+        </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contribute to the Tekst programming language.">
+    <title>Contributing — Tekst</title>
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        .contribute-hero {
+            max-width: 1180px;
+            margin: auto;
+            padding: 120px 24px 90px;
+        }
+
+        .contribute-hero h1 {
+            max-width: 850px;
+            margin-top: 20px;
+            font-size: clamp(52px, 8vw, 94px);
+            line-height: .95;
+            letter-spacing: -5px;
+        }
+
+        .contribute-hero h1 span {
+            color: #ff6b35;
+        }
+
+        .contribute-hero p {
+            max-width: 650px;
+            margin-top: 30px;
+            color: #999;
+            font-size: 17px;
+        }
+
+        .contribute-grid {
+            max-width: 1180px;
+            margin: auto;
+            padding: 30px 24px 130px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .contribute-card {
+            padding: 35px;
+            background: #111;
+            border: 1px solid #242424;
+            border-radius: 10px;
+            transition: .2s ease;
+        }
+
+        .contribute-card:hover {
+            background: #151515;
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+
+        .contribute-card span {
+            color: #ff6b35;
+            font: 12px monospace;
+        }
+
+        .contribute-card h2 {
+            margin-top: 40px;
+            font-size: 25px;
+            letter-spacing: -1px;
+        }
+
+        .contribute-card p {
+            margin-top: 12px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .guide {
+            max-width: 1180px;
+            margin: auto;
+            padding: 100px 24px;
+            border-top: 1px solid #242424;
+        }
+
+        .guide h2 {
+            margin-bottom: 35px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid #242424;
+            border-left: 1px solid #242424;
+        }
+
+        .step {
+            padding: 30px;
+            min-height: 220px;
+            border-right: 1px solid #242424;
+            border-bottom: 1px solid #242424;
+        }
+
+        .step-number {
+            color: #ff6b35;
+            font-family: monospace;
+        }
+
+        .step h3 {
+            margin-top: 45px;
+            font-size: 18px;
+        }
+
+        .step p {
+            margin-top: 8px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .contribute-code {
+            margin-top: 45px;
+            background: #0b0b0b;
+            border: 1px solid #242424;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .contribute-code div {
+            padding: 10px 15px;
+            color: #666;
+            border-bottom: 1px solid #242424;
+            font: 12px monospace;
+        }
+
+        .contribute-code pre {
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        .contribute-code code {
+            color: #ccc;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .closing {
+            max-width: 1180px;
+            margin: auto;
+            padding: 80px 24px 140px;
+            text-align: center;
+        }
+
+        .closing p {
+            max-width: 550px;
+            margin: 20px auto 30px;
+            color: #777;
+        }
+
+        @media (max-width: 800px) {
+            .contribute-grid,
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .contribute-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .contribute-hero {
+                padding-top: 80px;
+            }
+
+            .contribute-hero h1 {
+                letter-spacing: -3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="../" class="brand">
+                <span class="brand-mark">T</span>
+                <span>Tekst</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="../#features">Features</a>
+                <a href="../docs/">Docs</a>
+                <a href="../#examples">Examples</a>
+                <a href="./">Contribute</a>
+            </div>
+
+            <a href="../docs/" class="nav-button">
+                Documentation <span>→</span>
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="contribute-hero">
+            <div class="section-label">TEKST / OPEN SOURCE</div>
+
+            <h1>Make Tekst<br><span>better.</span></h1>
+
+            <p>
+                Tekst is built to be experimented with. Fix something,
+                improve something, build something new, or just explore
+                how the language works.
+            </p>
+        </section>
+
+        <section class="contribute-grid">
+            <article class="contribute-card">
+                <span>01</span>
+                <h2>Report bugs</h2>
+                <p>
+                    Found something behaving incorrectly? Open an issue with
+                    a clear description and a reproducible example.
+                </p>
+            </article>
+
+            <article class="contribute-card">
+                <span>02</span>
+                <h2>Improve the language</h2>
+                <p>
+                    Add syntax, improve runtime behavior, or help make existing
+                    features more reliable.
+                </p>
+            </article>
+
+            <article class="contribute-card">
+                <span>03</span>
+                <h2>Improve the docs</h2>
+                <p>
+                    Documentation is code too, except it has fewer opportunities
+                    to segfault.
+                </p>
+            </article>
+
+            <article class="contribute-card">
+                <span>04</span>
+                <h2>Build experiments</h2>
+                <p>
+                    Create programs, libraries, tools, and experiments that
+                    explore what Tekst can do.
+                </p>
+            </article>
+        </section>
+
+        <section class="guide">
+            <div class="section-label">CONTRIBUTION GUIDE</div>
+
+            <h2>From clone to pull request.</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">01</span>
+                    <h3>Fork</h3>
+                    <p>Create your own copy of the repository.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">02</span>
+                    <h3>Clone</h3>
+                    <p>Clone your fork and create a working branch.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">03</span>
+                    <h3>Build</h3>
+                    <p>Build the interpreter and test your changes.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">04</span>
+                    <h3>Submit</h3>
+                    <p>Open a pull request describing what you changed.</p>
+                </div>
+            </div>
+
+            <div class="contribute-code">
+                <div>terminal</div>
+
+                <pre><code>git clone YOUR_FORK_URL
+cd Tekst
+
+git checkout -b my-change
+
+g++ -std=c++17 -O2 \
+  -o Tekst \
+  src/main.cpp \
+  src/lexer.cpp \
+  src/parser.cpp \
+  -I.</code></pre>
+            </div>
+        </section>
+
+        <section class="closing">
+            <div class="section-label">BUILD WITH US</div>
+
+            <h2>Good languages<br>grow together.</h2>
+
+            <p>
+                Every improvement makes Tekst a little more useful,
+                understandable, and interesting.
+            </p>
+
+            <a href="../docs/" class="button button-primary">
+                Read the documentation
+                <span>→</span>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="brand">
+                <span class="brand-mark">T</span>
+                <span>Tekst</span>
+            </div>
+
+            <p>A lightweight programming language.</p>
+
+        <div class="footer-links">
+            <a href="download/TekstSetup.exe">Download</a>
+            <a href="docs/">Documentation</a>
+            <a href="contributing/">Contributing</a>
+        </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
