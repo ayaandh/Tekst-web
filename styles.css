@@ -797,3 +797,276 @@ pre code .code-string {
         text-align: left;
     }
 }
+
+.download-section {
+    max-width: var(--max-width);
+    margin: auto;
+    padding: 130px 24px;
+    border-top: 1px solid var(--border);
+}
+
+.download-section > .section-label {
+    margin-bottom: 22px;
+}
+
+.download-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 45px;
+    align-items: center;
+    padding: 46px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(255, 107, 53, 0.09),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            #121212 0%,
+            #101010 55%,
+            #0d0d0d 100%
+        );
+
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.download-card::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 300px;
+    height: 300px;
+
+    background: rgba(255, 107, 53, 0.08);
+    filter: blur(90px);
+    pointer-events: none;
+}
+
+.download-card:hover {
+    border-color: #3a3a3a;
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.45),
+        0 0 80px rgba(255, 107, 53, 0.035),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.download-card > div {
+    position: relative;
+    z-index: 1;
+}
+
+.download-card h2 {
+    margin-bottom: 12px;
+    font-size: clamp(38px, 4vw, 54px);
+    letter-spacing: -3px;
+}
+
+.download-card p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.download-platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 14px !important;
+    padding: 6px 10px;
+
+    color: var(--orange) !important;
+    background: rgba(255, 107, 53, 0.06);
+
+    border: 1px solid rgba(255, 107, 53, 0.18);
+    border-radius: 6px;
+
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px !important;
+    letter-spacing: 0.2px;
+}
+
+.download-platform::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+
+    background: var(--orange);
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+}
+
+.download-card > .button {
+    position: relative;
+    z-index: 1;
+
+    min-width: 205px;
+    justify-content: space-between;
+
+    padding: 13px 15px 13px 18px;
+
+    border-radius: 8px;
+    font-size: 13px;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.download-card > .button span {
+    display: grid;
+    place-items: center;
+
+    width: 26px;
+    height: 26px;
+
+    margin-left: 18px;
+
+    border-radius: 6px;
+
+    font-size: 16px;
+    line-height: 1;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.download-card > .button:hover {
+    transform: translateY(-2px);
+}
+
+.download-card > .button:hover span {
+    transform: translateY(2px);
+}
+
+.download-card > .button-primary {
+    background: var(--orange);
+    color: #080808;
+
+    box-shadow:
+        0 8px 25px rgba(255, 107, 53, 0.12);
+}
+
+.download-card > .button-primary:hover {
+    background: var(--orange-light);
+    box-shadow:
+        0 12px 35px rgba(255, 107, 53, 0.2);
+}
+
+.download-card > .button-primary span {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.download-card > .button-secondary {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-light);
+    color: var(--text);
+}
+
+.download-card > .button-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #444;
+}
+
+.download-card > .button-secondary span {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Stack the buttons neatly on the right */
+.download-card > .button {
+    grid-column: 2;
+}
+
+.download-card > div {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+}
+
+.download-card > .button:nth-of-type(1) {
+    grid-row: 1;
+}
+
+.download-card > .button:nth-of-type(2) {
+    grid-row: 2;
+}
+
+.download-card > .button:nth-of-type(3) {
+    grid-row: 3;
+}
+
+
+/* Tablet */
+@media (max-width: 850px) {
+    .download-card {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 35px;
+    }
+
+    .download-card > div {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        margin-bottom: 15px;
+    }
+
+    .download-card > .button {
+        grid-column: auto;
+        grid-row: auto;
+        min-width: 0;
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 560px) {
+    .download-section {
+        padding-top: 90px;
+        padding-bottom: 90px;
+    }
+
+    .download-card {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 28px;
+        border-radius: 13px;
+    }
+
+    .download-card > div {
+        margin-bottom: 12px;
+    }
+
+    .download-card h2 {
+        font-size: 40px;
+        letter-spacing: -2.5px;
+    }
+
+    .download-card p {
+        font-size: 14px;
+    }
+
+    .download-card > .button {
+        width: 100%;
+        min-width: 0;
+    }
+}
