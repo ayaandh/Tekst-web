@@ -133,6 +133,11 @@
             font-size: 14px;
         }
 
+        .warning {
+            border-left-color: #ffb347;
+            background: rgba(255, 179, 71, 0.05);
+        }
+
         @media (max-width: 800px) {
             .docs-layout {
                 grid-template-columns: 1fr;
@@ -159,8 +164,10 @@
 </head>
 
 <body>
+
     <nav class="navbar">
         <div class="nav-inner">
+
             <a href="../" class="brand">
                 <span class="brand-mark">T</span>
                 <span>Tekst</span>
@@ -177,33 +184,44 @@
             <a href="../contributing/" class="nav-button">
                 Contribute <span>→</span>
             </a>
+
         </div>
     </nav>
 
     <main class="docs-layout">
+
         <aside class="docs-sidebar">
             <strong>Documentation</strong>
+
             <a href="#introduction" class="active">Introduction</a>
             <a href="#installation">Installation</a>
+            <a href="#syntax">Syntax</a>
             <a href="#variables">Variables</a>
-            <a href="#functions">Functions</a>
+            <a href="#types">Types</a>
+            <a href="#operators">Operators</a>
             <a href="#control-flow">Control flow</a>
+            <a href="#functions">Functions</a>
+            <a href="#collections">Collections</a>
             <a href="#classes">Classes</a>
+            <a href="#modules">Modules</a>
             <a href="#errors">Errors</a>
             <a href="#running">Running Tekst</a>
+            <a href="#limitations">Current limitations</a>
         </aside>
 
         <article class="docs-content">
+
             <div class="section-label">TEKST DOCUMENTATION</div>
 
             <h1>Learn Tekst.</h1>
 
             <p>
-                Everything you need to understand the language, write your first
-                program, and start experimenting with the interpreter.
+                Everything you need to understand Tekst, write programs,
+                and experiment with the interpreter.
             </p>
 
             <section id="introduction" class="docs-block">
+
                 <h2>Introduction</h2>
 
                 <p>
@@ -212,9 +230,14 @@
                     concepts.
                 </p>
 
+                <p>
+                    The current implementation is built in C++ and processes
+                    Tekst source through a lexer, parser, AST, and interpreter.
+                </p>
+
                 <div class="callout">
-                    Tekst is currently an experimental language. Syntax and
-                    features may change as the interpreter evolves.
+                    Tekst is currently experimental. Syntax and behaviour may
+                    change as the language and interpreter evolve.
                 </div>
 
                 <div class="docs-code">
@@ -222,20 +245,22 @@
 
                     <pre><code><span class="code-builtin">print</span>(<span class="code-string">"Hello, World!"</span>)</code></pre>
                 </div>
+
             </section>
 
             <section id="installation" class="docs-block">
+
                 <h2>Installation</h2>
 
                 <p>
-                    The Tekst interpreter is currently built from source using
-                    a C++17-compatible compiler.
+                    The current interpreter is built from source using a
+                    C++17-compatible compiler.
                 </p>
 
                 <h3>Requirements</h3>
 
                 <ul>
-                    <li>G++ or another C++17 compiler</li>
+                    <li>G++ or another C++17-compatible compiler</li>
                     <li>Git</li>
                     <li>Windows, Linux, or macOS</li>
                 </ul>
@@ -247,15 +272,48 @@
 
                     <pre><code>g++ -std=c++17 -O2 -o Tekst src/main.cpp src/lexer.cpp src/parser.cpp -I.</code></pre>
                 </div>
+
+            </section>
+
+            <section id="syntax" class="docs-block">
+
+                <h2>Syntax</h2>
+
+                <p>
+                    Tekst uses indentation to define blocks. A colon starts
+                    a block and indentation determines where that block ends.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">syntax.tekst</div>
+
+                    <pre><code><span class="code-keyword">if</span> <span class="code-variable">x</span> &gt; <span class="code-number">10</span>:
+  <span class="code-builtin">print</span>(<span class="code-string">"Greater than 10"</span>)</code></pre>
+                </div>
+
+                <p>
+                    The lexer produces explicit <code>INDENT</code> and
+                    <code>DEDENT</code> tokens and reports inconsistent
+                    indentation as an error.
+                </p>
+
+                <h3>Comments</h3>
+
+                <div class="callout warning">
+                    Comments are not currently implemented by the lexer.
+                    Lines beginning with <code>#</code> are therefore not
+                    valid Tekst syntax yet.
+                </div>
+
             </section>
 
             <section id="variables" class="docs-block">
+
                 <h2>Variables</h2>
 
                 <p>
-                    Variables are created by assigning a value to a name.
-                    Tekst does not require explicit type declarations for
-                    basic values.
+                    Variables can be created by assigning an expression to a
+                    name.
                 </p>
 
                 <div class="docs-code">
@@ -263,50 +321,140 @@
 
                     <pre><code><span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
 <span class="code-variable">age</span> = <span class="code-number">14</span>
-<span class="code-variable">price</span> = <span class="code-number">9.99</span>
-<span class="code-variable">active</span> = <span class="code-boolean">True</span>
-
-<span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>]
-<span class="code-variable">config</span> = {<span class="code-string">"port"</span>: <span class="code-number">8080</span>}</code></pre>
+<span class="code-variable">active</span> = <span class="code-boolean">true</span></code></pre>
                 </div>
-            </section>
 
-            <section id="functions" class="docs-block">
-                <h2>Functions</h2>
+                <h3>Declarations</h3>
 
                 <p>
-                    Functions are declared with the <code>fn</code> keyword.
+                    Tekst also supports declarations using a type or class
+                    name followed by a variable name.
                 </p>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">functions.tekst</div>
+                    <div class="docs-code-title">declarations.tekst</div>
 
-                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
-  <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
+                    <pre><code><span class="code-keyword">let</span> <span class="code-variable">Type</span> <span class="code-variable">value</span>
+<span class="code-variable">Type</span> <span class="code-variable">value</span>
 
-<span class="code-function">greet</span>(<span class="code-string">"Tekst"</span>)</code></pre>
+<span class="code-variable">Counter</span> <span class="code-variable">counter</span> = <span class="code-variable">Counter</span>(<span class="code-number">10</span>)</code></pre>
                 </div>
 
-                <h3>Default arguments</h3>
+            </section>
+
+            <section id="types" class="docs-block">
+
+                <h2>Types</h2>
+
+                <p>
+                    The interpreter currently represents integer, boolean,
+                    string, floating-point, object, and function values.
+                </p>
+
+                <h3>Numbers</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">defaults.tekst</div>
+                    <div class="docs-code-title">numbers.tekst</div>
 
-                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>, <span class="code-variable">greeting</span> = <span class="code-string">"Hello"</span>):
-  <span class="code-builtin">print</span>(<span class="code-variable">greeting</span> + <span class="code-string">", "</span> + <span class="code-variable">name</span>)
-
-<span class="code-function">greet</span>(<span class="code-string">"World"</span>)
-<span class="code-function">greet</span>(<span class="code-string">"World"</span>, <span class="code-string">"Welcome"</span>)</code></pre>
+                    <pre><code><span class="code-variable">x</span> = <span class="code-number">42</span>
+<span class="code-variable">y</span> = <span class="code-number">10</span> + <span class="code-number">5</span></code></pre>
                 </div>
+
+                <p>
+                    Numeric literals are currently parsed as integers.
+                    Floating-point values can still exist at runtime through
+                    <code>float()</code>.
+                </p>
+
+                <h3>Booleans</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">booleans.tekst</div>
+
+                    <pre><code><span class="code-variable">enabled</span> = <span class="code-boolean">true</span>
+<span class="code-variable">disabled</span> = <span class="code-boolean">false</span></code></pre>
+                </div>
+
+                <h3>Strings</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">strings.tekst</div>
+
+                    <pre><code><span class="code-variable">language</span> = <span class="code-string">"Tekst"</span>
+<span class="code-builtin">print</span>(<span class="code-variable">language</span>)</code></pre>
+                </div>
+
+                <h3>Type conversion</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">conversion.tekst</div>
+
+                    <pre><code><span class="code-variable">number</span> = <span class="code-builtin">int</span>(<span class="code-string">"42"</span>)
+<span class="code-variable">text</span> = <span class="code-builtin">str</span>(<span class="code-number">42</span>)
+<span class="code-variable">flag</span> = <span class="code-builtin">bool</span>(<span class="code-number">1</span>)
+<span class="code-variable">decimal</span> = <span class="code-builtin">float</span>(<span class="code-string">"3.14"</span>)</code></pre>
+                </div>
+
+            </section>
+
+            <section id="operators" class="docs-block">
+
+                <h2>Operators</h2>
+
+                <p>
+                    Tekst currently supports arithmetic and comparison
+                    operators.
+                </p>
+
+                <h3>Arithmetic</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">operators.tekst</div>
+
+                    <pre><code><span class="code-variable">a</span> = <span class="code-number">10</span> + <span class="code-number">5</span>
+<span class="code-variable">b</span> = <span class="code-number">10</span> - <span class="code-number">5</span>
+<span class="code-variable">c</span> = <span class="code-number">10</span> * <span class="code-number">5</span>
+<span class="code-variable">d</span> = <span class="code-number">10</span> / <span class="code-number">5</span>
+<span class="code-variable">e</span> = <span class="code-number">10</span> % <span class="code-number">3</span></code></pre>
+                </div>
+
+                <ul>
+                    <li><code>+</code> addition</li>
+                    <li><code>-</code> subtraction</li>
+                    <li><code>*</code> multiplication</li>
+                    <li><code>/</code> division</li>
+                    <li><code>%</code> modulo</li>
+                </ul>
+
+                <h3>Comparison</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">comparison.tekst</div>
+
+                    <pre><code><span class="code-variable">x</span> == <span class="code-number">10</span>
+<span class="code-variable">x</span> != <span class="code-number">5</span>
+<span class="code-variable">x</span> &lt; <span class="code-number">20</span>
+<span class="code-variable">x</span> &lt;= <span class="code-number">10</span>
+<span class="code-variable">x</span> &gt; <span class="code-number">5</span>
+<span class="code-variable">x</span> &gt;= <span class="code-number">10</span></code></pre>
+                </div>
+
+                <div class="callout warning">
+                    The lexer recognises <code>and</code>, <code>or</code>,
+                    and <code>not</code>, but the current parser does not
+                    implement these operators yet.
+                </div>
+
             </section>
 
             <section id="control-flow" class="docs-block">
+
                 <h2>Control flow</h2>
 
-                <h3>Conditions</h3>
+                <h3>If statements</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">conditions.tekst</div>
+                    <div class="docs-code-title">if.tekst</div>
 
                     <pre><code><span class="code-variable">x</span> = <span class="code-number">10</span>
 
@@ -318,29 +466,124 @@
   <span class="code-builtin">print</span>(<span class="code-string">"Small"</span>)</code></pre>
                 </div>
 
-                <h3>Loops</h3>
+                <h3>While loops</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">loops.tekst</div>
+                    <div class="docs-code-title">while.tekst</div>
 
                     <pre><code><span class="code-variable">count</span> = <span class="code-number">0</span>
 
 <span class="code-keyword">while</span> <span class="code-variable">count</span> &lt; <span class="code-number">5</span>:
   <span class="code-builtin">print</span>(<span class="code-variable">count</span>)
-  <span class="code-variable">count</span> = <span class="code-variable">count</span> + <span class="code-number">1</span>
+  <span class="code-variable">count</span> = <span class="code-variable">count</span> + <span class="code-number">1</span></code></pre>
+                </div>
 
-<span class="code-variable">items</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]
+                <h3>For loops</h3>
+
+                <p>
+                    The current interpreter supports iterating over lists.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">for.tekst</div>
+
+                    <pre><code><span class="code-variable">items</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]
 
 <span class="code-keyword">for</span> <span class="code-variable">item</span> <span class="code-keyword">in</span> <span class="code-variable">items</span>:
   <span class="code-builtin">print</span>(<span class="code-variable">item</span>)</code></pre>
                 </div>
+
+            </section>
+
+            <section id="functions" class="docs-block">
+
+                <h2>Functions</h2>
+
+                <p>
+                    Functions can be declared using either <code>def</code>
+                    or <code>fn</code>.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">functions.tekst</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
+  <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
+
+<span class="code-function">greet</span>(<span class="code-string">"Tekst"</span>)</code></pre>
+                </div>
+
+                <h3>Return values</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">return.tekst</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">add</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span>):
+  <span class="code-keyword">return</span> <span class="code-variable">a</span> + <span class="code-variable">b</span>
+
+<span class="code-variable">result</span> = <span class="code-function">add</span>(<span class="code-number">10</span>, <span class="code-number">20</span>)
+<span class="code-builtin">print</span>(<span class="code-variable">result</span>)</code></pre>
+                </div>
+
+                <div class="callout warning">
+                    Default parameters are parsed by the current parser but
+                    are not currently applied by the interpreter.
+                </div>
+
+            </section>
+
+            <section id="collections" class="docs-block">
+
+                <h2>Collections</h2>
+
+                <h3>Lists</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">lists.tekst</div>
+
+                    <pre><code><span class="code-variable">numbers</span> = [<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>]
+
+<span class="code-builtin">print</span>(<span class="code-variable">numbers</span>[<span class="code-number">0</span>])
+<span class="code-builtin">print</span>(<span class="code-builtin">len</span>(<span class="code-variable">numbers</span>))</code></pre>
+                </div>
+
+                <p>
+                    List indexes begin at zero.
+                </p>
+
+                <h3>Dictionaries</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">dictionaries.tekst</div>
+
+                    <pre><code><span class="code-variable">config</span> = {
+  <span class="code-string">"host"</span>: <span class="code-string">"localhost"</span>,
+  <span class="code-string">"port"</span>: <span class="code-number">8080</span>
+}
+
+<span class="code-builtin">print</span>(<span class="code-variable">config</span>[<span class="code-string">"port"</span>])</code></pre>
+                </div>
+
+                <p>
+                    Dictionary keys must currently be strings.
+                </p>
+
+                <h3>len()</h3>
+
+                <p>
+                    <code>len()</code> returns the length of a string, list,
+                    or dictionary.
+                </p>
+
             </section>
 
             <section id="classes" class="docs-block">
+
                 <h2>Classes</h2>
 
                 <p>
-                    Tekst supports classes, constructors, methods, and inheritance.
+                    Tekst supports classes, constructors, methods, object
+                    fields, and attribute access.
                 </p>
 
                 <div class="docs-code">
@@ -356,17 +599,64 @@
   <span class="code-keyword">def</span> <span class="code-function">display</span>():
     <span class="code-builtin">print</span>(<span class="code-variable">self</span>.<span class="code-property">value</span>)
 
-<span class="code-class">Counter</span> <span class="code-variable">counter</span>
+<span class="code-variable">counter</span> = <span class="code-class">Counter</span>(<span class="code-number">0</span>)
 <span class="code-variable">counter</span>.<span class="code-function">increment</span>()
 <span class="code-variable">counter</span>.<span class="code-function">display</span>()</code></pre>
                 </div>
+
+                <h3>Attributes</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">attributes.tekst</div>
+
+                    <pre><code><span class="code-variable">counter</span>.<span class="code-property">value</span> = <span class="code-number">100</span>
+<span class="code-builtin">print</span>(<span class="code-variable">counter</span>.<span class="code-property">value</span>)</code></pre>
+                </div>
+
+                <div class="callout warning">
+                    The parser recognises <code>extends</code>, but inheritance
+                    is not currently implemented at runtime.
+                </div>
+
+            </section>
+
+            <section id="modules" class="docs-block">
+
+                <h2>Modules</h2>
+
+                <p>
+                    Tekst can load another <code>.tekst</code> file as a module.
+                </p>
+
+                <h3>Import a module</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">main.tekst</div>
+
+                    <pre><code><span class="code-keyword">import</span> <span class="code-variable">math</span>
+
+<span class="code-builtin">print</span>(<span class="code-variable">math</span>.<span class="code-property">value</span>)</code></pre>
+                </div>
+
+                <h3>Import a member</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">main.tekst</div>
+
+                    <pre><code><span class="code-keyword">from</span> <span class="code-variable">math</span> <span class="code-keyword">import</span> <span class="code-variable">add</span>
+
+<span class="code-builtin">print</span>(<span class="code-variable">add</span>(<span class="code-number">2</span>, <span class="code-number">3</span>))</code></pre>
+                </div>
+
             </section>
 
             <section id="errors" class="docs-block">
+
                 <h2>Error handling</h2>
 
                 <p>
-                    Runtime errors can be handled using try and catch blocks.
+                    Runtime exceptions can be handled using <code>try</code>
+                    and <code>catch</code>.
                 </p>
 
                 <div class="docs-code">
@@ -378,9 +668,23 @@
 <span class="code-keyword">catch</span> <span class="code-variable">error</span>:
   <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
                 </div>
+
+                <h3>Common errors</h3>
+
+                <ul>
+                    <li>Undefined variables</li>
+                    <li>Invalid attribute access</li>
+                    <li>List index out of range</li>
+                    <li>Missing dictionary keys</li>
+                    <li>Division by zero</li>
+                    <li>Invalid function or method calls</li>
+                    <li>Invalid indentation</li>
+                </ul>
+
             </section>
 
             <section id="running" class="docs-block">
+
                 <h2>Running Tekst</h2>
 
                 <p>
@@ -394,21 +698,74 @@
                     <pre><code>Tekst script.tekst</code></pre>
                 </div>
 
+                <h3>Debug mode</h3>
+
                 <p>
-                    Debug output can be enabled when supported by the interpreter.
+                    Debug mode prints lexer tokens and the parsed AST before
+                    execution.
                 </p>
 
                 <div class="docs-code">
                     <div class="docs-code-title">terminal</div>
 
-                    <pre><code>./Tekst --debug script.tekst</code></pre>
+                    <pre><code>Tekst --debug script.tekst</code></pre>
                 </div>
+
+                <p>
+                    The short form is also available.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>Tekst -d script.tekst</code></pre>
+                </div>
+
+                <h3>Help</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>Tekst --help</code></pre>
+                </div>
+
             </section>
+
+            <section id="limitations" class="docs-block">
+
+                <h2>Current limitations</h2>
+
+                <p>
+                    Tekst is still under development. Some features are
+                    recognised by the lexer or parser but are not fully
+                    implemented by the interpreter.
+                </p>
+
+                <ul>
+                    <li>Default function arguments are parsed but not applied.</li>
+                    <li>Class inheritance is parsed but not implemented at runtime.</li>
+                    <li><code>and</code>, <code>or</code>, and <code>not</code> are lexed but not parsed as expressions.</li>
+                    <li><code>throw</code> is recognised but is not currently implemented as a statement.</li>
+                    <li>Comments are not currently supported.</li>
+                    <li>Numeric literals are currently integers.</li>
+                    <li>For loops currently require a list.</li>
+                    <li>Dictionary keys must be strings.</li>
+                </ul>
+
+                <div class="callout">
+                    This documentation describes the current interpreter
+                    implementation rather than planned language features.
+                </div>
+
+            </section>
+
         </article>
+
     </main>
 
     <footer>
         <div class="footer-inner">
+
             <div class="brand">
                 <span class="brand-mark">T</span>
                 <span>Tekst</span>
@@ -416,14 +773,16 @@
 
             <p>A lightweight programming language.</p>
 
-        <div class="footer-links">
-            <a href="download/TekstSetup.exe">Download</a>
-            <a href="docs/">Documentation</a>
-            <a href="contributing/">Contributing</a>
-        </div>
+            <div class="footer-links">
+                <a href="../download/TekstSetup.exe">Download</a>
+                <a href="./">Documentation</a>
+                <a href="../contributing/">Contributing</a>
+            </div>
+
         </div>
     </footer>
 
     <script src="../script.js"></script>
+
 </body>
 </html>
