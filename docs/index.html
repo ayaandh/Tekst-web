@@ -188,9 +188,12 @@
             <a href="#variables">Variables</a>
             <a href="#functions">Functions</a>
             <a href="#control-flow">Control flow</a>
+            <a href="#collections">Collections</a>
             <a href="#classes">Classes</a>
+            <a href="#modules">Modules</a>
             <a href="#errors">Errors</a>
             <a href="#running">Running Tekst</a>
+            <a href="#package-manager">Package manager</a>
         </aside>
 
         <article class="docs-content">
@@ -218,7 +221,7 @@
                 </div>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">hello.tekst</div>
+                    <div class="docs-code-title">hello.tk</div>
 
                     <pre><code><span class="code-builtin">print</span>(<span class="code-string">"Hello, World!"</span>)</code></pre>
                 </div>
@@ -228,24 +231,36 @@
                 <h2>Installation</h2>
 
                 <p>
-                    The Tekst interpreter is currently built from source using
-                    a C++17-compatible compiler.
+                    Tekst can be installed using the Tekst installer on Windows.
+                    The installer includes both the Tekst interpreter and
+                    <code>tk</code>, the Tekst package manager.
                 </p>
 
-                <h3>Requirements</h3>
+                <h3>Windows</h3>
 
-                <ul>
-                    <li>G++ or another C++17 compiler</li>
-                    <li>Git</li>
-                    <li>Windows, Linux, or macOS</li>
-                </ul>
-
-                <h3>Build</h3>
+                <p>
+                    Download and run the Tekst installer. During installation,
+                    you can add Tekst and <code>tk</code> to your PATH.
+                </p>
 
                 <div class="docs-code">
                     <div class="docs-code-title">terminal</div>
 
-                    <pre><code>g++ -std=c++17 -O2 -o Tekst src/main.cpp src/lexer.cpp src/parser.cpp -I.</code></pre>
+                    <pre><code>tekst --help
+tk --help</code></pre>
+                </div>
+
+                <h3>Building from source</h3>
+
+                <p>
+                    Tekst can also be built from source using a C++17-compatible
+                    compiler.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>g++ -std=c++17 -Wall -Wextra -pedantic src/Tekst/lexer.cpp src/Tekst/parser.cpp src/Tekst/main.cpp -o Tekst.exe</code></pre>
                 </div>
             </section>
 
@@ -254,12 +269,12 @@
 
                 <p>
                     Variables are created by assigning a value to a name.
-                    Tekst does not require explicit type declarations for
-                    basic values.
+                    Tekst supports dynamic values without requiring explicit
+                    type declarations for basic variables.
                 </p>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">variables.tekst</div>
+                    <div class="docs-code-title">variables.tk</div>
 
                     <pre><code><span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
 <span class="code-variable">age</span> = <span class="code-number">14</span>
@@ -269,6 +284,20 @@
 <span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>]
 <span class="code-variable">config</span> = {<span class="code-string">"port"</span>: <span class="code-number">8080</span>}</code></pre>
                 </div>
+
+                <h3>Declarations</h3>
+
+                <p>
+                    The <code>let</code> keyword can be used when declaring
+                    variables explicitly.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">declaration.tk</div>
+
+                    <pre><code><span class="code-keyword">let</span> <span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
+<span class="code-keyword">let</span> <span class="code-variable">count</span> = <span class="code-number">10</span></code></pre>
+                </div>
             </section>
 
             <section id="functions" class="docs-block">
@@ -276,24 +305,37 @@
 
                 <p>
                     Functions are declared with the <code>fn</code> keyword.
+                    The <code>def</code> keyword is also supported.
                 </p>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">functions.tekst</div>
+                    <div class="docs-code-title">functions.tk</div>
 
                     <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
-  <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
+    <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
 
 <span class="code-function">greet</span>(<span class="code-string">"Tekst"</span>)</code></pre>
+                </div>
+
+                <h3>Return values</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">return.tk</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">add</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span>):
+    <span class="code-keyword">return</span> <span class="code-variable">a</span> + <span class="code-variable">b</span>
+
+<span class="code-variable">result</span> = <span class="code-function">add</span>(<span class="code-number">10</span>, <span class="code-number">20</span>)
+<span class="code-builtin">print</span>(<span class="code-variable">result</span>)</code></pre>
                 </div>
 
                 <h3>Default arguments</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">defaults.tekst</div>
+                    <div class="docs-code-title">defaults.tk</div>
 
                     <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>, <span class="code-variable">greeting</span> = <span class="code-string">"Hello"</span>):
-  <span class="code-builtin">print</span>(<span class="code-variable">greeting</span> + <span class="code-string">", "</span> + <span class="code-variable">name</span>)
+    <span class="code-builtin">print</span>(<span class="code-variable">greeting</span> + <span class="code-string">", "</span> + <span class="code-variable">name</span>)
 
 <span class="code-function">greet</span>(<span class="code-string">"World"</span>)
 <span class="code-function">greet</span>(<span class="code-string">"World"</span>, <span class="code-string">"Welcome"</span>)</code></pre>
@@ -306,33 +348,84 @@
                 <h3>Conditions</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">conditions.tekst</div>
+                    <div class="docs-code-title">conditions.tk</div>
 
                     <pre><code><span class="code-variable">x</span> = <span class="code-number">10</span>
 
 <span class="code-keyword">if</span> <span class="code-variable">x</span> &gt; <span class="code-number">15</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Large"</span>)
+    <span class="code-builtin">print</span>(<span class="code-string">"Large"</span>)
 <span class="code-keyword">elif</span> <span class="code-variable">x</span> &gt; <span class="code-number">5</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Medium"</span>)
+    <span class="code-builtin">print</span>(<span class="code-string">"Medium"</span>)
 <span class="code-keyword">else</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Small"</span>)</code></pre>
+    <span class="code-builtin">print</span>(<span class="code-string">"Small"</span>)</code></pre>
                 </div>
 
-                <h3>Loops</h3>
+                <h3>While loops</h3>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">loops.tekst</div>
+                    <div class="docs-code-title">while.tk</div>
 
                     <pre><code><span class="code-variable">count</span> = <span class="code-number">0</span>
 
 <span class="code-keyword">while</span> <span class="code-variable">count</span> &lt; <span class="code-number">5</span>:
-  <span class="code-builtin">print</span>(<span class="code-variable">count</span>)
-  <span class="code-variable">count</span> = <span class="code-variable">count</span> + <span class="code-number">1</span>
+    <span class="code-builtin">print</span>(<span class="code-variable">count</span>)
+    <span class="code-variable">count</span> = <span class="code-variable">count</span> + <span class="code-number">1</span></code></pre>
+                </div>
 
-<span class="code-variable">items</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]
+                <h3>For loops</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">for.tk</div>
+
+                    <pre><code><span class="code-variable">items</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]
 
 <span class="code-keyword">for</span> <span class="code-variable">item</span> <span class="code-keyword">in</span> <span class="code-variable">items</span>:
-  <span class="code-builtin">print</span>(<span class="code-variable">item</span>)</code></pre>
+    <span class="code-builtin">print</span>(<span class="code-variable">item</span>)</code></pre>
+                </div>
+
+                <h3>Break and continue</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">control.tk</div>
+
+                    <pre><code><span class="code-keyword">for</span> <span class="code-variable">item</span> <span class="code-keyword">in</span> [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>]:
+    <span class="code-keyword">if</span> <span class="code-variable">item</span> == <span class="code-number">3</span>:
+        <span class="code-keyword">break</span>
+
+    <span class="code-builtin">print</span>(<span class="code-variable">item</span>)</code></pre>
+                </div>
+            </section>
+
+            <section id="collections" class="docs-block">
+                <h2>Collections</h2>
+
+                <h3>Lists</h3>
+
+                <p>
+                    Lists store ordered collections of values and can be
+                    accessed using indexes.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">lists.tk</div>
+
+                    <pre><code><span class="code-variable">numbers</span> = [<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>]
+
+<span class="code-builtin">print</span>(<span class="code-variable">numbers</span>[<span class="code-number">0</span>])
+<span class="code-variable">numbers</span>[<span class="code-number">1</span>] = <span class="code-number">25</span></code></pre>
+                </div>
+
+                <h3>Dictionaries</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">dictionaries.tk</div>
+
+                    <pre><code><span class="code-variable">user</span> = {
+    <span class="code-string">"name"</span>: <span class="code-string">"Tekst"</span>,
+    <span class="code-string">"version"</span>: <span class="code-string">"0.1.3"</span>
+}
+
+<span class="code-builtin">print</span>(<span class="code-variable">user</span>[<span class="code-string">"name"</span>])</code></pre>
                 </div>
             </section>
 
@@ -340,25 +433,56 @@
                 <h2>Classes</h2>
 
                 <p>
-                    Tekst supports classes, constructors, methods, and inheritance.
+                    Tekst supports classes, constructors, methods, and object
+                    attributes.
                 </p>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">classes.tekst</div>
+                    <div class="docs-code-title">classes.tk</div>
 
                     <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
-  <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-variable">self</span>, <span class="code-variable">start</span>):
-    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
+    <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-variable">self</span>, <span class="code-variable">start</span>):
+        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
 
-  <span class="code-keyword">def</span> <span class="code-function">increment</span>():
-    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">self</span>.<span class="code-property">value</span> + <span class="code-number">1</span>
+    <span class="code-keyword">def</span> <span class="code-function">increment</span>():
+        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">self</span>.<span class="code-property">value</span> + <span class="code-number">1</span>
 
-  <span class="code-keyword">def</span> <span class="code-function">display</span>():
-    <span class="code-builtin">print</span>(<span class="code-variable">self</span>.<span class="code-property">value</span>)
+    <span class="code-keyword">def</span> <span class="code-function">display</span>():
+        <span class="code-builtin">print</span>(<span class="code-variable">self</span>.<span class="code-property">value</span>)</code></pre>
+                </div>
 
-<span class="code-class">Counter</span> <span class="code-variable">counter</span>
-<span class="code-variable">counter</span>.<span class="code-function">increment</span>()
-<span class="code-variable">counter</span>.<span class="code-function">display</span>()</code></pre>
+                <p>
+                    Methods can access object attributes through
+                    <code>self</code>.
+                </p>
+            </section>
+
+            <section id="modules" class="docs-block">
+                <h2>Modules</h2>
+
+                <p>
+                    Tekst supports importing modules using the
+                    <code>import</code> statement.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">hello.tk</div>
+
+                    <pre><code><span class="code-keyword">fn</span> <span class="code-function">hi</span>():
+    <span class="code-builtin">print</span>(<span class="code-string">"Hi"</span>)</code></pre>
+                </div>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">main.tk</div>
+
+                    <pre><code><span class="code-keyword">import</span> <span class="code-variable">hello</span>
+
+<span class="code-variable">hello</span>.<span class="code-function">hi</span>()</code></pre>
+                </div>
+
+                <div class="callout">
+                    Importing a module gives you access to the functions,
+                    variables, and other definitions contained in that module.
                 </div>
             </section>
 
@@ -366,17 +490,26 @@
                 <h2>Error handling</h2>
 
                 <p>
-                    Runtime errors can be handled using try and catch blocks.
+                    Runtime errors can be handled using <code>try</code> and
+                    <code>catch</code> blocks.
                 </p>
 
                 <div class="docs-code">
-                    <div class="docs-code-title">errors.tekst</div>
+                    <div class="docs-code-title">errors.tk</div>
 
                     <pre><code><span class="code-keyword">try</span>:
-  <span class="code-variable">x</span> = <span class="code-number">1</span> / <span class="code-number">0</span>
+    <span class="code-variable">x</span> = <span class="code-number">1</span> / <span class="code-number">0</span>
 
 <span class="code-keyword">catch</span> <span class="code-variable">error</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
+    <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
+                </div>
+
+                <h3>Throwing errors</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">throw.tk</div>
+
+                    <pre><code><span class="code-keyword">throw</span> <span class="code-string">"Something went wrong"</span></code></pre>
                 </div>
             </section>
 
@@ -384,24 +517,87 @@
                 <h2>Running Tekst</h2>
 
                 <p>
-                    Once the interpreter has been built, pass a Tekst source
-                    file to the executable.
+                    Once Tekst is installed, pass a <code>.tk</code> source
+                    file to the interpreter.
                 </p>
 
                 <div class="docs-code">
                     <div class="docs-code-title">terminal</div>
 
-                    <pre><code>Tekst script.tekst</code></pre>
+                    <pre><code>tekst script.tk</code></pre>
                 </div>
 
+                <h3>Debug mode</h3>
+
                 <p>
-                    Debug output can be enabled when supported by the interpreter.
+                    Use <code>--debug</code> to display lexical tokens and the
+                    parsed program before execution.
                 </p>
 
                 <div class="docs-code">
                     <div class="docs-code-title">terminal</div>
 
-                    <pre><code>./Tekst --debug script.tekst</code></pre>
+                    <pre><code>tekst --debug script.tk</code></pre>
+                </div>
+
+                <h3>Help</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>tekst --help</code></pre>
+                </div>
+            </section>
+
+            <section id="package-manager" class="docs-block">
+                <h2>Package manager</h2>
+
+                <p>
+                    Tekst includes <code>tk</code>, a package manager for
+                    installing and managing Tekst packages.
+                </p>
+
+                <h3>Help</h3>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">terminal</div>
+
+                    <pre><code>tk --help</code></pre>
+                </div>
+
+                <h3>Packages</h3>
+
+                <p>
+                    Packages are stored in the Tekst package directory and can
+                    contain one or more <code>.tk</code> source files.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">package structure</div>
+
+                    <pre><code>hello/
+└── hello.tk</code></pre>
+                </div>
+
+                <h3>Using a package</h3>
+
+                <p>
+                    Once a package is installed, import it from your Tekst
+                    program.
+                </p>
+
+                <div class="docs-code">
+                    <div class="docs-code-title">main.tk</div>
+
+                    <pre><code><span class="code-keyword">import</span> <span class="code-variable">hello</span>
+
+<span class="code-variable">hello</span>.<span class="code-function">hi</span>()</code></pre>
+                </div>
+
+                <div class="callout">
+                    The package manager and module system are still evolving.
+                    Package layout and commands may change before the first
+                    stable Tekst release.
                 </div>
             </section>
         </article>
@@ -410,17 +606,17 @@
     <footer>
         <div class="footer-inner">
             <div class="brand">
-                <span class="brand-mark">T</span> 
+                <span class="brand-mark">T</span>
                 <span>Tekst</span>
             </div>
 
             <p>A lightweight programming language.</p>
 
-        <div class="footer-links">
-            <a href="download/TekstSetup.exe">Download</a>
-            <a href="docs/">Documentation</a>
-            <a href="contributing/">Contributing</a>
-        </div>
+            <div class="footer-links">
+                <a href="../download/TekstSetup.exe">Download</a>
+                <a href="./">Documentation</a>
+                <a href="../contributing/">Contributing</a>
+            </div>
         </div>
     </footer>
 
