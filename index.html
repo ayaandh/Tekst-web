@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tekst is a lightweight programming language designed around simple, readable syntax.">
+    <meta name="description" content="Tekst is a lightweight C++17 interpreter for a simple, app-oriented programming language with Python-inspired syntax.">
     <title>Tekst | The Programming Language</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -40,26 +40,26 @@
                 <h1>Programming,<br><span>without the noise.</span></h1>
 
                 <p class="hero-text">
-                    Tekst is a lightweight programming language with clean,
-                    readable syntax designed for learning, experimentation,
-                    and building useful things.
+                    Tekst is a lightweight, app-oriented programming language
+                    with readable Python-inspired syntax, indentation-based
+                    blocks, and a direct AST interpreter.
                 </p>
 
                 <div class="hero-actions">
-                    <a href="download/Windows/Windows.zip" class="button button-primary">
+                    <a href="download/windows/TekstSetup.exe" class="button button-primary">
                         Download for Windows
                         <span>↓</span>
                     </a>
-                    <a href="download/Linux/Linux.zip" class="button button-secondary">
-                        Download for Linux
-                        <span>↓</span>
-                    </a>
-                    <a href="download/macos/MacOS.zip" class="button button-primary">
-                        Download for MacOS
-                        <span>↓</span>
+                    <a href="docs/" class="button button-secondary">
+                        Read the docs
+                        <span>→</span>
                     </a>
                 </div>
 
+                <div class="platform-note">
+                    <span>●</span>
+                    Currently available for Windows.
+                </div>
 
                 <div class="hero-code">
                     <div class="window-bar">
@@ -69,14 +69,14 @@
                             <span></span>
                         </div>
 
-                        <span>hello.tekst</span>
+                        <span>main.tk</span>
                         <button class="copy-button">Copy</button>
                     </div>
 
                     <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
-  <span class="code-builtin">print</span>(<span class="code-string">"Hello, "</span> + <span class="code-variable">name</span>)
+    <span class="code-keyword">return</span> <span class="code-string">"Hello {name}"</span>
 
-<span class="code-function">greet</span>(<span class="code-string">"World"</span>)</code></pre>
+<span class="code-builtin">print</span>(<span class="code-function">greet</span>(<span class="code-string">"World"</span>))</code></pre>
                 </div>
             </div>
         </section>
@@ -91,14 +91,20 @@
 
                 <div>
                     <p>
-                        Tekst takes inspiration from languages like Python while
-                        keeping its own identity. The goal is simple: make code
-                        easy to read, easy to write, and fun to experiment with.
+                        Tekst is a lightweight C++17 interpreter for a simple,
+                        app-oriented programming language. It takes inspiration
+                        from Python while keeping its own identity.
                     </p>
 
                     <p>
-                        The interpreter is written in C++17 and processes Tekst
-                        source code through a lexer, parser, and interpreter.
+                        The language supports variables, functions, classes,
+                        collections, exceptions, modules, file utilities,
+                        mathematical operations, packages, and a built-in REPL.
+                    </p>
+
+                    <p>
+                        Source code is processed through a lexer, parser,
+                        abstract syntax tree, and direct interpreter.
                     </p>
                 </div>
             </div>
@@ -119,38 +125,50 @@
             <div class="feature-grid">
                 <article class="feature-card">
                     <div class="feature-number">01</div>
-                    <h3>Simple syntax</h3>
-                    <p>Readable syntax inspired by modern scripting languages.</p>
+                    <h3>Readable syntax</h3>
+                    <p>Python-inspired syntax with indentation-based blocks and familiar programming concepts.</p>
                 </article>
 
                 <article class="feature-card">
                     <div class="feature-number">02</div>
                     <h3>Dynamic values</h3>
-                    <p>Work naturally with integers, doubles, strings, lists, and dictionaries.</p>
+                    <p>Work with integers, doubles, booleans, strings, lists, dictionaries, and null.</p>
                 </article>
 
                 <article class="feature-card">
                     <div class="feature-number">03</div>
                     <h3>Functions</h3>
-                    <p>Create reusable functions with parameters and default arguments.</p>
+                    <p>Use fn or def, default arguments, variadic arguments, return values, and closures.</p>
                 </article>
 
                 <article class="feature-card">
                     <div class="feature-number">04</div>
-                    <h3>Objects</h3>
-                    <p>Use classes, constructors, methods, and inheritance.</p>
+                    <h3>Classes & objects</h3>
+                    <p>Create constructors, fields, methods, instances, inheritance, and method overrides.</p>
                 </article>
 
                 <article class="feature-card">
                     <div class="feature-number">05</div>
-                    <h3>Control flow</h3>
-                    <p>Use conditions, while loops, and for-in iteration naturally.</p>
+                    <h3>Collections</h3>
+                    <p>Use lists and dictionaries with indexing, assignment, negative indexes, and slicing.</p>
                 </article>
 
                 <article class="feature-card">
                     <div class="feature-number">06</div>
                     <h3>Error handling</h3>
-                    <p>Handle runtime problems using try and catch blocks.</p>
+                    <p>Handle runtime problems with try, catch, and throw while receiving useful diagnostics.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-number">07</div>
+                    <h3>Modules</h3>
+                    <p>Import project, local, and package modules with import, from, and as.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-number">08</div>
+                    <h3>Tooling</h3>
+                    <p>Use tk for projects and packages, plus the interactive REPL and debug mode.</p>
                 </article>
             </div>
         </section>
@@ -163,7 +181,7 @@
 
                 <p>
                     Tekst keeps common programming concepts recognizable while
-                    giving them a compact syntax.
+                    adding its own compact syntax and runtime features.
                 </p>
             </div>
 
@@ -177,36 +195,51 @@
 
                 <div class="code-panel">
                     <div class="code-title">
-                        <span>example.tekst</span>
+                        <span>example.tk</span>
                         <button class="copy-button">Copy</button>
                     </div>
 
                     <pre class="code-example active"><code><span class="code-variable">x</span> = <span class="code-number">42</span>
 <span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
-<span class="code-variable">active</span> = <span class="code-boolean">True</span>
+<span class="code-variable">active</span> = <span class="code-boolean">true</span>
+<span class="code-variable">nothing</span> = <span class="code-keyword">null</span>
 
-<span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>]</code></pre>
+<span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>]
+<span class="code-variable">config</span> = {<span class="code-string">"port"</span>: <span class="code-number">8080</span>}</code></pre>
 
-                    <pre class="code-example"><code><span class="code-keyword">fn</span> <span class="code-function">add</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span>):
-  <span class="code-builtin">print</span>(<span class="code-variable">a</span> + <span class="code-variable">b</span>)
+                    <pre class="code-example"><code><span class="code-keyword">fn</span> <span class="code-function">add</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span> = <span class="code-number">0</span>):
+    <span class="code-keyword">return</span> <span class="code-variable">a</span> + <span class="code-variable">b</span>
 
-<span class="code-function">add</span>(<span class="code-number">5</span>, <span class="code-number">3</span>)</code></pre>
+<span class="code-keyword">fn</span> <span class="code-function">total</span>(*<span class="code-variable">values</span>):
+    <span class="code-variable">result</span> = <span class="code-number">0</span>
+    <span class="code-keyword">for</span> <span class="code-variable">value</span> <span class="code-keyword">in</span> <span class="code-variable">values</span>:
+        <span class="code-variable">result</span> += <span class="code-variable">value</span>
+    <span class="code-keyword">return</span> <span class="code-variable">result</span></code></pre>
 
-                    <pre class="code-example"><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
-  <span class="code-keyword">def</span> <span class="code-function">__init__</span>(<span class="code-variable">self</span>, <span class="code-variable">start</span>):
-    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
+                    <pre class="code-example"><code><span class="code-keyword">class</span> <span class="code-class">Animal</span>:
+    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">name</span>):
+        <span class="code-variable">self</span>.<span class="code-property">name</span> = <span class="code-variable">name</span>
 
-  <span class="code-keyword">def</span> <span class="code-function">increment</span>():
-    <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">self</span>.<span class="code-property">value</span> + <span class="code-number">1</span></code></pre>
+    <span class="code-keyword">fn</span> <span class="code-function">speak</span>():
+        <span class="code-keyword">return</span> <span class="code-string">"animal"</span>
 
-                    <pre class="code-example"><code><span class="code-variable">x</span> = <span class="code-number">10</span>
+<span class="code-keyword">class</span> <span class="code-class">Dog</span> <span class="code-keyword">extends</span> <span class="code-class">Animal</span>:
+    <span class="code-keyword">fn</span> <span class="code-function">speak</span>():
+        <span class="code-keyword">return</span> <span class="code-string">"woof"</span></code></pre>
 
-<span class="code-keyword">if</span> <span class="code-variable">x</span> &gt; <span class="code-number">15</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Large"</span>)
-<span class="code-keyword">elif</span> <span class="code-variable">x</span> &gt; <span class="code-number">5</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Medium"</span>)
+                    <pre class="code-example"><code><span class="code-variable">score</span> = <span class="code-number">85</span>
+
+<span class="code-keyword">if</span> <span class="code-variable">score</span> &gt;= <span class="code-number">90</span>:
+    <span class="code-builtin">print</span>(<span class="code-string">"A"</span>)
+<span class="code-keyword">elif</span> <span class="code-variable">score</span> &gt;= <span class="code-number">80</span>:
+    <span class="code-builtin">print</span>(<span class="code-string">"B"</span>)
 <span class="code-keyword">else</span>:
-  <span class="code-builtin">print</span>(<span class="code-string">"Small"</span>)</code></pre>
+    <span class="code-builtin">print</span>(<span class="code-string">"C"</span>)
+
+<span class="code-keyword">for</span> <span class="code-variable">n</span> <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):
+    <span class="code-keyword">if</span> <span class="code-variable">n</span> == <span class="code-number">3</span>:
+        <span class="code-keyword">continue</span>
+    <span class="code-builtin">print</span>(<span class="code-variable">n</span>)</code></pre>
                 </div>
             </div>
         </section>
@@ -236,13 +269,14 @@
                 <article class="example-card">
                     <div class="example-meta">
                         <span>02</span>
-                        <span>Lists</span>
+                        <span>Collections</span>
                     </div>
 
-                    <pre><code><span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>]
+                    <pre><code><span class="code-variable">numbers</span> = [<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>, <span class="code-number">40</span>]
 
-<span class="code-keyword">for</span> <span class="code-variable">num</span> <span class="code-keyword">in</span> <span class="code-variable">numbers</span>:
-  <span class="code-builtin">print</span>(<span class="code-variable">num</span> * <span class="code-number">2</span>)</code></pre>
+<span class="code-builtin">print</span>(<span class="code-variable">numbers</span>[<span class="code-number">-1</span>])
+<span class="code-variable">numbers</span>[<span class="code-number">0</span>] += <span class="code-number">5</span>
+<span class="code-variable">numbers</span>.<span class="code-function">append</span>(<span class="code-number">50</span>)</code></pre>
                 </article>
 
                 <article class="example-card">
@@ -252,9 +286,57 @@
                     </div>
 
                     <pre><code><span class="code-keyword">fn</span> <span class="code-function">multiply</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span>):
-  <span class="code-builtin">print</span>(<span class="code-variable">a</span> * <span class="code-variable">b</span>)
+    <span class="code-keyword">return</span> <span class="code-variable">a</span> * <span class="code-variable">b</span>
 
-<span class="code-function">multiply</span>(<span class="code-number">3</span>, <span class="code-number">7</span>)</code></pre>
+<span class="code-builtin">print</span>(<span class="code-function">multiply</span>(<span class="code-number">3</span>, <span class="code-number">7</span>))</code></pre>
+                </article>
+
+                <article class="example-card">
+                    <div class="example-meta">
+                        <span>04</span>
+                        <span>Errors</span>
+                    </div>
+
+                    <pre><code><span class="code-keyword">try</span>:
+    <span class="code-variable">value</span> = <span class="code-number">10</span> / <span class="code-number">0</span>
+
+<span class="code-keyword">catch</span> <span class="code-variable">error</span>:
+    <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
+                </article>
+
+                <article class="example-card">
+                    <div class="example-meta">
+                        <span>05</span>
+                        <span>Classes</span>
+                    </div>
+
+                    <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
+    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">start</span> = <span class="code-number">0</span>):
+        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
+
+    <span class="code-keyword">fn</span> <span class="code-function">increment</span>():
+        <span class="code-variable">self</span>.<span class="code-property">value</span> += <span class="code-number">1</span>
+        <span class="code-keyword">return</span> <span class="code-variable">self</span>.<span class="code-property">value</span></code></pre>
+                </article>
+
+                <article class="example-card">
+                    <div class="example-meta">
+                        <span>06</span>
+                        <span>Application</span>
+                    </div>
+
+                    <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
+    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">start</span> = <span class="code-number">0</span>):
+        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
+
+    <span class="code-keyword">fn</span> <span class="code-function">increment</span>():
+        <span class="code-variable">self</span>.<span class="code-property">value</span> += <span class="code-number">1</span>
+        <span class="code-keyword">return</span> <span class="code-variable">self</span>.<span class="code-property">value</span>
+
+<span class="code-variable">counter</span> = <span class="code-class">Counter</span>(<span class="code-number">10</span>)
+
+<span class="code-keyword">for</span> <span class="code-variable">i</span> <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">3</span>):
+    <span class="code-builtin">print</span>(<span class="code-variable">counter</span>.<span class="code-function">increment</span>())</code></pre>
                 </article>
             </div>
         </section>
@@ -266,7 +348,8 @@
                 <h2>Source code in.<br>Execution out.</h2>
 
                 <p>
-                    Tekst uses a straightforward interpreter pipeline.
+                    Tekst uses a direct AST interpreter pipeline with no
+                    bytecode compiler or virtual machine.
                 </p>
             </div>
 
@@ -274,7 +357,7 @@
                 <div class="pipeline-item">
                     <span>01</span>
                     <strong>Lexer</strong>
-                    <p>Turns source text into tokens.</p>
+                    <p>Converts Tekst source code into tokens.</p>
                 </div>
 
                 <div class="pipeline-line"></div>
@@ -282,7 +365,7 @@
                 <div class="pipeline-item">
                     <span>02</span>
                     <strong>Parser</strong>
-                    <p>Builds an abstract syntax tree.</p>
+                    <p>Converts tokens into an abstract syntax tree.</p>
                 </div>
 
                 <div class="pipeline-line"></div>
@@ -290,34 +373,60 @@
                 <div class="pipeline-item">
                     <span>03</span>
                     <strong>Interpreter</strong>
-                    <p>Evaluates the AST at runtime.</p>
+                    <p>Evaluates the AST directly at runtime.</p>
                 </div>
             </div>
         </section>
+
+        <section class="intro-section">
+            <div class="section-label">06 / TOOLING</div>
+
+            <div class="intro-grid">
+                <div>
+                    <h2>A language with<br>its own workflow.</h2>
+                </div>
+
+                <div>
+                    <p>
+                        Tekst includes the <code>tk</code> command-line tool for
+                        projects, packages, execution, and interactive development.
+                    </p>
+
+                    <p>
+                        Create projects, install packages, manage dependencies,
+                        run programs, enter the REPL, and inspect versions and help
+                        directly from the terminal.
+                    </p>
+
+                    <div class="docs-code">
+                        <div class="docs-code-title">terminal</div>
+                        <pre><code>tk init
+tk new myapp
+tk install package
+tk run main.tk
+tk repl</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="download-section" id="download">
             <div class="section-label">DOWNLOAD</div>
 
             <div class="download-card">
                 <div>
                     <h2>Get Tekst.</h2>
-                    <p>Download the latest Tekst build and start writing.</p>
-                    <p class="download-platform">Windows | MacOS | Linux</p>
+                    <p>Download the latest Tekst Windows build and start writing.</p>
+                    <p class="download-platform">Windows</p>
                 </div>
 
                 <a href="download/windows/TekstSetup.exe" class="button button-primary">
                     Download for Windows
                     <span>↓</span>
                 </a>
-                <a href="download/Windows/Linux.zip" class="button button-secondary">
-                    Download for Linux
-                    <span>↓</span>
-                </a>
-                <a href="download/Windows/MacOS.zip" class="button button-primary">
-                    Download for MacOS
-                    <span>↓</span>
-                </a>
             </div>
         </section>
+
         <section class="cta-section">
             <div class="cta-content">
                 <div class="section-label">START BUILDING</div>
@@ -325,7 +434,8 @@
                 <h2>Learn the language.<br>Then break it.</h2>
 
                 <p>
-                    Read the documentation and start writing Tekst.
+                    Read the documentation, explore the interpreter, and start
+                    writing Tekst.
                 </p>
 
                 <a href="docs/" class="button button-primary">
@@ -343,13 +453,13 @@
                 <span>Tekst</span>
             </div>
 
-            <p>A lightweight programming language.</p>
+            <p>A lightweight C++17 programming language.</p>
 
-        <div class="footer-links">
-            <a href="#download">Download</a>
-            <a href="docs/">Documentation</a>
-            <a href="contributing/">Contributing</a>
-        </div>
+            <div class="footer-links">
+                <a href="#download">Download</a>
+                <a href="docs/">Documentation</a>
+                <a href="contributing/">Contributing</a>
+            </div>
         </div>
     </footer>
 
