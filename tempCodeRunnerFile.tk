@@ -1,0 +1,16 @@
+class Counter:
+    def __init__(self, start=0):
+        self.value = start
+
+    def increment(self, amount=1):
+        self.value += amount
+        return self.value
+
+counter = Counter(10)
+
+for i in range(3):
+    print(counter.increment())
+
+name = "Tekst"
+
+print("Running {name}")
