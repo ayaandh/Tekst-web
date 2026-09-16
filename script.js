@@ -135,12 +135,20 @@ function updatePlatform(platform) {
     detectedPlatform.textContent = name;
 
     latestDownload.href = download;
-    latestDownloadText.textContent = "Download for " + name;
-    latestDownloadVersion.textContent = latestRelease.version;
+    latestDownloadText.textContent =
+        "Download for " + name;
 
-    windowsDownload.href = platformDownload("windows");
-    macosDownload.href = platformDownload("macos");
-    linuxDownload.href = platformDownload("linux");
+    latestDownloadVersion.textContent =
+        "v" + latestRelease.version;
+
+    windowsDownload.href =
+        platformDownload("windows");
+
+    macosDownload.href =
+        platformDownload("macos");
+
+    linuxDownload.href =
+        platformDownload("linux");
 
     windowsDownload.classList.remove("selected");
     macosDownload.classList.remove("selected");
@@ -165,7 +173,7 @@ function updatePlatform(platform) {
 async function loadLatestRelease() {
     try {
         const releasesUrl = new URL(
-            "releases/index.html",
+            "releases/releases.json",
             window.location.href
         );
 
@@ -177,55 +185,64 @@ async function loadLatestRelease() {
         );
 
         if (!response.ok) {
-            throw new Error("Could not load releases/index.html");
+            throw new Error(
+                "Could not load releases.json: " +
+                response.status
+            );
         }
 
-        const html = await response.text();
+        const releases = await response.json();
 
-        const parser = new DOMParser();
-
-        const releaseDocument = parser.parseFromString(
-            html,
-            "text/html"
-        );
-
-        const releaseCard =
-            releaseDocument.querySelector(".release-card");
-
-        if (!releaseCard) {
-            throw new Error("No .release-card found");
+        if (!Array.isArray(releases) || releases.length === 0) {
+            throw new Error("No releases found");
         }
 
-        const versionElement =
-            releaseCard.querySelector(".release-version");
+        releases.sort((a, b) => {
+            const av = a.version
+                .replace(/^v/, "")
+                .split(".")
+                .map(Number);
 
-        const descriptionElement =
-            releaseCard.querySelector(".release-description");
+            const bv = b.version
+                .replace(/^v/, "")
+                .split(".")
+                .map(Number);
 
-        const href =
-            releaseCard.getAttribute("href");
+            for (
+                let i = 0;
+                i < Math.max(av.length, bv.length);
+                i++
+            ) {
+                const aPart = av[i] || 0;
+                const bPart = bv[i] || 0;
 
-        if (!href) {
-            throw new Error("Release card has no href");
+                if (aPart !== bPart) {
+                    return bPart - aPart;
+                }
+            }
+
+            return 0;
+        });
+
+        const release = releases[0];
+
+        if (!release.version || !release.path) {
+            throw new Error("Invalid release data");
         }
-
-        const versionText = versionElement
-            ? versionElement.textContent.trim()
-            : "Tekst";
 
         latestRelease = {
-            version: versionText.replace(/^Latest\s+/i, ""),
-            description: descriptionElement
-                ? descriptionElement.textContent.trim()
-                : "Latest Tekst release.",
+            version: release.version.replace(/^v/, ""),
+            description:
+                release.description ||
+                "Latest Tekst release.",
             url: new URL(
-                href,
+                release.path,
                 releasesUrl.href
             ).href
         };
 
         latestVersion.textContent =
-            latestRelease.version;
+            "v" + latestRelease.version;
 
         latestDescription.textContent =
             latestRelease.description;
@@ -233,16 +250,13 @@ async function loadLatestRelease() {
         latestReleaseDetails.href =
             latestRelease.url;
 
-        latestDownloadVersion.textContent =
-            latestRelease.version;
-
         downloadLatestText.textContent =
-            "Download " +
+            "Download v" +
             latestRelease.version +
             " and start writing.";
 
         downloadLatestVersion.textContent =
-            latestRelease.version;
+            "v" + latestRelease.version;
 
         updatePlatform(getPlatform());
 
@@ -287,17 +301,18 @@ async function loadLatestRelease() {
     }
 }
 
-trigger.addEventListener("click", event => {
-    event.stopPropagation();
+if (trigger && dropdown) {
+    trigger.addEventListener("click", event => {
+        event.stopPropagation();
+        dropdown.classList.toggle("open");
+    });
 
-    dropdown.classList.toggle("open");
-});
-
-document.addEventListener("click", event => {
-    if (!dropdown.contains(event.target)) {
-        dropdown.classList.remove("open");
-    }
-});
+    document.addEventListener("click", event => {
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove("open");
+        }
+    });
+}
 
 document.querySelectorAll("[data-platform]").forEach(item => {
     item.addEventListener("click", () => {

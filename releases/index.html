@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/icon.png">
-    <meta
-        name="description"
-        content="Tekst releases — download stable versions of the Tekst programming language."
-    >
-
+    <meta name="description" content="Tekst releases — download stable versions of the Tekst programming language.">
     <title>Tekst | Releases</title>
-
     <link rel="stylesheet" href="../styles.css">
-
     <style>
         .releases-section {
             max-width: 1100px;
@@ -227,12 +221,10 @@
         }
     </style>
 </head>
-
 <body>
 
 <nav class="navbar">
     <div class="nav-inner">
-
         <a href="../" class="brand">
             <span class="brand-mark">T</span>
             <span>Tekst</span>
@@ -249,16 +241,13 @@
         <a href="../#download" class="nav-button">
             Download <span>↓</span>
         </a>
-
     </div>
 </nav>
 
 <main>
-
     <section class="releases-section">
 
         <div class="releases-header">
-
             <div class="section-label">
                 RELEASES
             </div>
@@ -272,19 +261,15 @@
                 Download stable versions of Tekst and explore what changed
                 in each release.
             </p>
-
         </div>
 
         <div class="latest-release">
-
             <div class="section-label">
                 LATEST RELEASE
             </div>
 
             <a href="#" class="latest-release-card" id="latest-release-card">
-
                 <div>
-
                     <div class="latest-label">
                         Current stable version
                     </div>
@@ -300,19 +285,15 @@
                     <p class="latest-description" id="latest-description">
                         Loading latest release...
                     </p>
-
                 </div>
 
                 <div class="latest-arrow">
                     →
                 </div>
-
             </a>
-
         </div>
 
         <div class="release-list-header">
-
             <div>
                 <div class="section-label">
                     ALL RELEASES
@@ -326,19 +307,15 @@
             <p id="release-count">
                 Loading...
             </p>
-
         </div>
 
         <div class="release-list" id="release-list"></div>
 
     </section>
-
 </main>
 
 <footer>
-
     <div class="footer-inner">
-
         <div class="brand">
             <span class="brand-mark">T</span>
             <span>Tekst</span>
@@ -354,44 +331,17 @@
             <a href="./">Releases</a>
             <a href="../contributing/">Contributing</a>
         </div>
-
     </div>
-
 </footer>
 
 <script>
-    const releases = [
-        {
-            version: "2.0.0",
-            date: "September 16, 2026",
-            description: "Version 2.0.0 introduces the change to a whole new compiler which replaces the old interpreted language.",
-            path: "v2.0.0/",
-            changes: [
-                "New compiler replacing old Interpreter"
-            ]
-        },
-        {
-            version: "1.5.1",
-            date: "September 16, 2026",
-            description: "Version 1.5.1 introduces change to GitLab powered package manager.",
-            path: "v1.5.1/",
-            changes: [
-                "Changed to GitLab"
-            ]
-        },
-        {
-            version: "1.5",
-            date: "September 9, 2026",
-            description: "Version 1.5 introduces proper project architecture, workflow improvements, and important bug fixes.",
-            path: "v1.5/",
-            changes: [
-                "Proper project architecture",
-                "Improved project workflow",
-                "Bug fixes",
-                "Stability improvements"
-            ]
-        } 
-    ];
+    const releaseList = document.getElementById("release-list");
+    const releaseCount = document.getElementById("release-count");
+
+    const latestVersion = document.getElementById("latest-version");
+    const latestDate = document.getElementById("latest-date");
+    const latestDescription = document.getElementById("latest-description");
+    const latestReleaseCard = document.getElementById("latest-release-card");
 
     function versionParts(version) {
         return version
@@ -416,57 +366,98 @@
         return 0;
     }
 
-    const sortedReleases = [...releases].sort(compareVersions);
-    const latestRelease = sortedReleases[0];
+    async function loadReleases() {
+        try {
+            const response = await fetch("releases.json", {
+                cache: "no-store"
+            });
 
-    if (latestRelease) {
-        document.getElementById("latest-version").textContent =
-            `v${latestRelease.version}`;
+            if (!response.ok) {
+                throw new Error("Failed to load releases.json");
+            }
 
-        document.getElementById("latest-date").textContent =
-            latestRelease.date;
+            const releases = await response.json();
 
-        document.getElementById("latest-description").textContent =
-            latestRelease.description;
+            if (!Array.isArray(releases) || releases.length === 0) {
+                throw new Error("No releases found");
+            }
 
-        document.getElementById("latest-release-card").href =
-            latestRelease.path;
+            const sortedReleases = [...releases].sort(compareVersions);
+            const latestRelease = sortedReleases[0];
+
+            latestVersion.textContent =
+                "v" + latestRelease.version.replace(/^v/, "");
+
+            latestDate.textContent =
+                latestRelease.date;
+
+            latestDescription.textContent =
+                latestRelease.description;
+
+            latestReleaseCard.href =
+                latestRelease.path;
+
+            sortedReleases.forEach((release, index) => {
+                const card = document.createElement("a");
+
+                card.href = release.path;
+                card.className = "release-card";
+
+                const content = document.createElement("div");
+
+                const version = document.createElement("div");
+                version.className = "release-version";
+                version.textContent =
+                    "v" + release.version.replace(/^v/, "");
+
+                if (index === 0) {
+                    const badge = document.createElement("span");
+                    badge.className = "badge";
+                    badge.textContent = "Latest";
+                    version.appendChild(badge);
+                }
+
+                const date = document.createElement("div");
+                date.className = "release-date";
+                date.textContent = release.date;
+
+                const description = document.createElement("p");
+                description.className = "release-description";
+                description.textContent = release.description;
+
+                content.appendChild(version);
+                content.appendChild(date);
+                content.appendChild(description);
+
+                const arrow = document.createElement("div");
+                arrow.className = "release-arrow";
+                arrow.textContent = "→";
+
+                card.appendChild(content);
+                card.appendChild(arrow);
+
+                releaseList.appendChild(card);
+            });
+
+            releaseCount.textContent =
+                sortedReleases.length +
+                " release" +
+                (sortedReleases.length === 1 ? "" : "s");
+
+        } catch (error) {
+            console.error(error);
+
+            latestVersion.textContent = "Unavailable";
+            latestDate.textContent = "";
+            latestDescription.textContent =
+                "Release information could not be loaded.";
+            latestReleaseCard.href = "./";
+            releaseCount.textContent =
+                "Unable to load releases";
+        }
     }
 
-    const releaseList = document.getElementById("release-list");
-
-    sortedReleases.forEach((release, index) => {
-        const card = document.createElement("a");
-
-        card.href = release.path;
-        card.className = "release-card";
-
-        card.innerHTML = `
-            <div>
-                <div class="release-version">
-                    v${release.version}
-                    ${index === 0 ? '<span class="badge">Latest</span>' : ''}
-                </div>
-
-                <div class="release-date">
-                    ${release.date}
-                </div>
-
-                <p class="release-description">
-                    ${release.description}
-                </p>
-            </div>
-
-            <div class="release-arrow">
-                →
-            </div>
-        `;
-
-        releaseList.appendChild(card);
-    });
-
-    document.getElementById("release-count").textContent =
-        `${sortedReleases.length} release${sortedReleases.length === 1 ? "" : "s"}`;
+    loadReleases();
 </script>
 
 </body>
