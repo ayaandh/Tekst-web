@@ -809,7 +809,7 @@
                             Download for <span id="detectedPlatform">Detecting...</span>
                         </div>
 
-                        <a href="releases/" class="download-main-button" id="latestDownload">
+                        <a href="../releases/" class="download-main-button" id="latestDownload">
                             <span>
                                 <strong id="latestDownloadText">
                                     Download for Windows
@@ -826,20 +826,20 @@
                         </a>
 
                         <div class="download-platforms">
-                            <a href="releases/" id="windowsDownload">
+                            <a href="../releases/" id="windowsDownload">
                                 Windows
                             </a>
 
-                            <a href="releases/" id="macosDownload">
+                            <a href="../releases/" id="macosDownload">
                                 macOS
                             </a>
 
-                            <a href="releases/" id="linuxDownload">
+                            <a href="../releases/" id="linuxDownload">
                                 Linux
                             </a>
                         </div>
 
-                        <a href="releases/" class="download-all">
+                        <a href="../releases/" class="download-all">
                             View all releases →
                         </a>
 
@@ -885,16 +885,15 @@
 
             <p>
                 Everything you need to understand the language, write programs,
-                use the interpreter, manage projects, and experiment with Tekst.
+                compile programs, explore the language, and experiment with Tekst.
             </p>
 
             <section id="introduction" class="docs-block">
                 <h2>Introduction</h2>
 
                 <p>
-                    Tekst is a lightweight C++17 interpreter for a simple,
-                    app-oriented programming language with Python-inspired
-                    syntax and indentation-based blocks.
+                    Tekst is an indentation-based programming language with a small,
+                    readable syntax and a native LLVM backend.
                 </p>
 
                 <p>
@@ -905,7 +904,7 @@
 
                 <div class="callout">
                     Tekst is actively developed. Syntax and implementation details
-                    may change as the interpreter evolves.
+                    may expand as the LLVM backend and native runtime evolve.
                 </div>
 
                 <div class="docs-code">
@@ -919,7 +918,7 @@
 
                 <p>
                     Tekst currently provides a Windows installer containing the
-                    Tekst interpreter and the <code>tk</code> command-line tool.
+                    Tekst compiler and the <code>tk</code> command-line tool.
                 </p>
 
                 <h3>Windows</h3>
@@ -1361,7 +1360,7 @@ Did you mean 'print'?</code></pre>
                 <h2>Running Tekst</h2>
 
                 <p>
-                    Pass a <code>.tk</code> source file to the Tekst interpreter.
+                    Pass a <code>.tk</code> source file to the Tekst compiler.
                 </p>
 
                 <div class="docs-code">
@@ -1422,7 +1421,7 @@ tk help</code></pre>
                 <h2>Architecture</h2>
 
                 <p>
-                    Tekst uses a direct AST interpreter pipeline.
+                    Tekst uses a native compiler pipeline.
                 </p>
 
                 <h3>1. Lexer</h3>
@@ -1454,8 +1453,8 @@ tk help</code></pre>
                 </p>
 
                 <div class="callout">
-                    Tekst does not require a bytecode compiler or virtual machine.
-                    The AST is interpreted directly.
+                    Tekst does not use a bytecode virtual machine. The AST is lowered to
+                    LLVM IR and then compiled into a native executable.
                 </div>
             </section>
 
@@ -1735,16 +1734,15 @@ tk help</code></pre>
 
             <p>
                 Everything you need to understand the language, write programs,
-                use the interpreter, manage projects, and experiment with Tekst.
+                compile programs, explore the language, and experiment with Tekst.
             </p>
 
             <section id="introduction" class="docs-block">
                 <h2>Introduction</h2>
 
                 <p>
-                    Tekst is a lightweight C++17 interpreter for a simple,
-                    app-oriented programming language with Python-inspired
-                    syntax and indentation-based blocks.
+                    Tekst is an indentation-based programming language with a small,
+                    readable syntax and a native LLVM backend.
                 </p>
 
                 <p>
@@ -1755,7 +1753,7 @@ tk help</code></pre>
 
                 <div class="callout">
                     Tekst is actively developed. Syntax and implementation details
-                    may change as the interpreter evolves.
+                    may expand as the LLVM backend and native runtime evolve.
                 </div>
 
                 <div class="docs-code">
@@ -1769,7 +1767,7 @@ tk help</code></pre>
 
                 <p>
                     Tekst currently provides a Windows installer containing the
-                    Tekst interpreter and the <code>tk</code> command-line tool.
+                    Tekst compiler and the <code>tk</code> command-line tool.
                 </p>
 
                 <h3>Windows</h3>
@@ -2211,12 +2209,12 @@ Did you mean 'print'?</code></pre>
                 <h2>Running Tekst</h2>
 
                 <p>
-                    Pass a <code>.tk</code> source file to the Tekst interpreter.
+                    Pass a <code>.tk</code> source file to the Tekst compiler.
                 </p>
 
                 <div class="docs-code">
                     <div class="docs-code-title">terminal</div>
-                    <pre><code>tekst main.tk</code></pre>
+                    <pre><code>tekst main.tk -o main</code></pre>
                 </div>
 
                 <h3>Debug mode</h3>
@@ -2225,11 +2223,6 @@ Did you mean 'print'?</code></pre>
                     Debug mode displays lexical tokens and the parsed AST before
                     execution.
                 </p>
-
-                <div class="docs-code">
-                    <div class="docs-code-title">terminal</div>
-                    <pre><code>tekst --debug main.tk</code></pre>
-                </div>
             </section>
 
             <section id="cli" class="docs-block">
@@ -2272,7 +2265,7 @@ tk help</code></pre>
                 <h2>Architecture</h2>
 
                 <p>
-                    Tekst uses a direct AST interpreter pipeline.
+                    Tekst uses a native compiler pipeline.
                 </p>
 
                 <h3>1. Lexer</h3>
@@ -2304,8 +2297,8 @@ tk help</code></pre>
                 </p>
 
                 <div class="callout">
-                    Tekst does not require a bytecode compiler or virtual machine.
-                    The AST is interpreted directly.
+                    Tekst does not use a bytecode virtual machine. The AST is lowered to
+                    LLVM IR and then compiled into a native executable.
                 </div>
             </section>
 

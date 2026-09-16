@@ -113,9 +113,9 @@ function platformDownload(platform) {
     }
 
     const files = {
-        windows: "windows/Windows.zip",
-        macos: "macos/MacOS.zip",
-        linux: "linux/Linux.zip"
+        windows: "Windows.zip",
+        macos: "MacOS.zip",
+        linux: "Linux.zip"
     };
 
     return new URL(
@@ -173,7 +173,7 @@ function updatePlatform(platform) {
 async function loadLatestRelease() {
     try {
         const releasesUrl = new URL(
-            "releases/releases.json",
+            "../releases/releases.json",
             window.location.href
         );
 

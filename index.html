@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tekst is a lightweight C++17 programming language with simple, app-oriented syntax.">
+    <meta name="description" content="Tekst is an indentation-based programming language with a small, readable syntax and a native LLVM backend.">
     <title>Tekst | The Programming Language</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="/icon.png">
@@ -713,7 +713,7 @@
             <p class="hero-text">
                 Tekst is a lightweight, app-oriented programming language
                 with readable Python-inspired syntax, indentation-based
-                blocks, and a direct AST interpreter.
+                blocks, and a native LLVM compiler backend.
             </p>
 
             <div class="hero-actions">
@@ -780,7 +780,7 @@
 
                 <p>
                     Source code is processed through a lexer, parser,
-                    abstract syntax tree, and direct interpreter.
+                    abstract syntax tree, then lowers it to LLVM IR for native compilation.
                 </p>
             </div>
 
@@ -1054,8 +1054,8 @@
             </h2>
 
             <p>
-                Tekst uses a direct AST interpreter pipeline with no
-                bytecode compiler or virtual machine.
+                Tekst uses a compiler pipeline that lexes and parses source into an AST,
+                lowers it to LLVM IR, and produces a native executable.
             </p>
         </div>
 
