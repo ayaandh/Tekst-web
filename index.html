@@ -7,6 +7,7 @@
     <title>Tekst | The Programming Language</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="/icon.png">
+
     <style>
         .download-dropdown {
             position: static;
@@ -256,6 +257,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <nav class="navbar">
@@ -323,10 +325,10 @@
                         </a>
 
                         <div class="download-heading">
-                            Download for <span id="detectedPlatform">Windows</span>
+                            Download for <span id="detectedPlatform">Detecting...</span>
                         </div>
 
-                        <a href="#" class="download-main-button" id="latestDownload">
+                        <a href="releases/" class="download-main-button" id="latestDownload">
                             <span>
                                 <strong id="latestDownloadText">
                                     Download for Windows
@@ -341,15 +343,15 @@
                         </a>
 
                         <div class="download-platforms">
-                            <a href="#" id="windowsDownload">
+                            <a href="releases/" id="windowsDownload">
                                 Windows
                             </a>
 
-                            <a href="#" id="macosDownload">
+                            <a href="releases/" id="macosDownload">
                                 macOS
                             </a>
 
-                            <a href="#" id="linuxDownload">
+                            <a href="releases/" id="linuxDownload">
                                 Linux
                             </a>
                         </div>
@@ -808,255 +810,6 @@ tk repl</code></pre>
 </footer>
 
 <script src="script.js"></script>
-
-<script>
-(function () {
-    const dropdown = document.getElementById("downloadDropdown");
-    const trigger = document.getElementById("downloadTrigger");
-
-    const latestVersion = document.getElementById("latestVersion");
-    const latestDescription = document.getElementById("latestDescription");
-    const latestReleaseDetails = document.getElementById("latestReleaseDetails");
-
-    const latestDownload = document.getElementById("latestDownload");
-    const latestDownloadText = document.getElementById("latestDownloadText");
-    const latestDownloadVersion = document.getElementById("latestDownloadVersion");
-    const detectedPlatform = document.getElementById("detectedPlatform");
-
-    const windowsDownload = document.getElementById("windowsDownload");
-    const macosDownload = document.getElementById("macosDownload");
-    const linuxDownload = document.getElementById("linuxDownload");
-
-    const downloadLatestText = document.getElementById("downloadLatestText");
-    const downloadLatestVersion = document.getElementById("downloadLatestVersion");
-    const downloadLatestButton = document.getElementById("downloadLatestButton");
-    const heroDownload = document.getElementById("heroDownload");
-
-    let latestRelease = {
-        version: "Tekst",
-        description: "Download the latest Tekst release.",
-        url: "releases/"
-    };
-
-    function getPlatform() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const platform = navigator.platform.toLowerCase();
-
-        if (
-            userAgent.includes("windows") ||
-            platform.includes("win")
-        ) {
-            return "windows";
-        }
-
-        if (
-            userAgent.includes("macintosh") ||
-            userAgent.includes("mac os") ||
-            platform.includes("mac")
-        ) {
-            return "macos";
-        }
-
-        if (
-            userAgent.includes("linux") ||
-            userAgent.includes("x11")
-        ) {
-            return "linux";
-        }
-
-        return "windows";
-    }
-
-    function platformName(platform) {
-        if (platform === "macos") return "macOS";
-        if (platform === "linux") return "Linux";
-        return "Windows";
-    }
-
-    function platformDownload(platform) {
-        let folder;
-        let file;
-
-        if (platform === "macos") {
-            folder = "macos";
-            file = "MacOS.zip";
-        } else if (platform === "linux") {
-            folder = "linux";
-            file = "Linux.zip";
-        } else {
-            folder = "windows";
-            file = "Windows.zip";
-        }
-
-        return new URL(
-            folder + "/" + file,
-            new URL(latestRelease.url, window.location.href)
-        ).href;
-    }
-
-    function updatePlatform(platform) {
-        const name = platformName(platform);
-        const download = platformDownload(platform);
-
-        detectedPlatform.textContent = name;
-
-        latestDownload.href = download;
-        latestDownloadText.textContent = "Download for " + name;
-        latestDownloadVersion.textContent = latestRelease.version;
-
-        windowsDownload.classList.remove("selected");
-        macosDownload.classList.remove("selected");
-        linuxDownload.classList.remove("selected");
-
-        if (platform === "windows") {
-            windowsDownload.classList.add("selected");
-        }
-
-        if (platform === "macos") {
-            macosDownload.classList.add("selected");
-        }
-
-        if (platform === "linux") {
-            linuxDownload.classList.add("selected");
-        }
-    }
-
-    function loadLatestRelease() {
-        fetch("releases/", {
-            cache: "no-store"
-        })
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Unable to load releases");
-                }
-
-                return response.text();
-            })
-            .then(function (html) {
-                const parser = new DOMParser();
-
-                const documentPage = parser.parseFromString(
-                    html,
-                    "text/html"
-                );
-
-                const firstRelease =
-                    documentPage.querySelector(".release-card");
-
-                if (!firstRelease) {
-                    throw new Error("No releases found");
-                }
-
-                const versionElement =
-                    firstRelease.querySelector(".release-version");
-
-                const descriptionElement =
-                    firstRelease.querySelector(".release-description");
-
-                const href =
-                    firstRelease.getAttribute("href");
-
-                if (!href) {
-                    throw new Error("Latest release has no URL");
-                }
-
-                latestRelease.version = versionElement
-                    ? versionElement.textContent
-                        .replace("Latest", "")
-                        .trim()
-                    : "Tekst";
-
-                latestRelease.description = descriptionElement
-                    ? descriptionElement.textContent.trim()
-                    : "Download the latest Tekst release.";
-
-                latestRelease.url = new URL(
-                    href,
-                    new URL("releases/", window.location.href)
-                ).href;
-
-                latestVersion.textContent =
-                    latestRelease.version;
-
-                latestDescription.textContent =
-                    latestRelease.description;
-
-                latestReleaseDetails.href =
-                    latestRelease.url;
-
-                downloadLatestText.textContent =
-                    "Download " +
-                    latestRelease.version +
-                    " and start writing.";
-
-                downloadLatestVersion.textContent =
-                    latestRelease.version;
-
-                const platform = getPlatform();
-
-                windowsDownload.href =
-                    platformDownload("windows");
-
-                macosDownload.href =
-                    platformDownload("macos");
-
-                linuxDownload.href =
-                    platformDownload("linux");
-
-                updatePlatform(platform);
-
-                downloadLatestButton.href =
-                    platformDownload(platform);
-
-                heroDownload.href =
-                    platformDownload(platform);
-            })
-            .catch(function (error) {
-                console.error(
-                    "Failed to load latest release:",
-                    error
-                );
-
-                latestVersion.textContent =
-                    "Latest Tekst Release";
-
-                latestDescription.textContent =
-                    "Download the latest stable version of Tekst.";
-
-                latestReleaseDetails.href =
-                    "releases/";
-
-                downloadLatestButton.href =
-                    "releases/";
-
-                heroDownload.href =
-                    "releases/";
-            });
-    }
-
-    trigger.addEventListener("click", function (event) {
-        event.stopPropagation();
-
-        dropdown.classList.toggle("open");
-    });
-
-    document.addEventListener("click", function (event) {
-        if (!dropdown.contains(event.target)) {
-            dropdown.classList.remove("open");
-        }
-    });
-
-    document
-        .querySelectorAll("[data-platform]")
-        .forEach(function (item) {
-            item.addEventListener("click", function () {
-                updatePlatform(this.dataset.platform);
-            });
-        });
-
-    loadLatestRelease();
-})();
-</script>
 
 </body>
 </html>
