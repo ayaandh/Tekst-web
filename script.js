@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const copyButtons = document.querySelectorAll(".copy-button");
 
 copyButtons.forEach(button => {
@@ -76,5 +75,4 @@ tabs.forEach((tab, index) => {
         tab.classList.add("active");
         examples[index].classList.add("active");
     });
->>>>>>> 4fcdc067fbde22a6e52bb85bd7eec14b79ce1701
 });
