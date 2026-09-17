@@ -1,5 +1,14 @@
 [
     {
+        "version": "2.1.2",
+        "date": "September 17, 2026",
+        "description": "Version 2.1.2 introduces better errors.",
+        "path": "v2.1.2/",
+        "changes": [
+            "Better errors"
+        ]
+    },
+    {
         "version": "2.0.0",
         "date": "September 16, 2026",
         "description": "Version 2.0.0 introduces the change to a whole new compiler which replaces the old interpreted language.",
