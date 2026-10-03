@@ -1,325 +1,153 @@
-const copyButtons = document.querySelectorAll(".copy-button");
+(() => {
+  const RELEASE_URL = 'releases/releases.json';
 
-copyButtons.forEach(button => {
-    button.addEventListener("click", async () => {
-        const container = button.closest(".hero-code, .code-panel, .example-card");
-        const code = container?.querySelector("pre code");
+  const escapeHtml = value => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 
-        if (!code) return;
-
-        try {
-            await navigator.clipboard.writeText(code.textContent);
-
-            const original = button.textContent;
-            button.textContent = "Copied";
-
-            setTimeout(() => {
-                button.textContent = original;
-            }, 1500);
-        } catch {
-            button.textContent = "Failed";
-
-            setTimeout(() => {
-                button.textContent = "Copy";
-            }, 1500);
-        }
-    });
-});
-
-const tabs = document.querySelectorAll(".code-tabs button");
-const examples = document.querySelectorAll(".code-example");
-
-tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => {
-        tabs.forEach(item => item.classList.remove("active"));
-        examples.forEach(item => item.classList.remove("active"));
-
-        tab.classList.add("active");
-
-        if (examples[index]) {
-            examples[index].classList.add("active");
-        }
-    });
-});
-
-const dropdown = document.getElementById("downloadDropdown");
-const trigger = document.getElementById("downloadTrigger");
-
-const latestVersion = document.getElementById("latestVersion");
-const latestDescription = document.getElementById("latestDescription");
-const latestReleaseDetails = document.getElementById("latestReleaseDetails");
-
-const latestDownload = document.getElementById("latestDownload");
-const latestDownloadText = document.getElementById("latestDownloadText");
-const latestDownloadVersion = document.getElementById("latestDownloadVersion");
-const detectedPlatform = document.getElementById("detectedPlatform");
-
-const windowsDownload = document.getElementById("windowsDownload");
-const macosDownload = document.getElementById("macosDownload");
-const linuxDownload = document.getElementById("linuxDownload");
-
-const downloadLatestText = document.getElementById("downloadLatestText");
-const downloadLatestVersion = document.getElementById("downloadLatestVersion");
-const downloadLatestButton = document.getElementById("downloadLatestButton");
-const heroDownload = document.getElementById("heroDownload");
-
-let latestRelease = null;
-
-function getPlatform() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const platform = navigator.platform.toLowerCase();
-
-    if (
-        userAgent.includes("windows") ||
-        platform.includes("win")
-    ) {
-        return "windows";
+  // One tokenizer for the homepage demo. The displayed HTML and copied source
+  // both come from the same string, so changing tabs cannot desynchronise them.
+  const highlightTekst = source => {
+    const token = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(#.*$)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_][A-Za-z0-9_]*)\b|===|!==|==|!=|<=|>=|->|\+=|-=|\*=|\/=|[+\-*\/%=<>]|[()[\]{},.:]/gm;
+    const keywords = new Set(['fn','let','mut','if','else','elif','for','while','in','return','break','continue','class','struct','import','from','as','try','catch','throw','new','package','pub','match','type','true','false','nil','and','or','not','is']);
+    const builtins = new Set(['print','input','range','len','str','int','float','bool','list','tuple','dict','read','write']);
+    const types = new Set(['int','float','bool','string','void','ptr']);
+    let html = '', last = 0, match;
+    while ((match = token.exec(source))) {
+      html += escapeHtml(source.slice(last, match.index));
+      const value = match[0];
+      if (match[1]) html += `<span class="tok-string">${escapeHtml(value)}</span>`;
+      else if (match[2]) html += `<span class="tok-comment">${escapeHtml(value)}</span>`;
+      else if (match[3]) html += `<span class="tok-number">${value}</span>`;
+      else if (match[4]) {
+        const next = source.slice(token.lastIndex);
+        const cls = keywords.has(value) ? 'tok-keyword' : builtins.has(value) ? 'tok-builtin' : types.has(value) ? 'tok-type' : /^\s*\(/.test(next) ? 'tok-function' : 'tok-variable';
+        html += `<span class="${cls}">${escapeHtml(value)}</span>`;
+      } else {
+        html += `<span class="tok-operator">${escapeHtml(value)}</span>`;
+      }
+      last = token.lastIndex;
     }
+    return html + escapeHtml(source.slice(last));
+  };
 
-    if (
-        userAgent.includes("macintosh") ||
-        userAgent.includes("mac os") ||
-        platform.includes("mac")
-    ) {
-        return "macos";
+  const codeSource = {
+    variables: {
+      title: 'variables.tk',
+      caption: 'Values are visible without ceremony.',
+      code: `name = "Tekst"\nage = 14\nactive = true\nitems = [1, 2, 3]`
+    },
+    functions: {
+      title: 'functions.tk',
+      caption: 'Functions read like their purpose.',
+      code: `fn greet(name):\n    return "Hello {name}!"\n\nmessage = greet("World")\nprint(message)`
+    },
+    flow: {
+      title: 'flow.tk',
+      caption: 'Blocks stay visible because indentation is structure.',
+      code: `score = 82\n\nif score >= 80:\n    print("Great")\nelse:\n    print("Keep going")`
     }
+  };
 
-    if (
-        userAgent.includes("linux") ||
-        userAgent.includes("x11") ||
-        platform.includes("linux")
-    ) {
-        return "linux";
+  const copyText = async text => {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
     }
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand('copy');
+    area.remove();
+    if (!ok) throw new Error('Copy failed');
+  };
 
-    return "windows";
-}
+  const demo = document.querySelector('[data-code-demo]');
+  if (demo) {
+    const code = demo.querySelector('[data-demo-code]');
+    const title = demo.querySelector('[data-demo-file]');
+    const caption = demo.querySelector('[data-demo-caption]');
+    const lines = demo.querySelector('[data-demo-lines]');
+    const copyButton = demo.querySelector('[data-demo-copy]');
+    let currentKey = 'variables';
 
-function platformName(platform) {
-    if (platform === "macos") {
-        return "macOS";
-    }
-
-    if (platform === "linux") {
-        return "Linux";
-    }
-
-    return "Windows";
-}
-
-function platformDownload(platform) {
-    if (!latestRelease) {
-        return "releases/";
-    }
-
-    const files = {
-        windows: "Windows.zip",
-        macos: "MacOS.zip",
-        linux: "Linux.zip"
+    const renderDemo = key => {
+      currentKey = key;
+      const item = codeSource[key];
+      code.dataset.source = item.code;
+      code.innerHTML = highlightTekst(item.code);
+      title.textContent = item.title;
+      caption.textContent = item.caption;
+      lines.textContent = `${item.code.split('\n').length} lines`;
+      demo.querySelectorAll('[data-demo-tab]').forEach(button => {
+        const active = button.dataset.demoTab === key;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+      copyButton.textContent = 'Copy code';
     };
 
-    return new URL(
-        files[platform],
-        latestRelease.url
-    ).href;
-}
+    demo.querySelectorAll('[data-demo-tab]').forEach(button => {
+      button.addEventListener('click', () => renderDemo(button.dataset.demoTab));
+    });
+    copyButton.addEventListener('click', async () => {
+      const source = codeSource[currentKey].code;
+      try {
+        await copyText(source);
+        copyButton.textContent = 'Copied ✓';
+      } catch {
+        copyButton.textContent = 'Copy failed';
+      }
+      window.setTimeout(() => { copyButton.textContent = 'Copy code'; }, 1400);
+    });
+    renderDemo(currentKey);
+  }
 
-function updatePlatform(platform) {
-    if (!latestRelease) {
-        return;
-    }
+  // Generic copy buttons elsewhere on the site. Always prefer an explicit target.
+  document.querySelectorAll('.copy-button[data-copy-target]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const target = document.getElementById(button.dataset.copyTarget);
+      if (!target) return;
+      const source = target.textContent;
+      const original = button.textContent;
+      try { await copyText(source); button.textContent = 'Copied ✓'; }
+      catch { button.textContent = 'Copy failed'; }
+      window.setTimeout(() => { button.textContent = original; }, 1400);
+    });
+  });
 
-    const name = platformName(platform);
-    const download = platformDownload(platform);
-
-    detectedPlatform.textContent = name;
-
-    latestDownload.href = download;
-    latestDownloadText.textContent =
-        "Download for " + name;
-
-    latestDownloadVersion.textContent =
-        "v" + latestRelease.version;
-
-    windowsDownload.href =
-        platformDownload("windows");
-
-    macosDownload.href =
-        platformDownload("macos");
-
-    linuxDownload.href =
-        platformDownload("linux");
-
-    windowsDownload.classList.remove("selected");
-    macosDownload.classList.remove("selected");
-    linuxDownload.classList.remove("selected");
-
-    if (platform === "windows") {
-        windowsDownload.classList.add("selected");
-    }
-
-    if (platform === "macos") {
-        macosDownload.classList.add("selected");
-    }
-
-    if (platform === "linux") {
-        linuxDownload.classList.add("selected");
-    }
-
-    downloadLatestButton.href = download;
-    heroDownload.href = download;
-}
-
-async function loadLatestRelease() {
-    try {
-        const releasesUrl = new URL(
-            "../releases/releases.json",
-            window.location.href
-        );
-
-        const response = await fetch(
-            releasesUrl.href,
-            {
-                cache: "no-store"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Could not load releases.json: " +
-                response.status
-            );
-        }
-
-        const releases = await response.json();
-
-        if (!Array.isArray(releases) || releases.length === 0) {
-            throw new Error("No releases found");
-        }
-
-        releases.sort((a, b) => {
-            const av = a.version
-                .replace(/^v/, "")
-                .split(".")
-                .map(Number);
-
-            const bv = b.version
-                .replace(/^v/, "")
-                .split(".")
-                .map(Number);
-
-            for (
-                let i = 0;
-                i < Math.max(av.length, bv.length);
-                i++
-            ) {
-                const aPart = av[i] || 0;
-                const bPart = bv[i] || 0;
-
-                if (aPart !== bPart) {
-                    return bPart - aPart;
-                }
-            }
-
-            return 0;
-        });
-
-        const release = releases[0];
-
-        if (!release.version || !release.path) {
-            throw new Error("Invalid release data");
-        }
-
-        latestRelease = {
-            version: release.version.replace(/^v/, ""),
-            description:
-                release.description ||
-                "Latest Tekst release.",
-            url: new URL(
-                release.path,
-                releasesUrl.href
-            ).href
-        };
-
-        latestVersion.textContent =
-            "v" + latestRelease.version;
-
-        latestDescription.textContent =
-            latestRelease.description;
-
-        latestReleaseDetails.href =
-            latestRelease.url;
-
-        downloadLatestText.textContent =
-            "Download v" +
-            latestRelease.version +
-            " and start writing.";
-
-        downloadLatestVersion.textContent =
-            "v" + latestRelease.version;
-
-        updatePlatform(getPlatform());
-
-    } catch (error) {
-        console.error(
-            "Failed to load latest release:",
-            error
-        );
-
-        latestVersion.textContent =
-            "Release unavailable";
-
-        latestDescription.textContent =
-            "The latest release could not be detected.";
-
-        latestDownloadVersion.textContent =
-            "Open releases";
-
-        latestReleaseDetails.href =
-            "releases/";
-
-        latestDownload.href =
-            "releases/";
-
-        windowsDownload.href =
-            "releases/";
-
-        macosDownload.href =
-            "releases/";
-
-        linuxDownload.href =
-            "releases/";
-
-        downloadLatestButton.href =
-            "releases/";
-
-        heroDownload.href =
-            "releases/";
-
-        detectedPlatform.textContent =
-            platformName(getPlatform());
-    }
-}
-
-if (trigger && dropdown) {
-    trigger.addEventListener("click", event => {
-        event.stopPropagation();
-        dropdown.classList.toggle("open");
+  // Release data powers every current-release surface on the homepage.
+  const base = new URL('./', document.baseURI);
+  fetch(new URL(RELEASE_URL, base), {cache: 'no-store'})
+    .then(response => { if (!response.ok) throw new Error(response.status); return response.json(); })
+    .then(releases => {
+      if (!Array.isArray(releases) || !releases.length) throw new Error('No releases');
+      const current = releases.find(r => /current/i.test(r.tag || '')) || releases[0];
+      const version = `v${String(current.version).replace(/^v/, '')}`;
+      document.querySelectorAll('[data-release-version]').forEach(el => el.textContent = version);
+      document.querySelectorAll('[data-release-description]').forEach(el => el.textContent = current.description || '');
+      document.querySelectorAll('[data-release-date]').forEach(el => el.textContent = current.date || '');
+      const path = String(current.path || '').replace(/^\.?\//, '');
+      document.querySelectorAll('[data-release-link]').forEach(el => el.href = `releases/${path}`);
+      const files = {windows: 'Windows.zip', linux: 'Linux.zip', macos: 'MacOS.zip'};
+      document.querySelectorAll('[data-platform]').forEach(el => {
+        el.href = `releases/${path}${files[el.dataset.platform] || ''}`;
+      });
+    }).catch(() => {
+      document.querySelectorAll('[data-release-version]').forEach(el => el.textContent = 'Tekst releases');
     });
 
-    document.addEventListener("click", event => {
-        if (!dropdown.contains(event.target)) {
-            dropdown.classList.remove("open");
-        }
+  document.addEventListener('click', event => {
+    document.querySelectorAll('.download-menu[open]').forEach(menu => {
+      if (!menu.contains(event.target)) menu.removeAttribute('open');
     });
-}
-
-document.querySelectorAll("[data-platform]").forEach(item => {
-    item.addEventListener("click", () => {
-        if (latestRelease) {
-            updatePlatform(item.dataset.platform);
-        }
-    });
-});
-
-loadLatestRelease();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') document.querySelectorAll('.download-menu[open]').forEach(menu => menu.removeAttribute('open'));
+  });
+})();

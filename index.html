@@ -1,1210 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tekst is an indentation-based programming language with a small, readable syntax and a native LLVM backend.">
-    <title>Tekst | The Programming Language</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="/icon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tekst is a readable programming language with an indentation-based syntax and a native LLVM compiler.">
+<meta name="theme-color" content="#080808">
+<title>Tekst | The Programming Language.</title>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="stylesheet" href="styles.css">
 </head>
-
-<body>
-<style>
-    
-.download-section {
-    max-width: 1180px;
-    margin: auto;
-    padding: 100px 24px;
-    border-top: 1px solid #242424;
-}
-
-.download-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 40px;
-    background: #111;
-    border: 1px solid #242424;
-    border-radius: 12px;
-}
-
-.download-card h2 {
-    margin-bottom: 10px;
-}
-
-.download-card p {
-    margin: 0;
-    color: #777;
-}
-
-.download-platform {
-    margin-top: 8px;
-    color: #ff6b35 !important;
-    font: 12px monospace;
-}
-
-@media (max-width: 700px) {
-    .download-card {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .platform-note {
-        border-radius: 10px;
-        text-align: left;
-    }
-}
-
-.download-section {
-    max-width: var(--max-width);
-    margin: auto;
-    padding: 130px 24px;
-    border-top: 1px solid var(--border);
-}
-
-.download-section > .section-label {
-    margin-bottom: 22px;
-}
-
-.download-card {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 45px;
-    align-items: center;
-    padding: 46px;
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            rgba(255, 107, 53, 0.09),
-            transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            #121212 0%,
-            #101010 55%,
-            #0d0d0d 100%
-        );
-
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.025);
-
-    transition:
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
-}
-
-.download-card::before {
-    content: "";
-    position: absolute;
-    top: -120px;
-    right: -120px;
-    width: 300px;
-    height: 300px;
-
-    background: rgba(255, 107, 53, 0.08);
-    filter: blur(90px);
-    pointer-events: none;
-}
-
-.download-card:hover {
-    border-color: #3a3a3a;
-    box-shadow:
-        0 30px 90px rgba(0, 0, 0, 0.45),
-        0 0 80px rgba(255, 107, 53, 0.035),
-        inset 0 1px 0 rgba(255, 255, 255, 0.035);
-}
-
-.download-card > div {
-    position: relative;
-    z-index: 1;
-}
-
-.download-card h2 {
-    margin-bottom: 12px;
-    font-size: clamp(38px, 4vw, 54px);
-    letter-spacing: -3px;
-}
-
-.download-card p {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.7;
-}
-
-.download-platform {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    margin-top: 14px !important;
-    padding: 6px 10px;
-
-    color: var(--orange) !important;
-    background: rgba(255, 107, 53, 0.06);
-
-    border: 1px solid rgba(255, 107, 53, 0.18);
-    border-radius: 6px;
-
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px !important;
-    letter-spacing: 0.2px;
-}
-
-.download-platform::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-
-    background: var(--orange);
-    border-radius: 50%;
-
-    box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
-}
-
-.download-card > .button {
-    position: relative;
-    z-index: 1;
-
-    min-width: 205px;
-    justify-content: space-between;
-
-    padding: 13px 15px 13px 18px;
-
-    border-radius: 8px;
-    font-size: 13px;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.download-card > .button span {
-    display: grid;
-    place-items: center;
-
-    width: 26px;
-    height: 26px;
-
-    margin-left: 18px;
-
-    border-radius: 6px;
-
-    font-size: 16px;
-    line-height: 1;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-}
-
-.download-card > .button:hover {
-    transform: translateY(-2px);
-}
-
-.download-card > .button:hover span {
-    transform: translateY(2px);
-}
-
-.download-card > .button-primary {
-    background: var(--orange);
-    color: #080808;
-
-    box-shadow:
-        0 8px 25px rgba(255, 107, 53, 0.12);
-}
-
-.download-card > .button-primary:hover {
-    background: var(--orange-light);
-    box-shadow:
-        0 12px 35px rgba(255, 107, 53, 0.2);
-}
-
-.download-card > .button-primary span {
-    background: rgba(0, 0, 0, 0.12);
-}
-
-.download-card > .button-secondary {
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid var(--border-light);
-    color: var(--text);
-}
-
-.download-card > .button-secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #444;
-}
-
-.download-card > .button-secondary span {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-/* Stack the buttons neatly on the right */
-.download-card > .button {
-    grid-column: 2;
-}
-
-.download-card > div {
-    grid-column: 1;
-    grid-row: 1 / span 3;
-}
-
-.download-card > .button:nth-of-type(1) {
-    grid-row: 1;
-}
-
-.download-card > .button:nth-of-type(2) {
-    grid-row: 2;
-}
-
-.download-card > .button:nth-of-type(3) {
-    grid-row: 3;
-}
-
-
-/* Tablet */
-@media (max-width: 850px) {
-    .download-card {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        padding: 35px;
-    }
-
-    .download-card > div {
-        grid-column: 1 / -1;
-        grid-row: auto;
-        margin-bottom: 15px;
-    }
-
-    .download-card > .button {
-        grid-column: auto;
-        grid-row: auto;
-        min-width: 0;
-    }
-}
-
-
-/* Mobile */
-@media (max-width: 560px) {
-    .download-section {
-        padding-top: 90px;
-        padding-bottom: 90px;
-    }
-
-    .download-card {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-        padding: 28px;
-        border-radius: 13px;
-    }
-
-    .download-card > div {
-        margin-bottom: 12px;
-    }
-
-    .download-card h2 {
-        font-size: 40px;
-        letter-spacing: -2.5px;
-    }
-
-    .download-card p {
-        font-size: 14px;
-    }
-
-    .download-card > .button {
-        width: 100%;
-        min-width: 0;
-    }
-}
-
-        .download-dropdown {
-            position: static;
-        }
-
-        .download-trigger {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 0;
-            border: 0;
-            background: none;
-            color: inherit;
-            font: inherit;
-            cursor: pointer;
-        }
-
-        .download-trigger span {
-            opacity: .5;
-            transition: transform .2s ease;
-        }
-
-        .download-dropdown.open .download-trigger span {
-            transform: rotate(180deg);
-        }
-
-        .download-menu {
-            position: absolute;
-            z-index: 1000;
-            top: 100%;
-            left: 50%;
-            width: min(900px, calc(100vw - 30px));
-            min-height: 390px;
-            display: grid;
-            grid-template-columns: 230px 1fr;
-            background: #171717;
-            border: 1px solid rgba(255,255,255,.12);
-            box-shadow: 0 30px 80px rgba(0,0,0,.45);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: translate(-50%, -10px);
-            transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-            overflow: hidden;
-        }
-
-        .download-dropdown.open .download-menu {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transform: translate(-50%, 0);
-        }
-
-        .download-sidebar {
-            border-right: 1px solid rgba(255,255,255,.1);
-            background: rgba(255,255,255,.035);
-            padding: 8px 0;
-        }
-
-        .download-sidebar-item {
-            display: flex;
-            align-items: center;
-            min-height: 48px;
-            padding: 0 20px;
-            color: inherit;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,.06);
-            font-size: .88rem;
-            opacity: .7;
-            transition: background .15s ease, opacity .15s ease, padding .15s ease;
-        }
-
-        .download-sidebar-item:hover,
-        .download-sidebar-item.active {
-            background: rgba(255,255,255,.08);
-            opacity: 1;
-            padding-left: 25px;
-        }
-
-        .download-content {
-            padding: 32px;
-        }
-
-        .download-label {
-            font-size: .72rem;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            opacity: .4;
-            margin-bottom: 10px;
-        }
-
-        .download-version {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .download-description {
-            max-width: 570px;
-            line-height: 1.65;
-            opacity: .6;
-            margin: 0 0 10px;
-        }
-
-        .download-release-link {
-            display: inline-block;
-            color: inherit;
-            text-decoration: none;
-            font-size: .85rem;
-            font-weight: 600;
-            opacity: .65;
-            margin-bottom: 30px;
-        }
-
-        .download-release-link:hover {
-            opacity: 1;
-        }
-
-        .download-heading {
-            font-size: .95rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .download-heading span {
-            opacity: .5;
-        }
-
-        .download-main-button {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 15px 18px;
-            border: 1px solid rgba(255,255,255,.14);
-            background: rgba(255,255,255,.05);
-            color: inherit;
-            text-decoration: none;
-            transition: background .15s ease, border-color .15s ease;
-        }
-
-        .download-main-button:hover {
-            background: rgba(255,255,255,.1);
-            border-color: rgba(255,255,255,.25);
-        }
-
-        .download-main-button span:first-child {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .download-main-button strong {
-            font-size: .9rem;
-        }
-
-        .download-main-button small {
-            font-size: .72rem;
-            opacity: .4;
-        }
-
-        .download-arrow {
-            font-size: 1.25rem;
-            opacity: .5;
-        }
-
-        .download-platforms {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .download-platforms a {
-            padding: 10px;
-            text-align: center;
-            color: inherit;
-            text-decoration: none;
-            border: 1px solid rgba(255,255,255,.08);
-            font-size: .75rem;
-            opacity: .55;
-            transition: background .15s ease, opacity .15s ease;
-        }
-
-        .download-platforms a:hover,
-        .download-platforms a.selected {
-            background: rgba(255,255,255,.07);
-            opacity: 1;
-        }
-
-        .download-all {
-            display: block;
-            margin-top: 20px;
-            color: inherit;
-            text-decoration: none;
-            font-size: .8rem;
-            font-weight: 600;
-            opacity: .55;
-        }
-
-        .download-all:hover {
-            opacity: 1;
-        }
-
-        @media (max-width: 800px) {
-            .download-menu {
-                grid-template-columns: 1fr;
-                width: min(500px, calc(100vw - 24px));
-                max-height: calc(100vh - 90px);
-                overflow-y: auto;
-            }
-
-            .download-sidebar {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                border-right: 0;
-                border-bottom: 1px solid rgba(255,255,255,.1);
-            }
-
-            .download-sidebar-item {
-                min-height: 42px;
-            }
-
-            .download-content {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 550px) {
-            .download-menu {
-                left: auto;
-                right: 10px;
-                transform: translateY(-10px);
-            }
-
-            .download-dropdown.open .download-menu {
-                transform: translateY(0);
-            }
-
-            .download-sidebar {
-                grid-template-columns: 1fr;
-            }
-
-            .download-platforms {
-                grid-template-columns: 1fr;
-            }
-        }
-</style>
-<nav class="navbar">
-    <div class="nav-inner">
-
-        <a href="/" class="brand">
-            <span class="brand-mark">T</span>
-            <span>Tekst</span>
-        </a>
-
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#syntax">Syntax</a>
-            <a href="#examples">Examples</a>
-            <a href="docs/">Docs</a>
-            <a href="contributing/">Contribute</a>
-
-            <div class="download-dropdown" id="downloadDropdown">
-                <button class="download-trigger" id="downloadTrigger" type="button">
-                    Download
-                    <span>⌄</span>
-                </button>
-
-                <div class="download-menu">
-
-                    <div class="download-sidebar">
-                        <a href="releases/" class="download-sidebar-item active">
-                            All releases
-                        </a>
-
-                        <a href="releases/" class="download-sidebar-item">
-                            Latest release
-                        </a>
-
-                        <a href="#download-windows" class="download-sidebar-item" data-platform="windows">
-                            Windows
-                        </a>
-
-                        <a href="#download-macos" class="download-sidebar-item" data-platform="macos">
-                            macOS
-                        </a>
-
-                        <a href="#download-linux" class="download-sidebar-item" data-platform="linux">
-                            Linux
-                        </a>
-
-                        <a href="releases/" class="download-sidebar-item">
-                            Older releases
-                        </a>
-                    </div>
-
-                    <div class="download-content">
-
-                        <div class="download-label">
-                            Latest Tekst Release
-                        </div>
-
-                        <div class="download-version" id="latestVersion">
-                            Loading...
-                        </div>
-
-                        <p class="download-description" id="latestDescription">
-                            Loading latest release information...
-                        </p>
-
-                        <a href="releases/" class="download-release-link" id="latestReleaseDetails">
-                            View release details →
-                        </a>
-
-                        <div class="download-heading">
-                            Download for <span id="detectedPlatform">Detecting...</span>
-                        </div>
-
-                        <a href="releases/" class="download-main-button" id="latestDownload">
-                            <span>
-                                <strong id="latestDownloadText">
-                                    Download for Windows
-                                </strong>
-
-                                <small id="latestDownloadVersion">
-                                    Loading...
-                                </small>
-                            </span>
-
-                            <span class="download-arrow">
-                                ↓
-                            </span>
-                        </a>
-
-                        <div class="download-platforms">
-                            <a href="releases/" id="windowsDownload">
-                                Windows
-                            </a>
-
-                            <a href="releases/" id="macosDownload">
-                                macOS
-                            </a>
-
-                            <a href="releases/" id="linuxDownload">
-                                Linux
-                            </a>
-                        </div>
-
-                        <a href="releases/" class="download-all">
-                            View all releases →
-                        </a>
-
-                    </div>
-                </div>
+<body class="home-v3">
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="wordmark image-wordmark" href="./" aria-label="Tekst home"><img src="banner.png" alt="Tekst"></a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="docs/">Docs</a>
+      <a href="releases/">Releases</a>
+      <a href="contributing/">Contributing</a>
+      <details class="download-menu"><summary>Download</summary>
+        <div class="download-panel">
+          <div class="download-panel-main">
+            <p class="eyebrow">Current release</p>
+            <h2 data-release-version>Loading…</h2>
+            <p data-release-description>Loading release information.</p>
+            <div class="download-meta"><span data-release-date></span><span>Stable</span></div>
+            <div class="download-platforms">
+              <a data-platform="windows" href="releases/">Windows <span>ZIP</span></a>
+              <a data-platform="linux" href="releases/">Linux <span>ZIP</span></a>
+              <a data-platform="macos" href="releases/">macOS <span>ZIP</span></a>
             </div>
-
-            <a href="#download" class="nav-button">
-                Get Tekst <span>↓</span>
-            </a>
+            <a class="download-release-link" data-release-link href="releases/">Release notes and source →</a>
+          </div>
+          <div class="download-panel-links">
+            <p class="eyebrow">Explore</p>
+            <a href="docs/"><strong>Documentation</strong><span>Learn the language</span></a>
+            <a href="releases/"><strong>All releases</strong><span>Version history</span></a>
+            <a href="contributing/"><strong>Contributing</strong><span>Work on Tekst</span></a>
+            <a href="docs/compiler/"><strong>Compiler</strong><span>C++17 + LLVM</span></a>
+          </div>
         </div>
-    </div>
-</nav>
+      </details>
+    </nav>
+    <details class="mobile-menu"><summary>Menu</summary><div class="mobile-menu-panel"><a href="docs/">Docs</a><a href="releases/">Releases</a><a href="contributing/">Contributing</a><a href="docs/getting-started/">Get started</a></div></details>
+    <a class="nav-cta" href="docs/getting-started/">Get started</a>
+  </div>
+</header>
 
 <main>
+  <section class="hero-v3">
+    <div class="hero-v3-grid"></div>
+    <div class="hero-v3-inner">
+      <div class="hero-v3-copy">
+        <div class="hero-v3-kicker"><span>TEKST</span><i></i><span>PROGRAMMING LANGUAGE</span></div>
+        <h1>Programming,<br><em>without the noise.</em></h1>
+        <p class="hero-v3-lead">A small, readable language with indentation-based syntax and a native LLVM compiler. Write programs that are easy to read before they become hard to maintain.</p>
+        <div class="hero-v3-actions"><a class="button button-primary" href="docs/getting-started/">Start writing <span>→</span></a><a class="hero-text-link" href="#language">See how it works <span>↓</span></a></div>
+        <div class="hero-v3-facts"><span><b>01</b> Readable syntax</span><span><b>02</b> Native compilation</span><span><b>03</b> Open to explore</span></div>
+      </div>
+      <div class="hero-v3-stage">
+        <div class="hero-v3-card">
+          <div class="v3-windowbar"><span class="window-dots"><i></i><i></i><i></i></span><span>hello.tk</span><button class="copy-button" type="button" data-copy-target="hero-code">Copy</button></div>
+          <pre><code id="hero-code" data-language="tekst">fn greet(name):
+    return "Hello {name}!"
 
-    <section class="hero">
-        <div class="hero-glow"></div>
-
-        <div class="hero-content">
-
-            <div class="eyebrow">
-                <span class="status-dot"></span>
-                Built with C++17
-            </div>
-
-            <h1>
-                Programming,<br>
-                <span>without the noise.</span>
-            </h1>
-
-            <p class="hero-text">
-                Tekst is a lightweight, app-oriented programming language
-                with readable Python-inspired syntax, indentation-based
-                blocks, and a native LLVM compiler backend.
-            </p>
-
-            <div class="hero-actions">
-                <a href="releases/" class="button button-primary" id="heroDownload">
-                    Download Latest
-                    <span>↓</span>
-                </a>
-
-                <a href="releases/" class="button button-secondary">
-                    View Releases
-                    <span>→</span>
-                </a>
-            </div>
-
-            <div class="hero-code">
-
-                <div class="window-bar">
-                    <div class="window-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-
-                    <span>main.tk</span>
-
-                    <button class="copy-button">
-                        Copy
-                    </button>
-                </div>
-
-                <pre><code><span class="code-keyword">fn</span> <span class="code-function">greet</span>(<span class="code-variable">name</span>):
-    <span class="code-keyword">return</span> <span class="code-string">"Hello {name}"</span>
-
-<span class="code-builtin">print</span>(<span class="code-function">greet</span>(<span class="code-string">"World"</span>))</code></pre>
-
-            </div>
+message = greet("World")
+print(message)</code></pre>
+          <div class="v3-code-foot"><span>TEKST</span><span>5 lines · 1 idea</span></div>
         </div>
-    </section>
+        <div class="hero-v3-note"><b>01</b><span>Readable at a glance.<br>Compilable when you are ready.</span></div>
+        <div class="hero-v3-orbit"></div>
+      </div>
+    </div>
+  </section>
 
-    <section class="intro-section">
-        <div class="section-label">01 / ABOUT</div>
+  <section class="proof-bar">
+    <div class="proof-inner">
+      <div><span>THE IDEA</span><strong>Make the structure visible.</strong></div>
+      <div><span>THE SYNTAX</span><strong>Indentation defines blocks.</strong></div>
+      <div><span>THE BACKEND</span><strong>LLVM takes it to native code.</strong></div>
+    </div>
+  </section>
 
-        <div class="intro-grid">
-
-            <div>
-                <h2>
-                    A language made<br>
-                    to stay out of your way.
-                </h2>
-            </div>
-
-            <div>
-                <p>
-                    Tekst is a lightweight C++17 interpreter for a simple,
-                    app-oriented programming language. It takes inspiration
-                    from Python while keeping its own identity.
-                </p>
-
-                <p>
-                    The language supports variables, functions, classes,
-                    collections, exceptions, modules, file utilities,
-                    mathematical operations, packages, and a built-in REPL.
-                </p>
-
-                <p>
-                    Source code is processed through a lexer, parser,
-                    abstract syntax tree, then lowers it to LLVM IR for native compilation.
-                </p>
-            </div>
-
+  <section class="language-section" id="language">
+    <div class="section-width">
+      <div class="v3-section-top"><div><p class="eyebrow">01 / The language</p><h2>Small surface.<br><em>Room to grow.</em></h2></div><p>Tekst is designed so the first program is approachable and the language can still support larger programs.</p></div>
+      <div class="language-layout">
+        <div class="language-list">
+          <article><span>01</span><div><h3>Indentation is structure</h3><p>No piles of braces just to show where a block starts. The shape of the code stays visible.</p></div></article>
+          <article><span>02</span><div><h3>Functions feel direct</h3><p>Define a function, give it arguments, return a value, and keep moving.</p></div></article>
+          <article><span>03</span><div><h3>Lower-level when needed</h3><p>Collections, classes, modules, pointers, and compiler tooling are part of the wider language surface.</p></div></article>
         </div>
-    </section>
+        <div class="language-quote"><span>“</span><p>The point isn't fewer features. It's less friction between the idea in your head and the code on the screen.</p><small>THE TEKST APPROACH</small></div>
+      </div>
+    </div>
+  </section>
 
-    <section id="features" class="features-section">
-
-        <div class="section-heading">
-
-            <div>
-                <div class="section-label">02 / FEATURES</div>
-
-                <h2>
-                    Everything you need.<br>
-                    Nothing you don't.
-                </h2>
-            </div>
-
-            <p>
-                A compact language doesn't have to be a limited one.
-            </p>
-
+  <section class="examples-section" id="examples">
+    <div class="section-width">
+      <div class="v3-section-top"><div><p class="eyebrow">02 / See it</p><h2>Don't read about it.<br><em>Look at the code.</em></h2></div><p>Every example below is a real piece of Tekst source. Switch tabs, then copy exactly the example you are looking at.</p></div>
+      <div class="v3-code-demo" data-code-demo>
+        <div class="v3-tabs" role="tablist" aria-label="Tekst examples">
+          <button class="active" role="tab" aria-selected="true" aria-controls="demo-panel" data-demo-tab="variables">Variables</button>
+          <button role="tab" aria-selected="false" aria-controls="demo-panel" data-demo-tab="functions">Functions</button>
+          <button role="tab" aria-selected="false" aria-controls="demo-panel" data-demo-tab="flow">Control flow</button>
         </div>
-
-        <div class="feature-grid">
-
-            <article class="feature-card">
-                <div class="feature-number">01</div>
-                <h3>Readable syntax</h3>
-                <p>Python-inspired syntax with indentation-based blocks and familiar programming concepts.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">02</div>
-                <h3>Dynamic values</h3>
-                <p>Work with integers, doubles, booleans, strings, lists, dictionaries, and null.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">03</div>
-                <h3>Functions</h3>
-                <p>Use fn or def, default arguments, variadic arguments, return values, and closures.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">04</div>
-                <h3>Classes & objects</h3>
-                <p>Create constructors, fields, methods, instances, inheritance, and method overrides.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">05</div>
-                <h3>Collections</h3>
-                <p>Use lists and dictionaries with indexing, assignment, negative indexes, and slicing.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">06</div>
-                <h3>Error handling</h3>
-                <p>Handle runtime problems with try, catch, and throw while receiving useful diagnostics.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">07</div>
-                <h3>Modules</h3>
-                <p>Import project, local, and package modules with import, from, and as.</p>
-            </article>
-
-            <article class="feature-card">
-                <div class="feature-number">08</div>
-                <h3>Tooling</h3>
-                <p>Use tk for projects and packages, plus the interactive REPL and debug mode.</p>
-            </article>
-
-        </div>
-    </section>
-
-    <section id="syntax" class="syntax-section">
-
-        <div class="section-label">03 / SYNTAX</div>
-
-        <div class="syntax-header">
-            <h2>
-                Looks familiar.<br>
-                Feels different.
-            </h2>
-
-            <p>
-                Tekst keeps common programming concepts recognizable while
-                adding its own compact syntax and runtime features.
-            </p>
-        </div>
-
-        <div class="code-showcase">
-
-            <div class="code-tabs">
-                <button class="active">Variables</button>
-                <button>Functions</button>
-                <button>Classes</button>
-                <button>Control flow</button>
-            </div>
-
-            <div class="code-panel">
-
-                <div class="code-title">
-                    <span>example.tk</span>
-                    <button class="copy-button">Copy</button>
-                </div>
-
-                <pre class="code-example active"><code><span class="code-variable">x</span> = <span class="code-number">42</span>
-<span class="code-variable">name</span> = <span class="code-string">"Tekst"</span>
-<span class="code-variable">active</span> = <span class="code-boolean">true</span>
-<span class="code-variable">nothing</span> = <span class="code-keyword">null</span>
-<span class="code-variable">numbers</span> = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>]
-<span class="code-variable">config</span> = {<span class="code-string">"port"</span>: <span class="code-number">8080</span>}</code></pre>
-
-                <pre class="code-example"><code><span class="code-keyword">fn</span> <span class="code-function">add</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span> = <span class="code-number">0</span>):
-    <span class="code-keyword">return</span> <span class="code-variable">a</span> + <span class="code-variable">b</span>
-
-<span class="code-keyword">fn</span> <span class="code-function">total</span>(*<span class="code-variable">values</span>):
-    <span class="code-variable">result</span> = <span class="code-number">0</span>
-
-    <span class="code-keyword">for</span> <span class="code-variable">value</span> <span class="code-keyword">in</span> <span class="code-variable">values</span>:
-        <span class="code-variable">result</span> += <span class="code-variable">value</span>
-
-    <span class="code-keyword">return</span> <span class="code-variable">result</span></code></pre>
-
-                <pre class="code-example"><code><span class="code-keyword">class</span> <span class="code-class">Animal</span>:
-    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">name</span>):
-        <span class="code-variable">self</span>.<span class="code-property">name</span> = <span class="code-variable">name</span>
-
-    <span class="code-keyword">fn</span> <span class="code-function">speak</span>():
-        <span class="code-keyword">return</span> <span class="code-string">"animal"</span>
-
-<span class="code-keyword">class</span> <span class="code-class">Dog</span> <span class="code-keyword">extends</span> <span class="code-class">Animal</span>:
-    <span class="code-keyword">fn</span> <span class="code-function">speak</span>():
-        <span class="code-keyword">return</span> <span class="code-string">"woof"</span></code></pre>
-
-                <pre class="code-example"><code><span class="code-variable">score</span> = <span class="code-number">85</span>
-
-<span class="code-keyword">if</span> <span class="code-variable">score</span> &gt;= <span class="code-number">90</span>:
-    <span class="code-builtin">print</span>(<span class="code-string">"A"</span>)
-
-<span class="code-keyword">elif</span> <span class="code-variable">score</span> &gt;= <span class="code-number">80</span>:
-    <span class="code-builtin">print</span>(<span class="code-string">"B"</span>)
-
-<span class="code-keyword">else</span>:
-    <span class="code-builtin">print</span>(<span class="code-string">"C"</span>)
-
-<span class="code-keyword">for</span> <span class="code-variable">n</span> <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">5</span>):
-    <span class="code-keyword">if</span> <span class="code-variable">n</span> == <span class="code-number">3</span>:
-        <span class="code-keyword">continue</span>
-
-    <span class="code-builtin">print</span>(<span class="code-variable">n</span>)</code></pre>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="examples" class="examples-section">
-
-        <div class="section-label">04 / EXAMPLES</div>
-
-        <div class="section-heading">
-            <h2>
-                Small programs.<br>
-                Real ideas.
-            </h2>
-
-            <p>
-                Start small. Build something interesting. Then make it
-                unnecessarily complicated. It's tradition.
-            </p>
-        </div>
-
-        <div class="examples-grid">
-
-            <article class="example-card large">
-                <div class="example-meta">
-                    <span>01</span>
-                    <span>Hello World</span>
-                </div>
-
-                <pre><code><span class="code-builtin">print</span>(<span class="code-string">"Hello, World!"</span>)</code></pre>
-            </article>
-
-            <article class="example-card">
-                <div class="example-meta">
-                    <span>02</span>
-                    <span>Collections</span>
-                </div>
-
-                <pre><code><span class="code-variable">numbers</span> = [<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>, <span class="code-number">40</span>]
-<span class="code-builtin">print</span>(<span class="code-variable">numbers</span>[<span class="code-number">-1</span>])
-<span class="code-variable">numbers</span>[<span class="code-number">0</span>] += <span class="code-number">5</span>
-<span class="code-variable">numbers</span>.<span class="code-function">append</span>(<span class="code-number">50</span>)</code></pre>
-            </article>
-
-            <article class="example-card">
-                <div class="example-meta">
-                    <span>03</span>
-                    <span>Functions</span>
-                </div>
-
-                <pre><code><span class="code-keyword">fn</span> <span class="code-function">multiply</span>(<span class="code-variable">a</span>, <span class="code-variable">b</span>):
-    <span class="code-keyword">return</span> <span class="code-variable">a</span> * <span class="code-variable">b</span>
-
-<span class="code-builtin">print</span>(<span class="code-function">multiply</span>(<span class="code-number">3</span>, <span class="code-number">7</span>))</code></pre>
-            </article>
-
-            <article class="example-card">
-                <div class="example-meta">
-                    <span>04</span>
-                    <span>Errors</span>
-                </div>
-
-                <pre><code><span class="code-keyword">try</span>:
-    <span class="code-variable">value</span> = <span class="code-number">10</span> / <span class="code-number">0</span>
-
-<span class="code-keyword">catch</span> <span class="code-variable">error</span>:
-    <span class="code-builtin">print</span>(<span class="code-string">"Something went wrong"</span>)</code></pre>
-            </article>
-
-            <article class="example-card">
-                <div class="example-meta">
-                    <span>05</span>
-                    <span>Classes</span>
-                </div>
-
-                <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
-    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">start</span> = <span class="code-number">0</span>):
-        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
-
-    <span class="code-keyword">fn</span> <span class="code-function">increment</span>():
-        <span class="code-variable">self</span>.<span class="code-property">value</span> += <span class="code-number">1</span>
-        <span class="code-keyword">return</span> <span class="code-variable">self</span>.<span class="code-property">value</span></code></pre>
-            </article>
-
-            <article class="example-card">
-                <div class="example-meta">
-                    <span>06</span>
-                    <span>Application</span>
-                </div>
-
-                <pre><code><span class="code-keyword">class</span> <span class="code-class">Counter</span>:
-    <span class="code-keyword">fn</span> <span class="code-function">init</span>(<span class="code-variable">start</span> = <span class="code-number">0</span>):
-        <span class="code-variable">self</span>.<span class="code-property">value</span> = <span class="code-variable">start</span>
-
-    <span class="code-keyword">fn</span> <span class="code-function">increment</span>():
-        <span class="code-variable">self</span>.<span class="code-property">value</span> += <span class="code-number">1</span>
-        <span class="code-keyword">return</span> <span class="code-variable">self</span>.<span class="code-property">value</span>
-
-<span class="code-variable">counter</span> = <span class="code-class">Counter</span>(<span class="code-number">10</span>)
-
-<span class="code-keyword">for</span> <span class="code-variable">i</span> <span class="code-keyword">in</span> <span class="code-function">range</span>(<span class="code-number">3</span>):
-    <span class="code-builtin">print</span>(<span class="code-variable">counter</span>.<span class="code-function">increment</span>())</code></pre>
-            </article>
-
-        </div>
-    </section>
-
-    <section class="architecture-section">
-
-        <div class="section-label">05 / ARCHITECTURE</div>
-
-        <div class="architecture-header">
-            <h2>
-                Source code in.<br>
-                Execution out.
-            </h2>
-
-            <p>
-                Tekst uses a compiler pipeline that lexes and parses source into an AST,
-                lowers it to LLVM IR, and produces a native executable.
-            </p>
-        </div>
-
-        <div class="pipeline">
-
-            <div class="pipeline-item">
-                <span>01</span>
-                <strong>Lexer</strong>
-                <p>Converts Tekst source code into tokens.</p>
-            </div>
-
-            <div class="pipeline-line"></div>
-
-            <div class="pipeline-item">
-                <span>02</span>
-                <strong>Parser</strong>
-                <p>Converts tokens into an abstract syntax tree.</p>
-            </div>
-
-            <div class="pipeline-line"></div>
-
-            <div class="pipeline-item">
-                <span>03</span>
-                <strong>Interpreter</strong>
-                <p>Evaluates the AST directly at runtime.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="intro-section">
-
-        <div class="section-label">06 / TOOLING</div>
-
-        <div class="intro-grid">
-
-            <div>
-                <h2>
-                    A language with<br>
-                    its own workflow.
-                </h2>
-            </div>
-
-            <div>
-
-                <p>
-                    Tekst includes the <code>tk</code> command-line tool for
-                    projects, packages, execution, and interactive development.
-                </p>
-
-                <p>
-                    Create projects, install packages, manage dependencies,
-                    run programs, enter the REPL, and inspect versions and help
-                    directly from the terminal.
-                </p>
-
-                <div class="docs-code">
-                    <div class="docs-code-title">terminal</div>
-
-                    <pre><code>tk init
-tk new myapp
-tk install package
-tk run main.tk
-tk repl</code></pre>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="download-section" id="download">
-
-        <div class="section-label">DOWNLOAD</div>
-
-        <div class="download-card">
-
-            <div>
-                <h2>Get Tekst.</h2>
-
-                <p id="downloadLatestText">
-                    Download the latest Tekst release and start writing.
-                </p>
-
-                <p class="download-platform" id="downloadLatestVersion">
-                    Latest release
-                </p>
-            </div>
-
-            <a href="releases/" class="button button-primary" id="downloadLatestButton">
-                View Latest Release
-                <span>→</span>
-            </a>
-
-        </div>
-    </section>
-
-    <section class="cta-section">
-
-        <div class="cta-content">
-
-            <div class="section-label">
-                START BUILDING
-            </div>
-
-            <h2>
-                Learn the language.<br>
-                Then break it.
-            </h2>
-
-            <p>
-                Read the documentation, explore the interpreter, and start
-                writing Tekst.
-            </p>
-
-            <a href="docs/" class="button button-primary">
-                Read the docs
-                <span>→</span>
-            </a>
-
-        </div>
-    </section>
-
+        <div class="v3-demo-head"><div><span class="demo-status"></span><span data-demo-file>variables.tk</span></div><button class="demo-copy" type="button" data-demo-copy>Copy code</button></div>
+        <div class="v3-demo-panel" id="demo-panel" role="tabpanel"><pre><code data-demo-code data-language="tekst"></code></pre></div>
+        <div class="v3-demo-foot"><span data-demo-caption>Values are visible without ceremony.</span><span data-demo-lines>4 lines</span></div>
+      </div>
+      <div class="demo-bottom"><span>Copying always uses the current tab.</span><span>Highlighting is regenerated from the same source.</span><span>No stale state.</span></div>
+    </div>
+  </section>
+
+  <section class="compiler-story">
+    <div class="section-width">
+      <div class="v3-section-top"><div><p class="eyebrow">03 / Under the surface</p><h2>Readable source.<br><em>Native destination.</em></h2></div><p>The compiler is written in C++17 and lowers Tekst programs through parsing and LLVM IR.</p></div>
+      <div class="compiler-rail">
+        <div class="compiler-node"><span>01</span><strong>Tekst source</strong><small>.tk / .tekst</small></div><i>→</i>
+        <div class="compiler-node"><span>02</span><strong>Lexer + parser</strong><small>tokens → AST</small></div><i>→</i>
+        <div class="compiler-node"><span>03</span><strong>LLVM IR</strong><small>lowering</small></div><i>→</i>
+        <div class="compiler-node final"><span>04</span><strong>Native code</strong><small>executable</small></div>
+      </div>
+      <div class="compiler-detail"><p>That gives Tekst two useful sides: a syntax you can understand quickly, and a compiler architecture you can dig into when you want to understand what happens underneath.</p><a href="docs/compiler/">Explore the compiler →</a></div>
+    </div>
+  </section>
+
+  <section class="feature-section">
+    <div class="section-width">
+      <div class="v3-section-top"><div><p class="eyebrow">04 / Beyond hello world</p><h2>A language you can<br><em>keep exploring.</em></h2></div><p>Move through the documentation by concept, not by a giant wall of reference pages.</p></div>
+      <div class="feature-grid-v3">
+        <a href="docs/basics/"><span>01</span><h3>Basics</h3><p>Values, variables, strings, operators, and input.</p><b>Learn basics ↗</b></a>
+        <a href="docs/functions/"><span>02</span><h3>Functions</h3><p>Arguments, returns, defaults, and reusable code.</p><b>Learn functions ↗</b></a>
+        <a href="docs/classes/"><span>03</span><h3>Objects</h3><p>Classes, fields, methods, instances, and inheritance.</p><b>Learn objects ↗</b></a>
+        <a href="docs/collections/"><span>04</span><h3>Collections</h3><p>Lists, tuples, dictionaries, indexing, and mutation.</p><b>Learn collections ↗</b></a>
+        <a href="docs/modules/"><span>05</span><h3>Modules</h3><p>Organise larger programs with imports and packages.</p><b>Learn modules ↗</b></a>
+        <a href="docs/pointers/"><span>06</span><h3>Memory</h3><p>Explore pointers, addresses, allocation, and lower-level concepts.</p><b>Learn memory ↗</b></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="try-section">
+    <div class="section-width try-grid">
+      <div><p class="eyebrow">05 / Start here</p><h2>Give Tekst<br><em>ten lines.</em></h2><p>Install a release, write your first program, and learn the language one concept at a time.</p><a class="button button-primary" href="docs/getting-started/">Open the getting started guide <span>→</span></a></div>
+      <div class="terminal-v3"><div><span>TERMINAL</span><span>TEKST CLI</span></div><pre><code><span class="term-dim">$</span> tekst hello.tk
+<span class="term-dim">$</span> ./hello
+<span class="term-output">Hello World!</span></code></pre></div>
+    </div>
+  </section>
+
+  <section class="release-v3"><div class="section-width release-v3-inner"><div><p class="eyebrow">Current release</p><h2 data-release-version>Loading…</h2><p data-release-description>Loading release information.</p><span class="release-v3-meta" data-release-date></span></div><a class="button button-outline" data-release-link href="releases/">View release <span>→</span></a></div></section>
+
+  <section class="final-v3"><div class="final-v3-inner"><div><p class="eyebrow">TEKST</p><h2>Write it.<br><em>Read it.<br>Understand it.</em></h2></div><div><p>The best first impression a programming language can make is a program you understand before anyone explains it.</p><a href="docs/getting-started/" class="final-link">Start with Tekst <span>↗</span></a></div></div></section>
 </main>
 
-<footer>
-
-    <div class="footer-inner">
-
-        <div class="brand">
-            <span class="brand-mark">T</span>
-            <span>Tekst</span>
-        </div>
-
-        <p>
-            A lightweight C++17 programming language.
-        </p>
-
-        <div class="footer-links">
-            <a href="#download">Download</a>
-            <a href="docs/">Documentation</a>
-            <a href="contributing/">Contributing</a>
-            <a href="releases/">Releases</a>
-        </div>
-
-    </div>
-
-</footer>
-
+<footer class="footer"><div class="content-width footer-grid"><div><a class="wordmark image-wordmark" href="./"><img src="banner.png" alt="Tekst"></a><p>A readable programming language with a native compiler.</p></div><nav aria-label="Footer"><a href="docs/">Documentation</a><a href="releases/">Releases</a><a href="contributing/">Contributing</a><a href="docs/compiler/">Compiler</a></nav><p class="footer-note">An independent language project.</p></div></footer>
 <script src="script.js"></script>
-
 </body>
 </html>

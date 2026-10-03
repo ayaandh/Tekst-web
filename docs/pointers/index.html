@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Work closer to memory with pointers, addresses, and manual allocation.">
+<meta name="theme-color" content="#080808">
+<title>Pointers &amp; Memory — Tekst</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../docs/docs.css">
+<link rel="icon" type="image/png" href="../../icon.png">
+</head>
+<body class="docs-site">
+<header class="docs-topbar">
+<div class="docs-topbar-inner">
+<a class="docs-brand image-wordmark" href="/" aria-label="Tekst home"><img src="/banner.png" alt="Tekst"></a>
+<nav class="docs-top-links" aria-label="Primary navigation">
+<a href="/docs/" class="current">Docs</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
+</nav>
+<div class="docs-top-actions"><button class="docs-search-button" type="button" data-search-open><kbd>⌘</kbd><kbd>K</kbd><span>Search</span></button><a class="docs-github" href="https://github.com/ayaandh/tekst-web">Source</a></div>
+</div>
+</header>
+<div class="docs-subbar"><div class="docs-subbar-inner"><a href="/docs/" class="docs-wordmark">Documentation</a><span class="docs-subbar-sep">/</span><span>Pointers &amp; Memory</span><span class="docs-subbar-version">2.1.3</span></div></div>
+<main class="docs-layout">
+<aside class="docs-sidebar"><div class="docs-sidebar-scroll"><div class="docs-nav-group"><div class="docs-nav-title">Learn</div><a class="docs-nav-link" href="/docs/"><span>Documentation</span></a><a class="docs-nav-link" href="/docs/getting-started/"><span>Getting Started</span></a><a class="docs-nav-link" href="/docs/basics/"><span>Basics</span></a><a class="docs-nav-link" href="/docs/control-flow/"><span>Control Flow</span></a><a class="docs-nav-link" href="/docs/functions/"><span>Functions</span></a><a class="docs-nav-link" href="/docs/classes/"><span>Classes & Objects</span></a></div><div class="docs-nav-group"><div class="docs-nav-title">Language</div><a class="docs-nav-link" href="/docs/collections/"><span>Collections</span></a><a class="docs-nav-link" href="/docs/modules/"><span>Modules & Packages</span></a><a class="docs-nav-link" href="/docs/stdlib/"><span>Standard Library</span></a><a class="docs-nav-link active" href="/docs/pointers/"><span>Pointers & Memory</span></a><a class="docs-nav-link" href="/docs/advanced/"><span>Advanced</span></a></div><div class="docs-nav-group"><div class="docs-nav-title">Reference</div><a class="docs-nav-link" href="/docs/compiler/"><span>Compiler & CLI</span></a><a class="docs-nav-link" href="/docs/reference/"><span>Language Reference</span></a></div></div></aside>
+<div class="docs-mobile-select"><label for="docs-section">Section</label><select id="docs-section" aria-label="Documentation section"><option value="/docs/">Documentation</option><option value="/docs/getting-started/">Getting Started</option><option value="/docs/basics/">Basics</option><option value="/docs/control-flow/">Control Flow</option><option value="/docs/functions/">Functions</option><option value="/docs/classes/">Classes & Objects</option><option value="/docs/collections/">Collections</option><option value="/docs/modules/">Modules & Packages</option><option value="/docs/stdlib/">Standard Library</option><option value="/docs/pointers/" selected>Pointers & Memory</option><option value="/docs/advanced/">Advanced</option><option value="/docs/compiler/">Compiler & CLI</option><option value="/docs/reference/">Language Reference</option></select></div>
+<article class="docs-article">
+<div class="docs-article-head"><div class="docs-eyebrow">Language</div>
+<h1 id="pointers-memory">Pointers &amp; Memory</h1><p class="docs-lead">Tekst exposes an explicit low-level memory layer for programs that need direct access to memory.</p>
+<h2 id="references">References to variables</h2><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>pointers.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">x = 41
+p = &amp;x
+*p = 42
+print(*p)</code></pre></div>
+<p><code>&amp;x</code> creates a pointer to a variable slot. <code>*p</code> dereferences the pointer for reading or writing.</p>
+<h2 id="alloc">Heap allocation</h2><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>memory.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">mem = alloc(8)
+store_int(mem, 123456)
+print(load_int(mem))
+free(mem)</code></pre></div>
+<p><code>alloc(n)</code> allocates <code>n</code> bytes and <code>free(p)</code> releases the allocation.</p>
+<h2 id="access">Memory access</h2><p>Use <code>load_int</code> and <code>store_int</code> for 64-bit integers, and <code>load_byte</code> and <code>store_byte</code> for bytes.</p>
+<h2 id="arithmetic">Pointer arithmetic</h2><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>pointer-arithmetic.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">mem = alloc(8)
+q = mem + 4
+store_int(q, 99)
+print(load_int(q))
+free(mem)</code></pre></div>
+<p>Pointer arithmetic is byte-based. The native runtime checks bounds for allocated blocks.</p>
+<h2 id="safety">When to use it</h2><p>Use explicit memory operations when you need low-level control. For ordinary application code, prefer normal values, collections, and objects.</p>
+</div>
+<div class="docs-pager"><a href="/docs/stdlib/"><span>Previous</span><strong>Standard Library</strong><b>←</b></a><a href="/docs/advanced/"><span>Next</span><strong>Advanced</strong><b>→</b></a></div>
+</article>
+<aside class="docs-outline"><div class="docs-outline-label">On this page</div><a class="toc-h2" href="#references">References to variables</a><a class="toc-h2" href="#alloc">Heap allocation</a><a class="toc-h2" href="#access">Memory access</a><a class="toc-h2" href="#arithmetic">Pointer arithmetic</a><a class="toc-h2" href="#safety">When to use it</a></aside>
+</main>
+<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst 2.1.3</span></footer>
+<div class="docs-search" data-search><div class="docs-search-panel"><div class="docs-search-head"><span>Search Tekst documentation</span><button type="button" data-search-close>Esc</button></div><input data-search-input type="search" placeholder="Search topics, syntax, and commands" autocomplete="off"><div class="docs-search-results" data-search-results></div><div class="docs-search-foot"><span>Enter to open</span><span>Esc to close</span></div></div></div>
+<script src="../../docs/shared.js"></script>
+<script src="../../syntax.js"></script></body>
+</html>
