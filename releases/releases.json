@@ -1,5 +1,14 @@
 [
     {
+        "version": "2.1.6",
+        "date": "October 02, 2026",
+        "description": "Version 2.1.6 adds SMTP and STMP.",
+        "path": "v2.1.6/",
+        "changes": [
+            "Sockets and SMTP/STMP"
+        ]
+    },
+    {
         "version": "2.1.5",
         "date": "October 02, 2026",
         "description": "Version 2.1.5 adds the error handling again.",
