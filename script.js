@@ -67,6 +67,13 @@
     if (!ok) throw new Error('Copy failed');
   };
 
+  const heroCode = document.querySelector('#hero-code');
+  if (heroCode) {
+    const source = heroCode.textContent;
+    heroCode.dataset.source = source;
+    heroCode.innerHTML = highlightTekst(source);
+  }
+
   const demo = document.querySelector('[data-code-demo]');
   if (demo) {
     const code = demo.querySelector('[data-demo-code]');
