@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Handle runtime errors in Tekst with try and catch blocks.">
+<meta name="theme-color" content="#080808">
+<title>Error Handling | Tekst</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../docs/docs.css">
+<link rel="icon" type="image/png" href="../../icon.png">
+</head>
+<body class="docs-site">
+<header class="docs-topbar">
+<div class="docs-topbar-inner">
+<a class="docs-brand image-wordmark" href="/" aria-label="Tekst home"><img src="/banner.png" alt="Tekst"></a>
+<nav class="docs-top-links" aria-label="Primary navigation">
+<a href="/docs/" class="current">Docs</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
+</nav>
+<div class="docs-top-actions"><button class="docs-search-button" type="button" data-search-open><kbd>⌘</kbd><kbd>K</kbd><span>Search</span></button><a class="docs-github" href="https://github.com/ayaandh/tekst-web">Source</a></div>
+</div>
+</header>
+<div class="docs-subbar"><div class="docs-subbar-inner"><a href="/docs/" class="docs-wordmark">Documentation</a><span class="docs-subbar-sep">/</span><span>Error Handling</span><span class="docs-subbar-version">2.1.5</span></div></div>
+<main class="docs-layout">
+<aside class="docs-sidebar"><div class="docs-sidebar-scroll"><div class="docs-nav-group"><div class="docs-nav-title">Learn</div><a class="docs-nav-link" href="/docs/"><span>Documentation</span></a><a class="docs-nav-link" href="/docs/getting-started/"><span>Getting Started</span></a><a class="docs-nav-link" href="/docs/basics/"><span>Basics</span></a><a class="docs-nav-link" href="/docs/control-flow/"><span>Control Flow</span></a><a class="docs-nav-link active" href="/docs/error-handling/"><span>Error Handling</span></a><a class="docs-nav-link" href="/docs/functions/"><span>Functions</span></a><a class="docs-nav-link" href="/docs/classes/"><span>Classes & Objects</span></a></div><div class="docs-nav-group"><div class="docs-nav-title">Language</div><a class="docs-nav-link" href="/docs/collections/"><span>Collections</span></a><a class="docs-nav-link" href="/docs/modules/"><span>Modules & Packages</span></a><a class="docs-nav-link" href="/docs/stdlib/"><span>Standard Library</span></a><a class="docs-nav-link" href="/docs/pointers/"><span>Pointers & Memory</span></a><a class="docs-nav-link" href="/docs/advanced/"><span>Advanced</span></a></div><div class="docs-nav-group"><div class="docs-nav-title">Reference</div><a class="docs-nav-link" href="/docs/compiler/"><span>Compiler & CLI</span></a><a class="docs-nav-link" href="/docs/reference/"><span>Language Reference</span></a></div></div></aside>
+<div class="docs-mobile-select"><label for="docs-section">Section</label><select id="docs-section" aria-label="Documentation section"><option value="/docs/">Documentation</option><option value="/docs/getting-started/">Getting Started</option><option value="/docs/basics/">Basics</option><option value="/docs/control-flow/">Control Flow</option><option value="/docs/error-handling/" selected>Error Handling</option><option value="/docs/functions/">Functions</option><option value="/docs/classes/">Classes & Objects</option><option value="/docs/collections/">Collections</option><option value="/docs/modules/">Modules & Packages</option><option value="/docs/stdlib/">Standard Library</option><option value="/docs/pointers/">Pointers & Memory</option><option value="/docs/advanced/">Advanced</option><option value="/docs/compiler/">Compiler & CLI</option><option value="/docs/reference/">Language Reference</option></select></div>
+<article class="docs-article">
+<div class="docs-article-head"><div class="docs-eyebrow">Language guide</div>
+<h1 id="error-handling">Error Handling</h1><p class="docs-lead">Programs encounter invalid input and operations that cannot complete. Tekst's <code>try</code>/<code>catch</code> statements let you respond to runtime errors instead of letting an expected failure interrupt the rest of your program.</p>
+<h2 id="when-to-use">When to use error handling</h2><p>Use error handling around operations that can fail for reasons your program can anticipate: converting user input, performing a calculation with user-provided values, or calling code that may report a runtime failure. A handler gives you a place to explain the issue, choose a safe fallback, or let the user try again.</p><p>Error handling is for failures that happen while a program is running. It does not make invalid Tekst syntax valid; syntax and compilation problems still need to be fixed before the program can run.</p>
+<h2 id="try-catch">The basic shape</h2><p>Write <code>try:</code>, indent the operations you want to protect, and follow that block with <code>catch:</code> and an indented handler. Tekst uses indentation to mark both blocks.</p>
+<div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>basic_try_catch.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">try:
+    result = 10 / 0
+    print(result)
+catch:
+    print("Could not calculate the result")</code></pre></div>
+<ol><li>Execution enters the <code>try</code> block and runs its statements in order.</li><li>If they complete, execution skips the handler and continues after the <code>catch</code> block.</li><li>If a runtime error occurs in the protected work, control moves to <code>catch</code> and the handler statements run.</li></ol>
+<h2 id="protect-related-work">Protect the operations that belong together</h2><p>Put the potentially failing steps in the <code>try</code> block, including the work that uses their results. In this first version, only the division is protected: the input conversion happens before <code>try</code>, so a conversion error would occur before the handler is active.</p>
+<div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>divide_by_input.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">number = int(input("Enter a non-zero number: "))
+
+try:
+    result = 100 / number
+    print("Result: {result}")
+catch:
+    print("That value could not be used for this calculation")</code></pre></div>
+<p>In this version, input conversion happens before the <code>try</code> block, so conversion errors are not handled here. To handle conversion and calculation failures with the same handler, move the conversion inside it:</p>
+<div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>validate_input.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">try:
+    number = int(input("Enter a non-zero number: "))
+    result = 100 / number
+    print("Result: {result}")
+catch:
+    print("Enter a valid non-zero number")</code></pre></div>
+<h2 id="write-useful-handlers">Write a useful handler</h2><p>A handler should help the person using your program understand what happened and what they can do next. Prefer a clear message or a safe recovery action over a silent <code>catch</code> that makes the program appear to have succeeded.</p>
+<div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>report_error.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">try:
+    amount = int(input("How many items? "))
+    print("Preparing {amount} items")
+catch:
+    print("Please enter the number of items as a whole number")</code></pre></div>
+<h2 id="keep-try-focused">Keep try blocks focused</h2><p>Protect only the statements that may fail for the reason you intend to handle. A very large <code>try</code> block can make it hard to tell which operation caused a problem, while a focused block makes the recovery behavior easier to understand and maintain.</p><ul><li>Keep normal program logic outside the <code>try</code> when it does not need protection.</li><li>Use messages that describe the action the user can take, not just “something went wrong.”</li><li>Do not silently ignore a failure if continuing could produce misleading results.</li></ul>
+<h2 id="common-mistakes">Common mistakes</h2><h3 id="indentation">Incorrect indentation</h3><p>The <code>catch</code> keyword lines up with <code>try</code>. Statements handled by each block are indented beneath their keyword.</p>
+<div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>block_structure.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">try:
+    risky_value = int(input("Enter a number: "))
+catch:
+    print("The input was not a usable number")
+
+print("The program continues here")</code></pre></div>
+<h3 id="expecting-compile-errors">Expecting catch to fix a compile error</h3><p><code>try</code>/<code>catch</code> handles runtime errors. If the compiler reports invalid syntax or another compile-time problem, fix the source and compile again; the program has not started running yet.</p>
+<h2 id="next-steps">Next steps</h2><p>For the other ways to control execution order, continue to <a href="/docs/control-flow/">Control Flow</a>. The <a href="/docs/reference/">Language Reference</a> lists <code>try / catch</code> alongside Tekst's other statements.</p>
+</div>
+<div class="docs-pager"><a href="/docs/control-flow/"><span>Previous</span><strong>Control Flow</strong><b>←</b></a><a href="/docs/advanced/"><span>Next</span><strong>Advanced</strong><b>→</b></a></div>
+</article>
+<aside class="docs-outline"><div class="docs-outline-label">On this page</div><a class="toc-h2" href="#when-to-use">When to use error handling</a><a class="toc-h2" href="#try-catch">The basic shape</a><a class="toc-h2" href="#protect-related-work">Protect related work</a><a class="toc-h2" href="#write-useful-handlers">Write a useful handler</a><a class="toc-h2" href="#keep-try-focused">Keep try blocks focused</a><a class="toc-h2" href="#common-mistakes">Common mistakes</a><a class="toc-h2" href="#next-steps">Next steps</a></aside>
+</main>
+<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst 2.1.5</span></footer>
+<div class="docs-search" data-search><div class="docs-search-panel"><div class="docs-search-head"><span>Search Tekst documentation</span><button type="button" data-search-close>Esc</button></div><input data-search-input type="search" placeholder="Search topics, syntax, and commands" autocomplete="off"><div class="docs-search-results" data-search-results></div><div class="docs-search-foot"><span>Enter to open</span><span>Esc to close</span></div></div></div>
+<script src="../../docs/shared.js"></script>
+<script src="../../syntax.js"></script></body>
+</html>
