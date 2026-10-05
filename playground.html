@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tekst Playground</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#090a0c;--panel:#0f1115;--panel2:#12151a;--border:#252a32;--text:#f2f4f7;--muted:#8b929d;--accent:#ff7a18;--accent2:#ff9d4d;--danger:#ff5c5c;--green:#58d68d}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;height:100vh;overflow:hidden}
+button,select{font:inherit}
+.app{height:100vh;display:flex;flex-direction:column}
+.topbar{height:58px;display:flex;align-items:center;gap:18px;padding:0 18px;border-bottom:1px solid var(--border);background:#0b0c0f}
+.logo{font-weight:800;letter-spacing:-.04em;font-size:20px}
+.logo span{color:var(--accent)}
+.sep{height:24px;width:1px;background:var(--border)}
+.title{color:var(--muted);font-size:14px}
+.spacer{flex:1}
+select,.btn{height:36px;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:8px;padding:0 11px;cursor:pointer}
+.btn:hover,select:hover{border-color:#3a414c}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#17100a;font-weight:750}
+.btn.primary:hover{background:var(--accent2)}
+.main{min-height:0;flex:1;display:grid;grid-template-columns:1fr 1fr}
+.editor-pane,.output-pane{min-width:0;display:flex;flex-direction:column}
+.editor-pane{border-right:1px solid var(--border)}
+.pane-head{height:46px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--border);background:var(--panel)}
+.pane-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.file{margin-left:12px;color:#c9ced6;font-size:13px}
+.editor-wrap{position:relative;min-height:0;flex:1;background:#0b0d10;display:flex;overflow:hidden}
+.lines{width:52px;flex:none;padding:15px 10px 15px 0;text-align:right;color:#505762;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;user-select:none;overflow:hidden}
+textarea{flex:1;min-width:0;resize:none;border:0;outline:0;background:transparent;color:#e7eaf0;padding:15px 16px 30px 0;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto;tab-size:4}
+textarea::selection{background:#5b321c}
+.output{flex:1;min-height:0;padding:16px;background:#0b0d10;overflow:auto;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}
+.empty{color:#555c66}
+.success{color:var(--green)}
+.error{color:var(--danger)}
+.bottom{height:38px;display:flex;align-items:center;padding:0 14px;border-top:1px solid var(--border);background:var(--panel)}
+.status{font-size:12px;color:var(--muted)}
+.status.ok{color:var(--green)}
+.status.err{color:var(--danger)}
+.examples{position:relative}
+.menu{position:absolute;right:0;top:43px;width:220px;background:#15181d;border:1px solid var(--border);border-radius:10px;padding:6px;z-index:20;box-shadow:0 12px 30px #0008}
+.menu button{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:9px;border-radius:7px;cursor:pointer}
+.menu button:hover{background:#20242b}
+.hidden{display:none}
+@media(max-width:800px){
+body{overflow:auto}.app{height:auto;min-height:100vh}.main{grid-template-columns:1fr}.editor-pane{height:58vh;border-right:0;border-bottom:1px solid var(--border)}.output-pane{height:38vh}.title,.sep{display:none}.topbar{gap:8px;padding:0 10px}.topbar .btn{padding:0 9px}.logo{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+<div class="logo">te<span>k</span>st</div>
+<div class="sep"></div>
+<div class="title">Playground</div>
+<div class="spacer"></div>
+<select id="version" aria-label="Tekst version"><option>Tekst 0.1</option><option>Tekst nightly</option></select>
+<div class="examples">
+<button class="btn" id="examplesBtn">Examples ▾</button>
+<div class="menu hidden" id="examplesMenu">
+<button data-example="hello">Hello World</button>
+<button data-example="variables">Variables</button>
+<button data-example="conditions">Conditions</button>
+<button data-example="functions">Functions</button>
+</div>
+</div>
+<button class="btn" id="reset">Reset</button>
+<button class="btn primary" id="run">Run ▶</button>
+</header>
+
+<main class="main">
+<section class="editor-pane">
+<div class="pane-head"><span class="pane-label">Editor</span><span class="file">main.tekst</span></div>
+<div class="editor-wrap">
+<div class="lines" id="lines">1</div>
+<textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Tekst code editor">fn main() {
+    print("Hello, Tekst!")
+}</textarea>
+</div>
+<div class="bottom"><span class="status" id="editorStatus">Ready · Ctrl+Enter to run</span></div>
+</section>
+
+<section class="output-pane">
+<div class="pane-head"><span class="pane-label">Output</span></div>
+<div class="output" id="output"><span class="empty">Run your Tekst program to see output here.</span></div>
+<div class="bottom"><span class="status" id="runStatus">Not run</span></div>
+</section>
+</main>
+</div>
+
+<script>
+const code=document.getElementById("code");
+const lines=document.getElementById("lines");
+const output=document.getElementById("output");
+const editorStatus=document.getElementById("editorStatus");
+const runStatus=document.getElementById("runStatus");
+const examplesBtn=document.getElementById("examplesBtn");
+const examplesMenu=document.getElementById("examplesMenu");
+
+const examples={
+hello:`fn main() {
+    print("Hello, Tekst!")
+}`,
+variables:`fn main() {
+    let name = "Ayaan"
+    let language = "Tekst"
+
+    print(name)
+    print(language)
+}`,
+conditions:`fn main() {
+    let age = 14
+
+    if age >= 13 {
+        print("Welcome to Tekst!")
+    }
+}`,
+functions:`fn greet(name) {
+    print("Hello, " + name)
+}
+
+fn main() {
+    greet("Tekst")
+}`
+};
+
+const initial=examples.hello;
+
+function updateLines(){
+    const count=code.value.split("\\n").length;
+    lines.textContent=Array.from({length:count},(_,i)=>i+1).join("\\n");
+    lines.scrollTop=code.scrollTop;
+}
+function setStatus(text,type=""){
+    editorStatus.textContent=text;
+    editorStatus.className="status "+type;
+}
+function run(){
+    const src=code.value.trim();
+    if(!src){
+        output.innerHTML='<span class="error">Error: empty source file.</span>';
+        runStatus.textContent="Failed";
+        runStatus.className="status err";
+        return;
+    }
+    output.innerHTML="";
+    const text=src.match(/print\\s*\\(\\s*"([^"]*)"\\s*\\)/g)||[];
+    const values=text.map(x=>x.replace(/^.*?print\\s*\\(\\s*"/,"").replace(/"\\s*\\)$/,""));
+    if(values.length){
+        output.textContent=values.join("\\n");
+        runStatus.textContent="Finished successfully";
+        runStatus.className="status ok";
+        setStatus("Program finished","ok");
+    }else{
+        output.innerHTML='<span class="error">Tekst compiler output will appear here when the compiler is connected.</span>';
+        runStatus.textContent="Compiler unavailable";
+        runStatus.className="status err";
+        setStatus("No executable output","err");
+    }
+}
+code.addEventListener("input",updateLines);
+code.addEventListener("scroll",()=>lines.scrollTop=code.scrollTop);
+code.addEventListener("keydown",e=>{
+    if(e.key==="Tab"){
+        e.preventDefault();
+        const start=code.selectionStart,end=code.selectionEnd;
+        code.value=code.value.slice(0,start)+"    "+code.value.slice(end);
+        code.selectionStart=code.selectionEnd=start+4;
+        updateLines();
+    }
+    if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){
+        e.preventDefault();
+        run();
+    }
+});
+document.getElementById("run").addEventListener("click",run);
+document.getElementById("reset").addEventListener("click",()=>{
+    code.value=initial;
+    output.innerHTML='<span class="empty">Run your Tekst program to see output here.</span>';
+    runStatus.textContent="Not run";
+    runStatus.className="status";
+    setStatus("Ready · Ctrl+Enter to run");
+    updateLines();
+    code.focus();
+});
+examplesBtn.addEventListener("click",()=>examplesMenu.classList.toggle("hidden"));
+document.querySelectorAll("[data-example]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        code.value=examples[btn.dataset.example];
+        examplesMenu.classList.add("hidden");
+        output.innerHTML='<span class="empty">Example loaded. Press Run to execute it.</span>';
+        runStatus.textContent="Not run";
+        runStatus.className="status";
+        setStatus("Example loaded");
+        updateLines();
+        code.focus();
+    });
+});
+document.addEventListener("click",e=>{
+    if(!e.target.closest(".examples"))examplesMenu.classList.add("hidden");
+});
+updateLines();
+</script>
+</body>
+</html>
