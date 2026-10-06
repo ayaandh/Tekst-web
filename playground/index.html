@@ -33,6 +33,7 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 .code-highlight,.code{position:absolute;inset:0;margin:0;padding:16px 18px 32px 0;border:0;font:var(--code-size)/var(--code-line) ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:normal;tab-size:4;white-space:pre;overflow:visible}
 .code-highlight{width:max-content;min-width:100%;color:#dce2eb;pointer-events:none;transform:translate(0,0)}
 .code{width:100%;height:100%;resize:none;outline:0;background:transparent;color:transparent;-webkit-text-fill-color:transparent;caret-color:#fff;overflow:auto;z-index:1}
+.code-fallback{color:#dce2eb !important;-webkit-text-fill-color:#dce2eb !important}
 .code::selection{background:rgba(255,129,43,.28);color:transparent}
 .code-highlight .active-line{background:rgba(255,255,255,.045)}
 .tok-keyword{color:#ff9a57}.tok-builtin{color:#71c9ff}.tok-string{color:#9bd897}.tok-number{color:#c6a4ff}.tok-comment{color:#77818e;font-style:italic}.tok-constant{color:#f3c66f}
@@ -95,6 +96,14 @@ const example=document.getElementById("example");
 const storageKey="tekst-playground-draft";
 const initialCode=`print("Hello, Tekst!")`;
 
+// Keep the editor usable even if syntax highlighting fails to render.
+function editorFallback(message){
+    highlight.textContent=code.value;
+    highlight.style.transform=`translate(${-code.scrollLeft}px, ${-code.scrollTop}px)`;
+    code.classList.add("code-fallback");
+    if(message) console.warn(message);
+}
+
 const examples={
     hello:initialCode,
     math:`x = 5
@@ -142,13 +151,18 @@ function highlightLine(line){
 
 function updateEditor(){
     const source=code.value;
+    code.classList.remove("code-fallback");
     const sourceLines=source.split("\n");
     lines.textContent=sourceLines.map((_,index)=>index+1).join("\n");
     const activeLine=source.slice(0,code.selectionStart).split("\n").length-1;
+    try {
     highlight.innerHTML=sourceLines.map((line,index)=>{
         const contents=highlightLine(line);
         return index===activeLine?`<span class="active-line">${contents}</span>`:contents;
     }).join("\n");
+    } catch(error) {
+        editorFallback(`Syntax highlighting failed: ${error.message||error}`);
+    }
     highlight.style.transform=`translate(${-code.scrollLeft}px, ${-code.scrollTop}px)`;
     codeStats.textContent=`${sourceLines.length} lines · ${source.length} chars`;
 }
@@ -227,7 +241,7 @@ async function loadAsset(path,label){
     try{
         response=await fetch(path,{cache:"no-store"});
     }catch(error){
-        throw new Error(`Could not fetch ${label} from ${new URL(path,location.href).href}. Serve the playground over HTTP and confirm that file is present. (${error.message})`);
+        throw new Error(`Could not fetch ${label} from ${new URL(path,location.href).href}. Confirm that GitHub Pages deployed the file and that the page is being opened over HTTPS. (${error.message})`);
     }
     if(!response.ok)throw new Error(`Could not load ${label} (HTTP ${response.status}) from ${response.url}`);
     return response;
@@ -450,6 +464,8 @@ try{
     console.error("Could not restore the playground draft",error);
 }
 updateEditor();
+window.addEventListener("error",event=>console.error("Tekst playground error:",event.error||event.message));
+window.addEventListener("unhandledrejection",event=>console.error("Tekst playground promise error:",event.reason));
 </script>
 </body>
 </html>

@@ -17,17 +17,24 @@ concurrency:
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Verify playground files
+        run: |
+          test -f playground/index.html
+          test -f playground/llvm-to-wat.js
+          test -f playground/tekst-compiler.wasm
+          test -f playground/tekst-runtime.wasm
+          test -f playground/CNAME
       - name: Upload playground site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: playground
       - name: Deploy to GitHub Pages
