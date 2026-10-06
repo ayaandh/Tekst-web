@@ -15,7 +15,7 @@
 <div class="docs-topbar-inner">
 <a class="docs-brand image-wordmark" href="/" aria-label="Tekst home"><img src="/banner.png" alt="Tekst"></a>
 <nav class="docs-top-links" aria-label="Primary navigation">
-<a href="/docs/" class="current">Docs</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
+<a href="/docs/" class="current">Docs</a><a href="/playground/">Try Tekst</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
 </nav>
 <div class="docs-top-actions"><button class="docs-search-button" type="button" data-search-open><kbd>⌘</kbd><kbd>K</kbd><span>Search</span></button><a class="docs-github" href="https://github.com/ayaandh/tekst-web">Source</a></div>
 </div>
@@ -26,10 +26,11 @@
 <div class="docs-mobile-select"><label for="docs-section">Section</label><select id="docs-section" aria-label="Documentation section"><option value="/docs/">Documentation</option><option value="/docs/getting-started/" selected>Getting Started</option><option value="/docs/basics/">Basics</option><option value="/docs/control-flow/">Control Flow</option><option value="/docs/functions/">Functions</option><option value="/docs/classes/">Classes & Objects</option><option value="/docs/collections/">Collections</option><option value="/docs/modules/">Modules & Packages</option><option value="/docs/stdlib/">Standard Library</option><option value="/docs/pointers/">Pointers & Memory</option><option value="/docs/advanced/">Advanced</option><option value="/docs/compiler/">Compiler & CLI</option><option value="/docs/reference/">Language Reference</option></select></div>
 <article class="docs-article">
 <div class="docs-article-head"><div class="docs-eyebrow">Learn</div>
-<h1 id="getting-started">Getting Started</h1><p class="docs-lead">Go from an empty directory to a native Tekst executable in a few minutes.</p>
+<h1 id="getting-started">Getting Started</h1><p class="docs-lead">Go from an empty directory to a native Tekst executable in a few minutes, or <a href="/playground/">try Tekst in your browser</a> without installing anything.</p>
 <h2 id="install">Install the compiler</h2><p>Build Tekst from source with a C++17 compiler, CMake 3.16 or newer, and LLVM/Clang. On Windows, the native toolchain uses Clang with the MinGW-w64 GNU target.</p><div class="docs-code" data-language="shell"><div class="docs-code-head"><span>terminal</span><button class="docs-copy">Copy</button></div><pre><code class="language-shell">cmake -S . -B build
 cmake --build build --config Release</code></pre></div>
 <p>The resulting executable is named <code>tekst</code> on Linux and macOS, or <code>tekst.exe</code> on Windows.</p>
+<p>CMake places the built compiler executables in <code>build/release/</code>. On Windows this includes <code>tekst.exe</code> and <code>tk.exe</code>.</p>
 <h2 id="first-program">Your first program</h2><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>hello.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">print("Hello, World!")</code></pre></div><div class="docs-code" data-language="shell"><div class="docs-code-head"><span>terminal</span><button class="docs-copy">Copy</button></div><pre><code class="language-shell">tekst hello.tk</code></pre></div>
 <h2 id="variables">Add some data</h2><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>variables.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">name = "Ayaan"
 age = 14
@@ -50,7 +51,7 @@ tekst main.tk --run</code></pre></div>
 </article>
 <aside class="docs-outline"><div class="docs-outline-label">On this page</div><a class="toc-h2" href="#install">Install the compiler</a><a class="toc-h2" href="#first-program">Your first program</a><a class="toc-h2" href="#variables">Add some data</a><a class="toc-h2" href="#conditions">Make a decision</a><a class="toc-h2" href="#run">Compile and run</a><a class="toc-h2" href="#llvm">Inspect LLVM IR</a><a class="toc-h2" href="#next">Where to go next</a><a class="toc-h3" href="#basics">Basics</a><a class="toc-h3" href="#control-flow">Control Flow</a></aside>
 </main>
-<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst source tree</span></footer>
+<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/playground/">Try Tekst</a><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst source tree</span></footer>
 <div class="docs-search" data-search><div class="docs-search-panel"><div class="docs-search-head"><span>Search Tekst documentation</span><button type="button" data-search-close>Esc</button></div><input data-search-input type="search" placeholder="Search topics, syntax, and commands" autocomplete="off"><div class="docs-search-results" data-search-results></div><div class="docs-search-foot"><span>Enter to open</span><span>Esc to close</span></div></div></div>
 <script src="../../docs/shared.js"></script>
 <script src="../../syntax.js"></script></body>

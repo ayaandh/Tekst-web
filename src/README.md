@@ -37,7 +37,7 @@ cmake -S . -B build
 cmake --build build --config Release
 ```
 
-The compiler is `tekst` / `tekst.exe`. CMake copies the Tekst runtime beside it.
+The compiler is `tekst` / `tekst.exe`. CMake places the compiler executables in `build/release/` and copies the Tekst runtime beside the compiler (the Windows build also produces `tk.exe`).
 
 ### WebAssembly playground
 
@@ -60,11 +60,11 @@ The browser backend supports expressions, variables, direct and indirect functio
 
 ### Publish the playground with GitHub Pages
 
-The repository includes a GitHub Actions workflow that publishes the `playground` directory to GitHub Pages whenever changes are pushed to `main`. If your default branch has a different name, update the branch in `.github/workflows/deploy-pages.yml`.
+The repository includes a GitHub Actions workflow that publishes the website root and the `playground` directory at `/playground/` to GitHub Pages whenever changes are pushed to `main`. If your default branch has a different name, update the branch in `.github/workflows/deploy-pages.yml`.
 
 1. Push the repository, including the contents of `playground`, to GitHub.
 2. In the repository, open **Settings → Pages** and set the build and deployment source to **GitHub Actions**.
-3. Push to `main` or manually run **Deploy playground to GitHub Pages** from the **Actions** tab.
+3. Push to `main` or manually run **Deploy site with playground to GitHub Pages** from the **Actions** tab.
 4. Open the Pages URL shown by the completed workflow. For a project repository it is usually `https://<owner>.github.io/<repository>/`.
 
 The compiler and runtime `.wasm` files are included in `playground`; rebuild them with `wasm/build-runtime.ps1` and commit the updated files if you change their C++ sources. The page also loads its WASI and WebAssembly text-compiler libraries from jsDelivr, so visitors need an internet connection that can reach that CDN.
@@ -142,10 +142,10 @@ Classes:
 
 ```tekst
 class Counter:
-    def __init__(self, start=0):
+    fn __init__(self, start=0):
         self.value = start
 
-    def increment(self, amount=1):
+    fn increment(self, amount=1):
         self.value += amount
         return self.value
 

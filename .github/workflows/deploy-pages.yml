@@ -26,9 +26,18 @@ jobs:
         uses: actions/checkout@v6
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Verify playground files
+      - name: Verify site and playground files
         run: |
           test -f index.html
+          test -f styles.css
+          test -f script.js
+          test -f syntax.js
+          test -f banner.png
+          test -f icon.png
+          test -f CNAME
+          test -f docs/docs.css
+          test -f contributing/index.html
+          test -f releases/releases.json
           test -f playground/index.html
           test -f playground/llvm-to-wat.js
           test -f playground/tekst-compiler.wasm
@@ -37,7 +46,10 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p "$RUNNER_TEMP/site"
-          cp -a ./* "$RUNNER_TEMP/site/"
+          cp -a \
+            index.html styles.css script.js syntax.js banner.png icon.png CNAME \
+            docs contributing releases playground \
+            "$RUNNER_TEMP/site/"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:

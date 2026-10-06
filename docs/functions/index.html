@@ -15,7 +15,7 @@
 <div class="docs-topbar-inner">
 <a class="docs-brand image-wordmark" href="/" aria-label="Tekst home"><img src="/banner.png" alt="Tekst"></a>
 <nav class="docs-top-links" aria-label="Primary navigation">
-<a href="/docs/" class="current">Docs</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
+<a href="/docs/" class="current">Docs</a><a href="/playground/">Try Tekst</a><a href="/releases/">Download</a><a href="/contributing/">Contribute</a><a href="/">Website</a>
 </nav>
 <div class="docs-top-actions"><button class="docs-search-button" type="button" data-search-open><kbd>⌘</kbd><kbd>K</kbd><span>Search</span></button><a class="docs-github" href="https://github.com/ayaandh/tekst-web">Source</a></div>
 </div>
@@ -47,11 +47,11 @@ welcome("Ayaan", "Hi")</code></pre></div>
     return result
 
 print(double(21))</code></pre></div>
-<h2 id="methods">Methods</h2><p>Classes use methods declared with <code>def</code>. Methods receive <code>self</code> explicitly.</p><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>method.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">class Counter:
-    def __init__(self, start=0):
+<h2 id="methods">Methods</h2><p>Methods use the same <code>fn</code> declaration as other functions and receive <code>self</code> explicitly.</p><div class="docs-code" data-language="tekst"><div class="docs-code-head"><span>method.tk</span><button class="docs-copy">Copy</button></div><pre><code class="language-tekst">class Counter:
+    fn __init__(self, start=0):
         self.value = start
 
-    def increment(self):
+    fn increment(self):
         self.value += 1
         return self.value</code></pre></div>
 </div>
@@ -59,7 +59,7 @@ print(double(21))</code></pre></div>
 </article>
 <aside class="docs-outline"><div class="docs-outline-label">On this page</div><a class="toc-h2" href="#define">Define a function</a><a class="toc-h2" href="#return">Return values</a><a class="toc-h2" href="#defaults">Default arguments</a><a class="toc-h2" href="#scope">Local values</a><a class="toc-h2" href="#methods">Methods</a></aside>
 </main>
-<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst source tree</span></footer>
+<footer class="docs-footer"><div><strong>Tekst</strong><span>A modern programming language for native software.</span></div><nav><a href="/playground/">Try Tekst</a><a href="/docs/">Documentation</a><a href="/releases/">Releases</a><a href="/contributing/">Contributing</a><a href="/">Website</a></nav><span>Tekst source tree</span></footer>
 <div class="docs-search" data-search><div class="docs-search-panel"><div class="docs-search-head"><span>Search Tekst documentation</span><button type="button" data-search-close>Esc</button></div><input data-search-input type="search" placeholder="Search topics, syntax, and commands" autocomplete="off"><div class="docs-search-results" data-search-results></div><div class="docs-search-foot"><span>Enter to open</span><span>Esc to close</span></div></div></div>
 <script src="../../docs/shared.js"></script>
 <script src="../../syntax.js"></script></body>
