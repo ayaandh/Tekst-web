@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090909">
+<meta name="theme-color" content="#151311">
 <title>Tekst Playground</title>
 <style>
 *{box-sizing:border-box}
-:root{color-scheme:dark;--bg:#090909;--panel:#101010;--panel2:#151515;--border:#292622;--text:#f5f2ee;--muted:#9a948d;--accent:#f36b32;--green:#68dda0;--red:#ff7777;--code-line:22px;--code-size:13px}
+:root{color-scheme:dark;--bg:#171411;--panel:#211c18;--panel2:#2a231e;--border:#3a3029;--text:#f5ede4;--muted:#b6a99c;--accent:#e9895c;--green:#8bc99e;--red:#e58a80;--code-line:22px;--code-size:13px}
 body{margin:0;height:100vh;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 button,select,textarea{font:inherit}
 button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .app{height:100vh;display:flex;flex-direction:column}
-.top{min-height:68px;flex:none;display:flex;align-items:center;gap:18px;padding:0 26px;border-bottom:1px solid rgba(255,255,255,.09);background:rgba(9,9,9,.94)}
+.top{min-height:68px;flex:none;display:flex;align-items:center;gap:18px;padding:0 26px;border-bottom:1px solid var(--border);background:rgba(23,20,17,.94)}
 .brand{display:inline-flex;align-items:center;flex:none}
 .brand img{display:block;width:auto;height:36px;max-width:145px;object-fit:contain}
 .title{color:var(--muted);font-size:12px;border-left:1px solid var(--border);padding-left:16px;white-space:nowrap}
@@ -20,7 +20,7 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 .site-nav a{color:#9c958e;font-size:12px;text-decoration:none;transition:color .2s}
 .site-nav a:hover,.site-nav a[aria-current="page"]{color:var(--accent)}
 .spacer{flex:1}
-.btn,select{height:36px;border:1px solid var(--border);border-radius:0;background:var(--panel2);color:var(--text);padding:0 12px;cursor:pointer;transition:border-color .15s,background .15s}
+.btn,select{height:36px;border:1px solid var(--border);border-radius:999px;background:var(--panel2);color:var(--text);padding:0 12px;cursor:pointer;transition:border-color .15s,background .15s}
 .btn:hover,select:hover{border-color:#51483f;background:#191614}.btn:disabled{opacity:.6;cursor:wait}
 .primary{background:var(--accent);border-color:var(--accent);color:#111;font-weight:750}.primary:hover{background:#ff8950;border-color:#ff8950}
 .kbd{font:10px ui-monospace,SFMono-Regular,Consolas,monospace;color:#77716b;white-space:nowrap}
@@ -31,7 +31,7 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 .label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .file{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;color:#cbd0d8}
 .head-spacer{flex:1}
-.editor{display:flex;flex:1;min-height:0;background:#0c0e12}
+.editor{display:flex;flex:1;min-height:0;background:#1c1916}
 .lines{width:56px;flex:none;padding:16px 12px 24px 0;text-align:right;color:#58616d;font:var(--code-size)/var(--code-line) ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:hidden;user-select:none}
 .code-wrap{position:relative;flex:1;min-width:0;min-height:0;overflow:hidden}
 .code-highlight,.code{position:absolute;inset:0;margin:0;padding:16px 18px 32px 0;border:0;font:var(--code-size)/var(--code-line) ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:normal;tab-size:4;white-space:pre;overflow:visible}
@@ -41,12 +41,48 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 .code::selection{background:rgba(255,129,43,.28);color:transparent}
 .code-highlight .active-line{background:rgba(255,255,255,.045)}
 .tok-keyword{color:#ff9a57}.tok-builtin{color:#71c9ff}.tok-string{color:#9bd897}.tok-number{color:#c6a4ff}.tok-comment{color:#77818e;font-style:italic}.tok-constant{color:#f3c66f}
-.output{flex:1;min-height:0;margin:0;padding:18px;background:#0c0e12;color:#dce2eb;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}
+.output{flex:1;min-height:0;margin:0;padding:18px;background:#1c1916;color:#e8dfd5;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}
 .bottom{height:36px;flex:none;display:flex;align-items:center;gap:14px;padding:0 15px;border-top:1px solid var(--border);background:var(--panel)}
 .status{font-size:11px;color:var(--muted)}.status.ok{color:var(--green)}.status.err{color:var(--red)}.bottom-spacer{flex:1}
 .icon-btn{height:26px;padding:0 8px;border:0;background:transparent;color:var(--muted);font-size:11px;cursor:pointer}.icon-btn:hover{color:var(--text)}
 @media(max-width:900px){.top{gap:12px;padding:10px 16px;flex-wrap:wrap}.site-nav{order:3;width:100%;justify-content:center;margin:0;padding:8px 0 2px;border-top:1px solid var(--border)}.spacer{display:none}}
 @media(max-width:760px){body{overflow:auto}.top{min-height:58px;gap:8px;padding:10px 12px}.brand img{height:32px}.title{padding-left:10px}.site-nav{gap:18px;justify-content:flex-start;overflow-x:auto;white-space:nowrap}.site-nav a{font-size:11px}.main{grid-template-columns:1fr;grid-template-rows:minmax(300px,1fr) minmax(220px,.8fr)}.pane:first-child{border-right:0;border-bottom:1px solid var(--border)}.kbd{display:none}}
+.app{background:radial-gradient(ellipse at 50% -20%,rgba(240,128,79,.09),transparent 40rem),#151311}
+.top{min-height:74px;padding:0 28px;border-color:#39312b;background:rgba(21,19,17,.92)}
+.title{padding:7px 12px;border:1px solid #39312b;border-radius:999px;background:#201c19;color:#c0b4a9}
+.site-nav{gap:5px}
+.site-nav a{padding:9px 12px;border-radius:999px;color:#b9ada2}
+.site-nav a:hover,.site-nav a[aria-current="page"]{background:#29231f;color:#f5eee7}
+.btn,select{border-color:#493b31;background:#29231f;color:#f5eee7}
+.btn:hover,select:hover{border-color:#76503a;background:#352a23}
+.primary{background:#f0804f;border-color:#f0804f;color:#21140e}
+.primary:hover{background:#f59b69;border-color:#f59b69}
+.main{margin:0 18px 18px;border:1px solid #493b31;border-radius:20px;background:#201c19;overflow:hidden}
+.pane:first-child{border-color:#39312b}
+.head,.bottom{border-color:#39312b;background:#29231f}
+.editor,.output{background:#1b1815}
+.lines{color:#8e8074}
+.file{color:#e4d8cc}
+.label{color:#c0b4a9}
+.code-highlight{color:#eee3d9}
+.code{caret-color:#f5eee7}
+.code::selection{background:rgba(240,128,79,.3)}
+.bottom{color:#b9ada2}
+.input-dialog{width:min(420px,calc(100vw - 32px));padding:0;border:1px solid #574438;border-radius:16px;background:#211c18;color:var(--text);box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.input-dialog::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(3px)}
+.input-form{display:grid;gap:14px;padding:22px}
+.input-form label{font-size:14px;color:#eee3d9}
+.input-form input{width:100%;height:42px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#171411;color:var(--text)}
+.input-actions{display:flex;justify-content:flex-end;gap:8px}
+@media(max-width:900px){
+  .top{background:rgba(21,19,17,.95)}
+  .site-nav{border-color:#39312b}
+}
+@media(max-width:760px){
+  .top{padding:10px 12px}
+  .main{margin:0 10px 10px;border-radius:16px}
+  .site-nav a{padding:8px 10px}
+}
 </style>
 </head>
 <body>
@@ -64,10 +100,21 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 <div class="spacer"></div>
 <select id="example" aria-label="Load an example">
 <option value="">Examples</option>
+<optgroup label="Language">
 <option value="hello">Hello World</option>
-<option value="math">Math &amp; variables</option>
-<option value="function">Functions</option>
-<option value="loop">Loops</option>
+<option value="values">Values &amp; built-ins</option>
+<option value="functions">Functions, defaults &amp; lambdas</option>
+<option value="control">Conditionals &amp; match</option>
+<option value="loops">Loops, break &amp; continue</option>
+<option value="collections">Collections &amp; comprehensions</option>
+<option value="strings">Strings &amp; methods</option>
+<option value="classes">Classes, structs &amp; methods</option>
+<option value="defer">Deferred cleanup</option>
+</optgroup>
+<optgroup label="Standard library">
+<option value="modules">Math &amp; JSON modules</option>
+<option value="input">Browser input</option>
+</optgroup>
 </select>
 <button class="btn" id="reset" type="button">Reset</button>
 <button class="btn primary" id="run" type="button">Run <span aria-hidden="true">▶</span></button>
@@ -91,6 +138,14 @@ button:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px sol
 <div class="bottom"><span class="status" id="runStatus">Not run</span><span class="bottom-spacer"></span><span class="status">WebAssembly</span></div>
 </section>
 </main>
+<dialog class="input-dialog" id="inputDialog" aria-labelledby="inputPrompt">
+<form class="input-form" id="inputForm">
+<span class="label">Program input</span>
+<label id="inputPrompt" for="inputValue"></label>
+<input id="inputValue" type="text" autocomplete="off">
+<div class="input-actions"><button class="btn" id="inputCancel" type="button">Cancel</button><button class="btn primary" type="submit">Continue</button></div>
+</form>
+</dialog>
 </div>
 <script type="module">
 import {translate} from "./llvm-to-wat.js";
@@ -105,6 +160,10 @@ const codeStats=document.getElementById("codeStats");
 const runStatus=document.getElementById("runStatus");
 const runButton=document.getElementById("run");
 const example=document.getElementById("example");
+const inputDialog=document.getElementById("inputDialog");
+const inputForm=document.getElementById("inputForm");
+const inputPrompt=document.getElementById("inputPrompt");
+const inputValue=document.getElementById("inputValue");
 const storageKey="tekst-playground-draft";
 const initialCode=`print("Hello, Tekst!")`;
 
@@ -118,19 +177,120 @@ function editorFallback(message){
 
 const examples={
     hello:initialCode,
-    math:`x = 5
-y = 3
-print("Sum:", x + y)
-print("Product:", x * y)`,
-    function:`fn greet(name):
-    return "Hello, " + name
+    values:`name = "Tekst"
+count = int("3")
+ratio = float("2.5")
+active = bool(count)
+print("Hello {name}")
+print("count:", count, "ratio:", ratio, "active:", active)
+print("length:", len(name), "None:", None)`,
+    functions:`fn greet(name, greeting = "Hello"):
+    return greeting + ", " + name
 
-print(greet("Tekst"))`,
-    loop:`total = 0
-for i in range(5):
+fn twice(value):
+    return value * 2
+
+double = fn(value): value * 2
+print(greet("Tekst"))
+print(greet("world", "Welcome"))
+print(twice(6), double(6))
+print("short-circuit:", False and True, True or False)`,
+    control:`score = 84
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+else:
+    grade = "Keep practicing"
+print("Grade:", grade)
+
+match grade:
+    case "A":
+        print("Excellent")
+    case "B":
+        print("Good work")
+    case _:
+        print("Keep going")`,
+    loops:`total = 0
+for i in range(1, 10):
+    if i == 3:
+        continue
+    if i == 7:
+        break
     total += i
-    print("step {i}: {total}")
-print("Final:", total)`
+print("for total:", total)
+
+count = 0
+while count < 3:
+    print("while:", count)
+    count += 1`,
+    collections:`numbers = [2, 4, 6, 8]
+squares = [n * n for n in numbers]
+first, second = (squares[0], squares[1])
+numbers[1] = 5
+person = {"name": "Ada", "age": 36}
+person["age"] += 1
+print("squares:", squares)
+print("first pair:", first, second)
+print("updated:", numbers, person["age"])`,
+    strings:`message = "tekst playground"
+shout = message.upper()
+words = message.split(" ")
+changed = message.replace("tekst", "Tekst")
+word_count = len(words)
+print(shout)
+print(words, words.contains("playground"))
+print(changed, "has {word_count} words")`,
+    classes:`class Counter:
+    fn __init__(self, start = 0):
+        self.value = start
+
+    fn increment(self, amount = 1):
+        self.value += amount
+        return self.value
+
+struct Point:
+    x: int = 3
+    y: int = 4
+
+counter = Counter(10)
+point = Point()
+print("counter:", counter.increment(), counter.increment(4))
+print("point:", point.x, point.y)`,
+    defer:`fn work():
+    defer print("cleanup runs before return")
+    print("working")
+    return 42
+
+print("result:", work())`,
+    modules:`use math
+use json
+use fs
+use random
+use time
+use os
+from math use sqrt as root
+
+value = {"area": math.pi * 3 * 3, "ok": True}
+encoded = json.encode(value)
+decoded = json.decode(encoded)
+fs.write("playground-test.tmp", encoded)
+random.seed(42)
+print("pi:", math.pi)
+print("sqrt:", math.sqrt(81))
+print("imported sqrt:", root(49))
+print("minimum:", math.min(9, 2, 4))
+print("json:", encoded)
+print("decoded area:", decoded["area"])
+print("file contents:", fs.read("playground-test.tmp"))
+print("random:", random.randint(1, 6))
+print("time available:", time.timestamp() > 0)
+print("working directory:", os.cwd())
+fs.remove("playground-test.tmp")`,
+    input:`name = input("What is your name?")
+age = int(input("How old are you?"))
+next_age = age + 1
+print("Hello {name}; next year you will be {next_age}")`
 };
 
 function setStatus(element,text,type=""){
@@ -143,7 +303,7 @@ function escapeHTML(text){
 }
 
 function highlightLine(line){
-    const tokenPattern=/#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:fn|def|class|if|elif|else|while|for|in|return|break|continue|pass|and|or|not|try|except|finally|import|from|as|match|case|defer)\b|\b(?:True|False|None)\b|\b(?:print|input|int|float|str|bool|len|range|alloc|free)\b|\b\d+(?:\.\d+)?\b/g;
+    const tokenPattern=/#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:fn|class|struct|extends|if|elif|else|while|for|in|return|break|continue|pass|and|or|not|try|catch|throw|use|from|as|match|case|defer|lambda)\b|\b(?:True|False|None|true|false|null)\b|\b(?:print|input|int|float|str|bool|len|range|alloc|free)\b|\b\d+(?:\.\d+)?\b/g;
     let result="";
     let previous=0;
     for(const match of line.matchAll(tokenPattern)){
@@ -153,7 +313,7 @@ function highlightLine(line){
         if(token.startsWith("#"))kind="comment";
         else if(token.startsWith('"')||token.startsWith("'"))kind="string";
         else if(/^\d/.test(token))kind="number";
-        else if(/^(True|False|None)$/.test(token))kind="constant";
+        else if(/^(True|False|None|true|false|null)$/.test(token))kind="constant";
         else if(/^(print|input|int|float|str|bool|len|range|alloc|free)$/.test(token))kind="builtin";
         result+=`<span class="tok-${kind}">${escapeHTML(token)}</span>`;
         previous=match.index+token.length;
@@ -305,24 +465,45 @@ async function compileSource(source,onStage=()=>{}){
     return stdout;
 }
 
-function collectInput(source){
+function requestInput(promptText){
+    inputPrompt.textContent=promptText;
+    inputValue.value="";
+    const closed=new Promise(resolve=>{
+        inputDialog.addEventListener("close",()=>{
+            resolve(inputDialog.returnValue==="submit"?inputValue.value:"");
+        },{once:true});
+    });
+    inputDialog.showModal();
+    inputValue.focus();
+    return closed;
+}
+
+document.getElementById("inputCancel").addEventListener("click",()=>inputDialog.close("cancel"));
+inputForm.addEventListener("submit",event=>{
+    event.preventDefault();
+    inputDialog.close("submit");
+});
+
+async function collectInput(source){
     const calls=[...source.matchAll(/\binput\s*\(\s*("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')?/g)];
     if(!calls.length)return "";
-    return calls.map((call,index)=>{
+    const values=[];
+    for(const [index,call] of calls.entries()){
         const rawPrompt=call[1];
         const prompt=rawPrompt?rawPrompt.slice(1,-1).replace(/\\n/g,"\n"):`Input ${index+1}`;
-        return window.prompt(prompt)??"";
-    }).join("\n")+"\n";
+        values.push(await requestInput(prompt));
+    }
+    return values.join("\n")+"\n";
 }
 
 async function runRuntime(wasmBytes,inputText){
-    const {WASI,File,OpenFile,ConsoleStdout}=await loadWasi();
+    const {WASI,File,OpenFile,ConsoleStdout,PreopenDirectory}=await loadWasi();
     let stdout="";
     let stderr="";
     const out=ConsoleStdout.lineBuffered(text=>stdout+=text+"\n");
     const err=ConsoleStdout.lineBuffered(text=>stderr+=text+"\n");
     const stdin=new OpenFile(new File(new TextEncoder().encode(inputText)));
-    const wasi=new WASI(["tekst-runtime"],[],[stdin,out,err]);
+    const wasi=new WASI(["tekst-runtime"],[],[stdin,out,err,new PreopenDirectory(".",[])]);
     const {instance}=await WebAssembly.instantiate(wasmBytes,{wasi_snapshot_preview1:wasi.wasiImport});
     const runtime=instance.exports;
     wasi.initialize(instance);
@@ -374,7 +555,7 @@ async function run(){
         const runtimeResponse=await loadAsset("./tekst-runtime.wasm","Tekst runtime WebAssembly module");
         const runtimeBytes=await runtimeResponse.arrayBuffer();
         stage="running program";
-        const inputText=collectInput(code.value);
+        const inputText=await collectInput(code.value);
         const {runtime,getStdout,getStderr}=await runRuntime(runtimeBytes,inputText);
         const program=await WebAssembly.instantiate(programWasm,{runtime});
         if(typeof program.instance.exports.main!=="function")throw new Error("Generated WebAssembly has no main function");

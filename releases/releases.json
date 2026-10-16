@@ -1,81 +1,112 @@
 [
     {
+        "version": "2.2.0-beta.1",
+        "channel": "beta",
+        "date": "October 08, 2026",
+        "description": "Beta preview for the next Tekst release with the updated module workflow and compiler cleanups.",
+        "path": "beta/v2.2.0-beta.1/",
+        "tag": "BETA",
+        "changes": [
+            "Next compiler workflow preview",
+            "Module system refinements",
+            "Preview tooling updates"
+        ]
+    },
+    {
         "version": "2.1.7",
+        "channel": "stable",
         "date": "October 06, 2026",
         "description": "Version 2.1.7 changes some syntax.",
         "path": "v2.1.7/",
+        "tag": "STABLE",
         "changes": [
             "Syntax changes from import to use and from def to fn in classes"
         ]
     },
     {
         "version": "2.1.6",
+        "channel": "stable",
         "date": "October 02, 2026",
         "description": "Version 2.1.6 adds SMTP and STMP.",
         "path": "v2.1.6/",
+        "tag": "STABLE",
         "changes": [
             "Sockets and SMTP/STMP"
         ]
     },
     {
         "version": "2.1.5",
+        "channel": "stable",
         "date": "October 02, 2026",
         "description": "Version 2.1.5 adds the error handling again.",
         "path": "v2.1.5/",
+        "tag": "STABLE",
         "changes": [
             "Better errors"
         ]
     },
     {
         "version": "2.1.4",
+        "channel": "stable",
         "date": "October 02, 2026",
         "description": "Version 2.1.4 introduces the HTTP library and removes the error handling for now expectected to return in v2.1.5.",
         "path": "v2.1.4/",
+        "tag": "STABLE",
         "changes": [
             "Better errors"
         ]
     },
     {
         "version": "2.1.3",
+        "channel": "stable",
         "date": "September 18, 2026",
         "description": "Version 2.1.3 introduces bug fixes and proper MacOS and Linux shell setups.",
         "path": "v2.1.3/",
+        "tag": "STABLE",
         "changes": [
             "Better errors"
         ]
     },
     {
         "version": "2.1.2",
+        "channel": "stable",
         "date": "September 17, 2026",
         "description": "Version 2.1.2 introduces better errors.",
         "path": "v2.1.2/",
+        "tag": "STABLE",
         "changes": [
             "Better errors"
         ]
     },
     {
         "version": "2.0.0",
+        "channel": "stable",
         "date": "September 16, 2026",
         "description": "Version 2.0.0 introduces the change to a whole new compiler which replaces the old interpreted language.",
         "path": "v2.0.0/",
+        "tag": "STABLE",
         "changes": [
             "New compiler replacing old Interpreter"
         ]
     },
     {
         "version": "1.5.1",
+        "channel": "stable",
         "date": "September 16, 2026",
         "description": "Version 1.5.1 introduces change to GitLab powered package manager.",
         "path": "v1.5.1/",
+        "tag": "STABLE",
         "changes": [
             "Changed to GitLab"
         ]
     },
     {
         "version": "1.5",
+        "channel": "stable",
         "date": "September 9, 2026",
         "description": "Version 1.5 introduces proper project architecture, workflow improvements, and important bug fixes.",
         "path": "v1.5/",
+        "tag": "STABLE",
         "changes": [
             "Proper project architecture",
             "Improved project workflow",

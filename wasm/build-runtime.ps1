@@ -131,6 +131,8 @@ try {
         "-Wl,--export=rt_call_method_zero"
         "-Wl,--export=rt_call_method_one"
         "-Wl,--export=rt_call_method_two"
+        "-Wl,--export=rt_std_call_browser"
+        "-Wl,--export=rt_std_get"
         "-Wl,--export=rt_format"
         "-Wl,--export=rt_list"
         "-Wl,--export=rt_dict"

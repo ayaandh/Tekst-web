@@ -8,6 +8,18 @@
 #include <stdexcept>
 #include <string>
 
+namespace {
+bool isBrowserStandardModule(const std::string& module) {
+    return module == "math" || module == "random" || module == "fs" ||
+        module == "time" || module == "os" || module == "json";
+}
+
+bool isNetworkModule(const std::string& module) {
+    return module == "http" || module == "socket" || module == "smtp" ||
+        module == "stmp";
+}
+}
+
 int main() {
     try {
         std::ios::sync_with_stdio(false);
@@ -18,10 +30,18 @@ int main() {
         const auto program = parse(tokens, source, "main.tk");
 
         for (const auto& statement : program.body) {
-            if (dynamic_cast<Import*>(statement.get()) ||
-                dynamic_cast<FromImport*>(statement.get())) {
+            const Import* import = dynamic_cast<Import*>(statement.get());
+            const FromImport* fromImport = dynamic_cast<FromImport*>(statement.get());
+            const std::string module = import ? import->module :
+                fromImport ? fromImport->module : "";
+            if (module.empty()) continue;
+            if (isNetworkModule(module)) {
                 throw std::runtime_error(
-                    "Imports are not available in the browser playground");
+                    "HTTP, socket, and SMTP modules are not available in the browser playground");
+            }
+            if (!isBrowserStandardModule(module)) {
+                throw std::runtime_error(
+                    "Local Tekst imports are not available in the browser playground");
             }
         }
 

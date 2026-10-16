@@ -142,6 +142,8 @@ function runtimeSignature(name) {
         rt_call_method_zero: [["i32", "i32"], "i32"],
         rt_call_method_one: [["i32", "i32", "i32"], "i32"],
         rt_call_method_two: [["i32", "i32", "i32", "i32"], "i32"],
+        rt_std_call_browser: [["i32", "i32", "i32", "i32", "i32", "i32", "i32", "i32", "i32", "i32", "i32"], "i32"],
+        rt_std_get: [["i32", "i32"], "i32"],
         rt_range_one: [["i32"], "i32"],
         rt_range_two: [["i32", "i32"], "i32"],
         rt_range_three: [["i32", "i32", "i32"], "i32"],
@@ -161,6 +163,10 @@ function runtimeSignature(name) {
         rt_optional_attr: [["i32", "i32"], "i32"]
     };
     return signatures[name];
+}
+
+function isPointerRuntime(name) {
+    return /^(?:rt_(?:ref|deref|store|alloc|free|ptr_))/.test(name);
 }
 
 function splitBlocks(body) {
@@ -192,6 +198,9 @@ function translate(ir) {
     for (const fn of functions) {
         for (const line of fn.body) {
             for (const [, name] of line.matchAll(/@([A-Za-z_][A-Za-z0-9_]*)\(/g)) {
+                if (isPointerRuntime(name)) {
+                    throw new Error("Pointers are not available in the browser playground");
+                }
                 if (name === "rt_print_many") {
                     imports.add("rt_print_part");
                     imports.add("rt_print_space");
@@ -222,6 +231,15 @@ function translate(ir) {
                     if (count < 1 || count > 3) throw new Error(`WebAssembly backend does not support range with ${count} arguments`);
                     imports.add(`rt_range_${["", "one", "two", "three"][count]}`);
                 }
+                else if (name === "rt_std_call") {
+                    const args = parseArgs(line.slice(line.indexOf("@rt_std_call(") + 13, line.lastIndexOf(")")));
+                    const count = Number(args[2]?.replace(/^i32\s+/, ""));
+                    if (!Number.isInteger(count) || count < 0 || count > 8) {
+                        throw new Error(`WebAssembly backend supports standard-library calls with up to eight arguments; received ${count}`);
+                    }
+                    imports.add("rt_std_call_browser");
+                }
+                else if (name === "rt_std_get") imports.add(name);
                 else if (name.startsWith("rt_")) imports.add(name);
             }
         }
@@ -276,7 +294,7 @@ function translate(ir) {
             if (!match) throw new Error(`Unsupported parameter in ${fn.name}: ${param}`);
             return `(param $${match[1].slice(1)} i32)`;
         });
-        const locals = new Set(["pc", "frame"]);
+        const locals = new Set(["pc", "pred", "frame"]);
         for (const block of blocks) {
             for (const instruction of block.instructions) {
                 for (const [, name] of instruction.matchAll(/%([\w.$-]+)/g)) locals.add(name);
@@ -338,7 +356,7 @@ function emitInstruction(instruction, context) {
         return index;
     };
     const branch = label => {
-        add(`i32.const ${targetIndex(label)}`, "local.set $pc", "br $dispatch");
+        add("local.get $pc", "local.set $pred", `i32.const ${targetIndex(label)}`, "local.set $pc", "br $dispatch");
     };
     const emitCallable = (rawArgs, destination) => {
         const args = parseArgs(rawArgs);
@@ -378,6 +396,41 @@ function emitInstruction(instruction, context) {
         return;
     }
 
+    match = instruction.match(/^%([\w.$-]+) = phi (ptr|i1|i32) (.+)$/);
+    if (match) {
+        const [, destination, type, rawValues] = match;
+        const incoming = [...rawValues.matchAll(/\[\s*([^,\]]+),\s*%([\w.$-]+)\s*\]/g)];
+        if (!incoming.length || incoming.length !== (rawValues.match(/\[/g) || []).length) {
+            throw new Error(`Unsupported LLVM phi instruction: ${instruction}`);
+        }
+        if (incoming.length === 1) {
+            add(operand(`${type} ${incoming[0][1]}`)[0], `local.set $${destination}`);
+            return;
+        }
+        const wasmType = type === "ptr" ? "i32" : type;
+        const emitIncoming = index => {
+            const entry = incoming[index];
+            const block = targetIndex(entry[2]);
+            add(
+                `local.get $pred`,
+                `i32.const ${block}`,
+                "i32.eq",
+                `if (result ${wasmType})`,
+                operand(`${type} ${entry[1]}`)[0]
+            );
+            if (index + 2 === incoming.length) {
+                add("else", operand(`${type} ${incoming[index + 1][1]}`)[0], "end");
+                return;
+            }
+            add("else");
+            emitIncoming(index + 1);
+            add("end");
+        };
+        emitIncoming(0);
+        add(`local.set $${destination}`);
+        return;
+    }
+
     match = instruction.match(/^store ptr (%[\w.$-]+), ptr (%[\w.$-]+)$/);
     if (match) {
         add(`local.get $${match[2].slice(1)}`, `local.get $${match[1].slice(1)}`, "i32.store");
@@ -393,6 +446,18 @@ function emitInstruction(instruction, context) {
     match = instruction.match(/^%([\w.$-]+) = call (ptr|i1|i32)(?: \([^)]*\))?\s+@([\w.$-]+)\((.*)\)$/);
     if (match) {
         const [, destination, resultType, name, rawArgs] = match;
+        if (name === "rt_std_call") {
+            const args = parseArgs(rawArgs);
+            const count = Number(args[2]?.replace(/^i32\s+/, ""));
+            if (!Number.isInteger(count) || count < 0 || count > 8 || args.length !== count + 3) {
+                throw new Error(`WebAssembly backend supports standard-library calls with up to eight arguments; received ${count}`);
+            }
+            for (const argument of args.slice(0, 3)) add(operand(argument)[0]);
+            for (const argument of args.slice(3)) add(operand(argument)[0]);
+            for (let index = count; index < 8; index++) add("i32.const 0");
+            add("call $rt_std_call_browser", `local.set $${destination}`);
+            return;
+        }
         if (name === "rt_list") {
             const allArgs = parseArgs(rawArgs);
             const count = Number(allArgs[0]?.replace(/^i32\s+/, ""));
@@ -540,6 +605,8 @@ function emitInstruction(instruction, context) {
     match = instruction.match(/^br i1 (%[\w.$-]+), label %([\w.$-]+), label %([\w.$-]+)$/);
     if (match) {
         add(
+            "local.get $pc",
+            "local.set $pred",
             `local.get $${match[1].slice(1)}`,
             "if",
             `  i32.const ${targetIndex(match[2])}`,

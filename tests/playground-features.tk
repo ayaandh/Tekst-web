@@ -1,0 +1,130 @@
+use math
+use random
+use time
+use os
+use fs
+use json
+from math use sqrt as root
+
+fn assert_equal(actual, expected, label):
+    if actual != expected:
+        print("FAIL: {label}")
+        failure = 1 / 0
+
+fn explode():
+    print("FAIL: short-circuit expression evaluated its right side")
+    failure = 1 / 0
+    return True
+
+fn factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+fn deferred():
+    defer print("deferred cleanup")
+    return 7
+
+assert_equal(5, 5, "values")
+assert_equal(int("12"), 12, "integer conversion")
+assert_equal(float("2.5"), 2.5, "float conversion")
+assert_equal(str(12), "12", "string conversion")
+assert_equal(bool(1), True, "boolean conversion")
+assert_equal(len("tekst"), 5, "length")
+assert_equal(factorial(5), 120, "recursion")
+
+assert_equal((False and explode()), False, "short circuit and")
+assert_equal((True or explode()), True, "short circuit or")
+
+double = fn(value): value * 2
+assert_equal(double(8), 16, "lambda call")
+
+score = 84
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+else:
+    grade = "C"
+assert_equal(grade, "B", "if/elif")
+match grade:
+    case "A":
+        matched = 1
+    case "B":
+        matched = 2
+    case _:
+        matched = 3
+assert_equal(matched, 2, "match")
+
+total = 0
+for i in range(1, 10):
+    if i == 3:
+        continue
+    if i == 7:
+        break
+    total += i
+assert_equal(total, 18, "for/break/continue")
+
+count = 0
+while count < 3:
+    count += 1
+assert_equal(count, 3, "while")
+
+numbers = [2, 4, 6, 8]
+squares = [n * n for n in numbers]
+first, second = (squares[0], squares[1])
+assert_equal(first, 4, "list comprehension")
+assert_equal(second, 16, "tuple destructuring")
+numbers[1] = 5
+numbers.push(10)
+assert_equal(numbers[1], 5, "list index assignment")
+assert_equal(numbers.contains(10), True, "list method")
+
+person = {"name": "Ada", "age": 36}
+person["age"] += 1
+assert_equal(person["age"], 37, "dictionary assignment")
+assert_equal("tekst".upper(), "TEKST", "string method")
+assert_equal("a,b".split(",")[1], "b", "string split")
+assert_equal("tekst".replace("tek", "Tek"), "Tekst", "string replace")
+
+class Counter:
+    fn __init__(self, start = 0):
+        self.value = start
+
+    fn increment(self, amount = 1):
+        self.value += amount
+        return self.value
+
+struct Point:
+    x: int = 3
+    y: int = 4
+
+counter = Counter(10)
+point = Point()
+assert_equal(counter.increment(), 11, "class default method argument")
+assert_equal(counter.increment(4), 15, "class method")
+assert_equal(point.x + point.y, 7, "struct fields")
+missing = None
+assert_equal(missing?.value, None, "optional attribute")
+assert_equal(deferred(), 7, "defer")
+
+assert_equal(root(81), 9, "from-import standard function")
+assert_equal(math.sqrt(64), 8, "math module")
+assert_equal(math.pi > 3, True, "math constant")
+assert_equal(math.min(9, 2, 4), 2, "standard call with three arguments")
+random.seed(42)
+roll = random.randint(1, 6)
+assert_equal((roll >= 1 and roll <= 6), True, "random module")
+assert_equal(time.timestamp() > 0, True, "time module")
+assert_equal(len(os.cwd()) > 0, True, "os module")
+
+encoded = json.encode(person)
+decoded = json.decode(encoded)
+assert_equal(decoded["age"], 37, "JSON module")
+fs.write("playground-test.tmp", encoded)
+assert_equal(fs.read("playground-test.tmp"), encoded, "filesystem read/write")
+assert_equal(fs.exists("playground-test.tmp"), True, "filesystem exists")
+fs.remove("playground-test.tmp")
+assert_equal(fs.exists("playground-test.tmp"), False, "filesystem remove")
+
+print("All playground language feature checks passed")
